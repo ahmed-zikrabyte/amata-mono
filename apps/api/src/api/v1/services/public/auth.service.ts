@@ -1,6 +1,6 @@
-import jwt, {SignOptions} from "jsonwebtoken";
+import jwt, { SignOptions } from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import {IUser} from "src/interfaces";
+import { IUser } from "src/interfaces";
 import config from "../../../../config";
 // This is a mock user data store. Replace with a database in a real application.
 const users: IUser[] = [];
@@ -14,11 +14,11 @@ const signToken = (id: string, role: "admin" | "client") => {
     expiresIn: expiresIn as any,
   };
 
-  return jwt.sign({id, role}, secret as string, options);
+  return jwt.sign({ id, role }, secret as string, options);
 };
 
 export const registerUser = async (userData: Partial<IUser>) => {
-  const {name, email, password, role} = userData;
+  const { name, email, password, role } = userData;
 
   if (!name || !email || !password || !role) {
     throw new Error("Please provide all required fields");
@@ -41,13 +41,13 @@ export const registerUser = async (userData: Partial<IUser>) => {
   const token = signToken(newUser.id, newUser.role);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const {password: _, ...userWithoutPassword} = newUser;
+  const { password: _, ...userWithoutPassword } = newUser;
 
-  return {user: userWithoutPassword, token};
+  return { user: userWithoutPassword, token };
 };
 
 export const loginUser = async (credentials: Partial<IUser>) => {
-  const {email, password} = credentials;
+  const { email, password } = credentials;
 
   if (!email || !password) {
     throw new Error("Please provide email and password");
@@ -62,7 +62,7 @@ export const loginUser = async (credentials: Partial<IUser>) => {
   const token = signToken(user.id, user.role);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const {password: _, ...userWithoutPassword} = user;
+  const { password: _, ...userWithoutPassword } = user;
 
-  return {user: userWithoutPassword, token};
+  return { user: userWithoutPassword, token };
 };

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import AppError from '../utils/AppError';
+import config from '../config';
 
 interface IError extends Error {
   statusCode?: number;
@@ -60,9 +61,9 @@ export const errorHandler = (err: IError, req: Request, res: Response, next: Nex
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
-  if (process.env.NODE_ENV === 'development') {
+  if (config.nodeEnv === 'development') {
     sendErrorDev(err, res);
-  } else if (process.env.NODE_ENV === 'production') {
+  } else if (config.nodeEnv === 'production') {
     let error = { ...err };
     error.message = err.message;
 
