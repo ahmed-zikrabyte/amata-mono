@@ -32,11 +32,11 @@ axiosInstance.interceptors.response.use(
       const { status, data } = error.response;
       console.log("📦 Received status:", data); // Debug
 
-      if (status === 401 && data.error === "INVALID_TOKEN") {
+      if (status === 401 && data.message === "INVALID_TOKEN") {
         console.warn("Unauthorized access - Admin token may be expired.");
         localStorage.removeItem("admin_token");
         window.location.href = "/login";
-      } else if (status === 401 && data.error === "TOKEN_EXPIRED") {
+      } else if (status === 401 && data.message === "TOKEN_EXPIRED") {
         console.warn("Unauthorized access - Admin token may be expired.");
         localStorage.removeItem("admin_token");
         window.location.href = "/login";

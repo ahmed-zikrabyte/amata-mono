@@ -18,6 +18,12 @@ const config = {
     windowMs: Number(process.env.RATE_LIMITER_WINDOW_MS) || 15 * 60 * 1000,
     maxRequests: Number(process.env.RATE_LIMITER_MAX_REQUESTS) || 100,
   },
+  aws: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
+    bucketName: process.env.S3_BUCKET_NAME,
+  }
 };
 
 export default config;
