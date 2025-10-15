@@ -6,12 +6,10 @@ export interface IAddress {
   addressType: "home" | "work" | "other";
   fullName: string;
   phoneNumber: string;
-  email: string;
   addressLine1: string;
-  addressLine2: string;
+  addressLine2?: string;
   landmark?: string;
   city: string;
   state: string;
   postalCode: string;
-  country: string;
 }
