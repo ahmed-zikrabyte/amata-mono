@@ -9,6 +9,14 @@ export interface AuthenticatedRequest extends Request {
   user?: any;
 }
 
+declare global {
+  namespace Express {
+    interface Request {
+      user?: any
+    }
+  }
+}
+
 const verifyToken = (token: string, secret: string) => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, secret, (err, decoded) => {
@@ -21,7 +29,7 @@ const verifyToken = (token: string, secret: string) => {
 };
 
 export const protect = (role: 'admin' | 'client') =>
-  catchAsync(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];

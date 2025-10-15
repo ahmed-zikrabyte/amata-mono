@@ -20,5 +20,5 @@ const userSchema = new mongoose.Schema<IUser>(
   { timestamps: true }
 );
 
-const USER_DB_REF = "users";
+export const USER_DB_REF = "users";
 export const UserModel = mongoose.model(USER_DB_REF, userSchema);

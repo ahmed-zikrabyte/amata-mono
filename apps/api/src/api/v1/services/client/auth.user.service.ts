@@ -6,6 +6,7 @@ import { UserModel } from "../../../../models/user.model";
 import { ServiceResponse } from "../../../../typings";
 import AppError from "../../../../utils/AppError";
 import generateOTP from "../../../../utils/generateOtp";
+import { CartModel } from "../../../../models/cart.model";
 
 export default class UserAuthService {
   register = async (
@@ -82,6 +83,13 @@ export default class UserAuthService {
       });
 
       await newUser.save();
+
+      const newCart = new CartModel({
+        items: [],
+        userId: newUser._id,
+      });
+
+      await newCart.save();
 
       const token = await signToken(newUser._id.toString(), "client");
 
