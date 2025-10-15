@@ -6,3 +6,5 @@ export * from "./blog.interface";
 export * from "./category.interface";
 export * from "./product.interface";
 export * from "./otp.interface";
+export * from "./cart.interface";
+export * from "./address.interface";
