@@ -39,6 +39,7 @@ export default function CreateBlogClient() {
     if (!values.image) {
       toast.error("Please upload an image");
       return;
+      
     }
 
     // Prepare form data
