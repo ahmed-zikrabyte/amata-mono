@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import config from '../config';
 import AppError from '../utils/AppError';
 import catchAsync from '../utils/catchAsync';
@@ -7,6 +7,14 @@ import { ROLES } from '../constants';
 
 export interface AuthenticatedRequest extends Request {
   user?: any;
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: any
+    }
+  }
 }
 
 const verifyToken = (token: string, secret: string) => {
@@ -21,7 +29,7 @@ const verifyToken = (token: string, secret: string) => {
 };
 
 export const protect = (role: 'admin' | 'client') =>
-  catchAsync(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];
@@ -38,6 +46,21 @@ export const protect = (role: 'admin' | 'client') =>
       req.user = decoded;
       next();
     } catch (error) {
-      return next(new AppError('Invalid token. Please log in again!', 401));
+      if (error instanceof TokenExpiredError) {
+        return next(
+          new AppError("TOKEN_EXPIRED", 401)
+        );
+      }
+
+      if (error instanceof JsonWebTokenError) {
+        return next(
+          new AppError("INVALID_TOKEN", 401)
+        );
+      }
+
+      // Fallback for unknown authentication issues
+      return next(
+        new AppError("Authentication failed. Please log in again.", 401)
+      );
     }
   });
