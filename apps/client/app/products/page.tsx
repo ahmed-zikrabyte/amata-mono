@@ -61,7 +61,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@workspace/ui/components/dialog";
-import { Star, Minus, Plus, SquarePen, Circle } from "lucide-react";
+import { Star, Minus, Plus, SquarePen, Circle, Images } from "lucide-react";
 
 const Page = () => {
   const productImages = [
@@ -140,6 +140,7 @@ const Page = () => {
     image: any;
   }
   const [openIndex, setOpenIndex] = useState(0);
+  const [rating, setRating] = useState(0);
 
   const faqs = [
     {
@@ -196,6 +197,37 @@ const Page = () => {
       image: rich4,
     },
   ];
+
+  // const ReviewSection = () => {
+  //   const [rating, setRating] = useState(0);
+  //   const [hoverRating, setHoverRating] = useState(0)
+
+  //   const StarRating = ({ totalStars = 5 }) => {
+  //   return (
+  //     <div className="flex gap-1">
+  //       {[...Array(totalStars)].map((_, index) => {
+  //         const starValue = index + 1;
+  //         return (
+  //           <button
+  //             key={index}
+  //             type="button"
+  //             className={`text-2xl cursor-pointer ${
+  //               starValue <= (hoverRating || rating)
+  //                 ? "text-yellow-400"
+  //                 : "text-gray-300"
+  //             }`}
+  //             onClick={() => setRating(starValue)}
+  //             onMouseEnter={() => setHoverRating(starValue)}
+  //             onMouseLeave={() => setHoverRating(0)}
+  //           >
+  //             ★
+  //           </button>
+  //         );
+  //       })}
+  //     </div>
+  //   );
+  // };
+  // }
 
   return (
     <div>
@@ -1075,21 +1107,265 @@ const Page = () => {
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
-          }} 
+          }}
         >
           <div className="relative">
             <div className="flex justify-between items-center">
               <h1 className="text-2xl text-black font-bold">
                 Customer Reviews
               </h1>
-              <div className="flex justify-center items-center gap-3">
-                <SquarePen className="w-5 h-5 text-black cursor-pointer"/>
-                <span className="text-sm text-black">Write a Review</span>
-              </div>
-              
+              <Dialog>
+                <DialogTrigger asChild>
+                  <div className="flex justify-between items-center gap-3 cursor-pointer">
+                    <SquarePen className="w-5 h-5 text-black" />
+                    <span className="text-[13px] text-black">
+                      Write a Review
+                    </span>
+                  </div>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[500px] max-w-7xl bg-white p-6 rounded-lg">
+                  {/* Review form */}
+                  <div className="space-y-6">
+                    {/* Header */}
+                    <div className="text-center">
+                      <h2 className="text-2xl font-bold text-black">
+                        Write a Review
+                      </h2>
+                    </div>
+
+                    {/* Rating Section */}
+                    <div className="space-y-4">
+                      <h3 className="text-[13px] font-medium text-black mt-4">
+                        Rating
+                      </h3>
+                      <div className="flex space-x-1 mb-2">
+                        {[...Array(5)].map((str, index) => {
+                          const starVal = index + 1;
+                          return (
+                            <Star
+                              key={index}
+                              onClick={() => setRating(starVal)}
+                              className={`w-5 h-5 cursor-pointer transition-colors duration-200 ${
+                                starVal <= rating
+                                  ? "fill-yellow-400 text-yellow-400"
+                                  : "text-gray-300"
+                              }`}
+                            />
+                          );
+                        })}
+                      </div>
+
+                      {/* Name and Email */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-[13px] font-normal text-black">
+                            Your Name
+                          </label>
+                          <Input
+                            placeholder="Enter your name"
+                            className="bg-white border-none text-black"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[13px] font-normal text-black">
+                            Email ID
+                          </label>
+                          <Input
+                            placeholder="Enter your Email"
+                            className="bg-white border-none text-black"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Review Text */}
+                      <div className="space-y-2">
+                        <label className="text-[13px] font-normal text-black">
+                          Write a Review
+                        </label>
+                        <Textarea
+                          placeholder="description..."
+                          className="bg-white border-none text-black min-h-[100px]"
+                        />
+                      </div>
+
+                      {/* Upload image*/}
+                      <div className="space-y-2">
+                        <label className="text-[13px] font-normal text-black">
+                          Upload images{" "}
+                          <span className="text-[10px] text-gray-400">
+                            (Optional)
+                          </span>
+                        </label>
+                        <div className="w-full h-24 border-2 border-dashed border-gray-200 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
+                          <div className="text-center">
+                            <Images className="w-8 h-8 text-gray-400 mx-auto mb-1" />
+                            <span className="text-[12px] text-gray-500">
+                              Upload images
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      {/* Action Buttons */}
+                      <div className="flex justify-end gap-5 pt-4">
+                        <Button
+                          variant="outline"
+                          className="bg-white border-red-800 text-red-950 hover:bg-red-700 hover:text-white transition-all duration-200"
+                        >
+                          Cancel
+                        </Button>
+                        <Button className="bg-red-700 hover:bg-green-700 text-white">
+                          Submit
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
             <br />
-            <hr />
+            <hr className="my-6 border-gray-300" />
+
+            {/* Rating Overview */}
+            <div className="flex items-start gap-6 mt-8">
+              {/* Overall Rating */}
+              <div className="text-center flex-shrink-0">
+                <div className="text-5xl font-bold text-black mb-2">4.5</div>
+                <div className="flex justify-center gap-1 mb-2">
+                  {"★"
+                    .repeat(5)
+                    .split("")
+                    .map((star, index) => (
+                      <span
+                        key={index}
+                        className={`text-2xl ${index < 4 ? "text-yellow-400" : "text-gray-300"}`}
+                      >
+                        ★
+                      </span>
+                    ))}
+                </div>
+                <div className="text-sm text-gray-600">(10k ratings)</div>
+              </div>
+
+              {/* First Vertical Line */}
+              <div className="h-52 w-px bg-gray-300"></div>
+
+              {/* Rating Bars */}
+              <div className="flex-1 space-y-2">
+                {[
+                  { rating: 5, count: "7.5k", width: "90%" },
+                  { rating: 4, count: "1.5k", width: "70%" },
+                  { rating: 3, count: "1k", width: "50%" },
+                  { rating: 2, count: "0.4k", width: "30%" },
+                  { rating: 1, count: "0.1k", width: "10%" },
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 w-10">
+                      <span className="text-black text-sm font-medium">
+                        {item.rating}
+                      </span>
+                      <span className="text-yellow-400 text-lg">★</span>
+                    </div>
+                    <div className="flex-1 bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-red-950 h-2 rounded-full"
+                        style={{ width: item.width }}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Second Vertical Line */}
+              <div className="h-52 w-px bg-gray-300"></div>
+
+              {/* Star Summary Box */}
+              <div className="w-48">
+                <div className="text-center mb-3"></div>
+                <div className="space-y-1">
+                  <div className="flex justify-between text-xs text-gray-700">
+                    <span>⭐ 5.0</span>
+                    <span className="font-medium">7.5k reviews</span>
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-700">
+                    <span>⭐ 4.0</span>
+                    <span className="font-medium">1.5k reviews</span>
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-700">
+                    <span>⭐ 3.0</span>
+                    <span className="font-medium">1k reviews</span>
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-700">
+                    <span>⭐ 2.0</span>
+                    <span className="font-medium">0.4k reviews</span>
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-700">
+                    <span>⭐ 1.0</span>
+                    <span className="font-medium">0.1k reviews</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Review */}
+            <div className="space-y-8 mt-5">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3 flex-col">
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="font-medium text-black">
+                      <span>1</span>
+                      Priya Menon - Bengaluru
+                      <div className="flex text-yellow-400 text-lg">
+                        {"★".repeat(5)}
+                      </div>
+                      <p className="text-[12px] font-medium">
+                        "The Gir Cow A2 Bilona Ghee tastes just like the one my
+                        grandmother used to make. Rich aroma, authentic flavor,
+                        and amazing quantity -- I won't go back to any other
+                        brand."
+                      </p>
+                      <hr className="mt-5 font-bold text-3xl" />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="font-medium text-black">
+                      <span>1</span>
+                      Priya Menon - Bengaluru
+                      <div className="flex text-yellow-400 text-lg">
+                        {"★".repeat(5)}
+                      </div>
+                      <p className="text-[12px] font-medium">
+                        "The Gir Cow A2 Bilona Ghee tastes just like the one my
+                        grandmother used to make. Rich aroma, authentic flavor,
+                        and amazing quantity -- I won't go back to any other
+                        brand."
+                      </p>
+                      <hr className="mt-5 font-bold text-3xl" />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="font-medium text-black">
+                      <span>1</span>
+                      Priya Menon - Bengaluru
+                      <div className="flex text-yellow-400 text-lg">
+                        {"★".repeat(5)}
+                      </div>
+                      <p className="text-[12px] font-medium">
+                        "The Gir Cow A2 Bilona Ghee tastes just like the one my
+                        grandmother used to make. Rich aroma, authentic flavor,
+                        and amazing quantity -- I won't go back to any other
+                        brand."
+                      </p>
+                      <hr className="mt-5 font-bold text-3xl" />
+                    </div>
+                  </div>
+                </div>
+                <div className="text-red-700 text-sm mt-10">
+                  Read all reviews
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
