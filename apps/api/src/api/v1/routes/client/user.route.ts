@@ -4,6 +4,7 @@ import { protect } from "../../../../middleware/auth.middleware";
 import userProductRoute from "./product.user.route";
 import userCartRoute from "./cart.user.route";
 import userAddressRoute from "./address.user.route";
+import userOrderRoute from "./order.user.route";
 
 const userRoutes: Router = Router();
 
@@ -14,5 +15,6 @@ userRoutes.use(protect("client"));
 
 userRoutes.use("/cart", userCartRoute);
 userRoutes.use("/address", userAddressRoute);
+userRoutes.use("/order", userOrderRoute);
 
 export default userRoutes;

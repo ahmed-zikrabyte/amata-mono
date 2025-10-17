@@ -1,18 +1,27 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from "react";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@workspace/ui/components/sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@workspace/ui/components/sidebar";
 import { AppSidebar } from "../../components/sidebar/app-sidebar";
 import { ChevronLeft, LogOut, User } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@workspace/ui/components/dropdown-menu"
-import {Button} from '@workspace/ui/components/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@workspace/ui/components/dropdown-menu";
+import { Button } from "@workspace/ui/components/button";
+import ConfirmationModal from "../../components/global/confirmation-modal";
 
 export default function DashboardLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-
-  const router = useRouter()
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const pathname = usePathname();
@@ -39,6 +48,11 @@ export default function DashboardLayout({
   if (isAuthenticated === null) {
     return null; // Or a loader if you prefer
   }
+
+  const handleLogout = () => {
+    localStorage.removeItem("admin_token");
+    router.push("/login");
+  };
 
   return (
     <div>
@@ -89,6 +103,13 @@ export default function DashboardLayout({
           </main>
         </SidebarInset>
       </SidebarProvider>
+      <ConfirmationModal
+        title="Logout?"
+        description="Are you sure you want to logout?"
+        open={open}
+        onOpenChange={setOpen}
+        onConfirm={handleLogout}
+      />
     </div>
-  )
+  );
 }
