@@ -54,13 +54,13 @@ export function AppSidebar() {
       //   type: "coupons",
       //   count: coupons,
       // },
-      // {
-      //   title: "Orders",
-      //   url: "/orders?type=orders&page=1",
-      //   icon: Bus,
-      //   type: "orders",
-      //   count: orders,
-      // },
+      {
+        title: "Orders",
+        url: "/orders",
+        icon: Bus,
+        type: "orders",
+        // count: orders,
+      },
       // {
       //   title: "Reviews",
       //   url: "/reviews?type=reviews",
