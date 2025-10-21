@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AmtRefund from "../../assets/AmtRefund.png";
 import Box from "../../assets/Box.png";
 import Box2 from "../../assets/Box2.png";
@@ -39,8 +39,12 @@ import review3 from "../../assets/Review3.png";
 import productCorsoul1 from "../../assets/ProductCorsolImg1.png";
 import productCorsoul2 from "../../assets/ProdutCorsolImg2.png";
 import { Star, Minus, Plus, SquarePen, Circle, Images } from "lucide-react";
-import Navbar from "../../components/global/navbar";
 import YouMayAlsoLike from "../../components/products/youMayAlsoLike";
+import { productApi } from "../../lib/api/productApi";
+import { Product } from "../../lib/types/product";
+import ProductCard from "../../components/products/productCard";
+import ProductCarousel from "../../components/products/productCarousel";
+import { useApi } from "../../hooks/useApi";
 import {
   Carousel,
   CarouselContent,
@@ -136,7 +140,7 @@ const Page = () => {
     image: any;
   }
 
-  interface Product {
+  interface LocalProduct  {
     id: number;
     category: string;
     title: string;
@@ -147,6 +151,8 @@ const Page = () => {
   }
   const [openIndex, setOpenIndex] = useState(0);
   const [rating, setRating] = useState(0);
+  const [activeImage, setActiveImage] = useState<number>(0);
+  const { data, loading, error, execute } = useApi<Product[]>();
 
   const faqs = [
     {
@@ -175,7 +181,6 @@ const Page = () => {
         "It typically lasts up to 9-12 months if stored properly under recommended conditions",
     },
   ];
-  const [activeImage, setActiveImage] = useState<number>(0);
 
   const buttonData: ButtonData[] = [
     {
@@ -211,7 +216,7 @@ const Page = () => {
     brahmi: productCorsoul2,
   };
 
-  const products: Product[] = [
+  const localProducts: LocalProduct[] = [
     {
       id: 1,
       category: "Category Approach",
@@ -258,18 +263,48 @@ const Page = () => {
       badge: "Approach",
     },
   ];
-  const [recommendedProducts] = useState(products);
-  const handleAddToCart = (productId: number) => {
-    console.log("Add to cart:", productId);
+  const [recommendedProducts] = useState<LocalProduct[]>(localProducts);
+
+  useEffect(() => {
+    try {
+      execute(productApi.getAll());
+    } catch (error) {
+      console.log(error)
+    }
+  }, [execute]);
+
+  useEffect(() => {
+    console.log({data})
+  }, [data])
+
+
+  const apiProducts = data || []
+ 
+  const handleAddToCart = (product: Product | LocalProduct) => {
+    console.log("Add to cart:", product);
   };
 
-  const handleShopNow = (productId: number) => {
-    console.log("Shop now:", productId);
+  const handleShopNow = (product: Product | LocalProduct) => {
+    console.log("Shop now:", product);
   };
 
   const handleViewAll = () => {
     console.log("View all products");
   };
+
+   if (loading) return (
+    <div className="flex justify-center items-center min-h-64">
+      <div className="text-lg">Loading products...</div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="flex justify-center items-center min-h-64">
+      <div className="text-red-500 text-lg">Error: {error}</div>
+    </div>
+  );
+
+  
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-4 sm:py-6 mt-16">
@@ -719,269 +754,261 @@ const Page = () => {
               {/* Right Column - Buttons */}
               <div className="flex items-center justify-center lg:justify-end order-1 lg:order-2">
                 <div className="w-full max-w-md lg:max-w-lg">
-                    
-
-                    {/* Buttons Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 sm:gap-6">
-                      {/* Nutrition Information */}
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="bg-white text-gray-800 py-4 sm:py-5 px-6 w-full border-2 border-gray-300 hover:border-red-300 transition-all duration-300"
-                          >
-                            <div className="flex items-center justify-center space-x-3">
-                              
-                              <span className="font-semibold text-sm sm:text-base">
-                                Nutrition Information
-                              </span>
-                            </div>
-                          </Button>
-                        </DialogTrigger>
-
-                        <DialogContent className="max-w-md sm:max-w-lg lg:max-w-2xl bg-white p-0 overflow-hidden rounded-2xl">
-                          <DialogHeader className="p-0 sticky top-0 z-10">
-                            <DialogTitle className="text-white bg-gradient-to-r from-red-700 to-red-800 px-6 py-5 w-full text-lg sm:text-xl font-bold shadow-lg">
+                  {/* Buttons Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 sm:gap-6">
+                    {/* Nutrition Information */}
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="bg-white text-gray-800 py-4 sm:py-5 px-6 w-full border-2 border-gray-300 hover:border-red-300 transition-all duration-300"
+                        >
+                          <div className="flex items-center justify-center space-x-3">
+                            <span className="font-semibold text-sm sm:text-base">
                               Nutrition Information
-                            </DialogTitle>
-                          </DialogHeader>
+                            </span>
+                          </div>
+                        </Button>
+                      </DialogTrigger>
 
-                          <div className="p-6 sm:p-8 overflow-y-auto max-h-[70vh] sm:max-h-[80vh]">
-                            <div className="mb-6">
-                              <table className="w-full border-collapse rounded-lg overflow-hidden shadow-md">
-                                <thead>
-                                  <tr className="bg-gradient-to-r from-red-600 to-red-700">
-                                    <th className="text-left py-4 px-4 sm:px-6 font-semibold text-white text-sm sm:text-base uppercase tracking-wide">
-                                      Nutrient
-                                    </th>
-                                    <th className="text-right py-4 px-4 sm:px-6 font-semibold text-white text-sm sm:text-base uppercase tracking-wide">
-                                      Value
-                                    </th>
+                      <DialogContent className="max-w-md sm:max-w-lg lg:max-w-2xl bg-white p-0 overflow-hidden rounded-2xl">
+                        <DialogHeader className="p-0 sticky top-0 z-10">
+                          <DialogTitle className="text-white bg-gradient-to-r from-red-700 to-red-800 px-6 py-5 w-full text-lg sm:text-xl font-bold shadow-lg">
+                            Nutrition Information
+                          </DialogTitle>
+                        </DialogHeader>
+
+                        <div className="p-6 sm:p-8 overflow-y-auto max-h-[70vh] sm:max-h-[80vh]">
+                          <div className="mb-6">
+                            <table className="w-full border-collapse rounded-lg overflow-hidden shadow-md">
+                              <thead>
+                                <tr className="bg-gradient-to-r from-red-600 to-red-700">
+                                  <th className="text-left py-4 px-4 sm:px-6 font-semibold text-white text-sm sm:text-base uppercase tracking-wide">
+                                    Nutrient
+                                  </th>
+                                  <th className="text-right py-4 px-4 sm:px-6 font-semibold text-white text-sm sm:text-base uppercase tracking-wide">
+                                    Value
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {[
+                                  { nutrient: "Energy", value: "897 kcal" },
+                                  { nutrient: "Total Fat", value: "99.7 g" },
+                                  {
+                                    nutrient: "Cholesterol",
+                                    value: "256 mg",
+                                  },
+                                  { nutrient: "Protein", value: "0 g" },
+                                  { nutrient: "Carbohydrates", value: "0 g" },
+                                  { nutrient: "Sugar", value: "0 g" },
+                                  { nutrient: "Trans Fat", value: "0 g" },
+                                  { nutrient: "Vitamin A", value: "840 µg" },
+                                  { nutrient: "Vitamin D", value: "13 µg" },
+                                  { nutrient: "Vitamin E", value: "1.8 µg" },
+                                  { nutrient: "Vitamin K", value: "8.6 µg" },
+                                ].map((item, index) => (
+                                  <tr
+                                    key={index}
+                                    className="border-b border-gray-200 even:bg-gray-50 hover:bg-gray-100 transition-colors duration-200"
+                                  >
+                                    <td className="py-3 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
+                                      {item.nutrient}
+                                    </td>
+                                    <td className="py-3 px-4 sm:px-6 text-right font-semibold text-gray-900 text-sm sm:text-base">
+                                      {item.value}
+                                    </td>
                                   </tr>
-                                </thead>
-                                <tbody>
-                                  {[
-                                    { nutrient: "Energy", value: "897 kcal" },
-                                    { nutrient: "Total Fat", value: "99.7 g" },
-                                    {
-                                      nutrient: "Cholesterol",
-                                      value: "256 mg",
-                                    },
-                                    { nutrient: "Protein", value: "0 g" },
-                                    { nutrient: "Carbohydrates", value: "0 g" },
-                                    { nutrient: "Sugar", value: "0 g" },
-                                    { nutrient: "Trans Fat", value: "0 g" },
-                                    { nutrient: "Vitamin A", value: "840 µg" },
-                                    { nutrient: "Vitamin D", value: "13 µg" },
-                                    { nutrient: "Vitamin E", value: "1.8 µg" },
-                                    { nutrient: "Vitamin K", value: "8.6 µg" },
-                                  ].map((item, index) => (
-                                    <tr
-                                      key={index}
-                                      className="border-b border-gray-200 even:bg-gray-50 hover:bg-gray-100 transition-colors duration-200"
-                                    >
-                                      <td className="py-3 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
-                                        {item.nutrient}
-                                      </td>
-                                      <td className="py-3 px-4 sm:px-6 text-right font-semibold text-gray-900 text-sm sm:text-base">
-                                        {item.value}
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
+                                ))}
+                              </tbody>
+                            </table>
                           </div>
-                        </DialogContent>
-                      </Dialog>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
 
-                      {/* Ingredients */}
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="bg-white hover:text-green-700 text-gray-800 py-4 sm:py-5 px-6 w-full  border-2 border-gray-300 hover:border-red-300 transition-all duration-300"
-                          >
-                            <div className="flex items-center justify-center space-x-3">
-                              
-                              <span className="font-semibold text-sm sm:text-base">
-                                Ingredients
-                              </span>
-                            </div>
-                          </Button>
-                        </DialogTrigger>
-
-                        <DialogContent className="max-w-md sm:max-w-lg lg:max-w-2xl bg-white p-0 overflow-hidden rounded-2xl">
-                          <DialogHeader className="p-0 sticky top-0 z-10">
-                            <DialogTitle className="text-white bg-red-700 px-6 py-5 w-full text-lg sm:text-xl font-bold shadow-lg">
+                    {/* Ingredients */}
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="bg-white hover:text-green-700 text-gray-800 py-4 sm:py-5 px-6 w-full  border-2 border-gray-300 hover:border-red-300 transition-all duration-300"
+                        >
+                          <div className="flex items-center justify-center space-x-3">
+                            <span className="font-semibold text-sm sm:text-base">
                               Ingredients
-                            </DialogTitle>
-                          </DialogHeader>
-
-                          <div className="p-6 sm:p-8 overflow-y-auto max-h-[70vh] sm:max-h-[80vh]">
-                            <div className="border-2 border-none rounded-xl bg-green-50/50 p-6 sm:p-8">
-                              <p className="mb-4 text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
-                                Made from 100% pure A2 Gir Cow milk using the
-                                traditional Bilona method. Free from
-                                preservatives, additives, and artificial
-                                flavours for authentic purity.
-                              </p>
-                              <ul className="space-y-3 sm:space-y-4">
-                                {[
-                                  "100% A2 Gir Cow Milk — sourced from indigenous Gir cows",
-                                  "Cultured Curd — prepared traditionally for hand-churning",
-                                  "No Preservatives, Additives, or Artificial Flavours",
-                                ].map((item, index) => (
-                                  <li
-                                    key={index}
-                                    className="flex items-start space-x-3 sm:space-x-4"
-                                  >
-                                    <Image
-                                      src={check}
-                                      alt="check"
-                                      className="w-5 h-5 sm:w-6 sm:h-6 mt-0.5 flex-shrink-0"
-                                    />
-                                    <p className="text-gray-700 text-sm sm:text-base font-medium flex-1">
-                                      {item}
-                                    </p>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
+                            </span>
                           </div>
-                        </DialogContent>
-                      </Dialog>
+                        </Button>
+                      </DialogTrigger>
 
-                      {/* Suggested Use */}
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="bg-white  hover:text-red-700 text-gray-800 py-4 sm:py-5 px-6 w-full border-2 border-gray-300 hover:border-red-300 transition-all duration-300 "
-                          >
-                            <div className="flex items-center justify-center space-x-3">
-                              
-                              <span className="font-semibold text-sm sm:text-base">
-                                Suggested Use
-                              </span>
-                            </div>
-                          </Button>
-                        </DialogTrigger>
+                      <DialogContent className="max-w-md sm:max-w-lg lg:max-w-2xl bg-white p-0 overflow-hidden rounded-2xl">
+                        <DialogHeader className="p-0 sticky top-0 z-10">
+                          <DialogTitle className="text-white bg-red-700 px-6 py-5 w-full text-lg sm:text-xl font-bold shadow-lg">
+                            Ingredients
+                          </DialogTitle>
+                        </DialogHeader>
 
-                        <DialogContent className="max-w-md sm:max-w-lg lg:max-w-2xl bg-white p-0 overflow-hidden rounded-2xl">
-                          <DialogHeader className="p-0 sticky top-0 z-10">
-                            <DialogTitle className="text-white bg-red-700 px-6 py-5 w-full text-lg sm:text-xl font-bold shadow-lg">
+                        <div className="p-6 sm:p-8 overflow-y-auto max-h-[70vh] sm:max-h-[80vh]">
+                          <div className="border-2 border-none rounded-xl bg-green-50/50 p-6 sm:p-8">
+                            <p className="mb-4 text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
+                              Made from 100% pure A2 Gir Cow milk using the
+                              traditional Bilona method. Free from
+                              preservatives, additives, and artificial flavours
+                              for authentic purity.
+                            </p>
+                            <ul className="space-y-3 sm:space-y-4">
+                              {[
+                                "100% A2 Gir Cow Milk — sourced from indigenous Gir cows",
+                                "Cultured Curd — prepared traditionally for hand-churning",
+                                "No Preservatives, Additives, or Artificial Flavours",
+                              ].map((item, index) => (
+                                <li
+                                  key={index}
+                                  className="flex items-start space-x-3 sm:space-x-4"
+                                >
+                                  <Image
+                                    src={check}
+                                    alt="check"
+                                    className="w-5 h-5 sm:w-6 sm:h-6 mt-0.5 flex-shrink-0"
+                                  />
+                                  <p className="text-gray-700 text-sm sm:text-base font-medium flex-1">
+                                    {item}
+                                  </p>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+
+                    {/* Suggested Use */}
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="bg-white  hover:text-red-700 text-gray-800 py-4 sm:py-5 px-6 w-full border-2 border-gray-300 hover:border-red-300 transition-all duration-300 "
+                        >
+                          <div className="flex items-center justify-center space-x-3">
+                            <span className="font-semibold text-sm sm:text-base">
                               Suggested Use
-                            </DialogTitle>
-                          </DialogHeader>
-
-                          <div className="p-6 sm:p-8 overflow-y-auto max-h-[70vh] sm:max-h-[80vh]">
-                            <div className="border-2 border-none rounded-xl bg-blue-50/50 p-6 sm:p-8">
-                              <p className="text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
-                                It can also be used for skin care, hair
-                                nourishment, and Ayurvedic rituals for holistic
-                                wellness.
-                                <br />
-                                <br />
-                                Enjoy Amata Organic Farms' A2 Gir Cow Ghee as a
-                                cooking medium, topping for rotis and rice, or a
-                                natural booster in milk and herbal drinks.
-                              </p>
-                            </div>
+                            </span>
                           </div>
-                        </DialogContent>
-                      </Dialog>
+                        </Button>
+                      </DialogTrigger>
 
-                      {/* Storage Information */}
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="bg-white hover:text-red-700 text-gray-800 py-4 sm:py-5 px-6 w-full border-2 border-gray-300 hover:border-red-300 transition-all duration-300"
-                          >
-                            <div className="flex items-center justify-center space-x-3">
-                              
-                              <span className="font-semibold text-sm sm:text-base">
-                                Storage Information
-                              </span>
-                            </div>
-                          </Button>
-                        </DialogTrigger>
+                      <DialogContent className="max-w-md sm:max-w-lg lg:max-w-2xl bg-white p-0 overflow-hidden rounded-2xl">
+                        <DialogHeader className="p-0 sticky top-0 z-10">
+                          <DialogTitle className="text-white bg-red-700 px-6 py-5 w-full text-lg sm:text-xl font-bold shadow-lg">
+                            Suggested Use
+                          </DialogTitle>
+                        </DialogHeader>
 
-                        <DialogContent className="max-w-md sm:max-w-lg lg:max-w-2xl bg-white p-0 overflow-hidden rounded-2xl">
-                          <DialogHeader className="p-0 sticky top-0 z-10">
-                            <DialogTitle className="text-white bg-red-700 px-6 py-5 w-full text-lg sm:text-xl font-bold shadow-lg">
+                        <div className="p-6 sm:p-8 overflow-y-auto max-h-[70vh] sm:max-h-[80vh]">
+                          <div className="border-2 border-none rounded-xl bg-blue-50/50 p-6 sm:p-8">
+                            <p className="text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
+                              It can also be used for skin care, hair
+                              nourishment, and Ayurvedic rituals for holistic
+                              wellness.
+                              <br />
+                              <br />
+                              Enjoy Amata Organic Farms' A2 Gir Cow Ghee as a
+                              cooking medium, topping for rotis and rice, or a
+                              natural booster in milk and herbal drinks.
+                            </p>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+
+                    {/* Storage Information */}
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="bg-white hover:text-red-700 text-gray-800 py-4 sm:py-5 px-6 w-full border-2 border-gray-300 hover:border-red-300 transition-all duration-300"
+                        >
+                          <div className="flex items-center justify-center space-x-3">
+                            <span className="font-semibold text-sm sm:text-base">
                               Storage Information
-                            </DialogTitle>
-                          </DialogHeader>
-
-                          <div className="p-6 sm:p-8">
-                            <div className="border-2 border-none rounded-xl bg-purple-50/50 p-6 sm:p-8">
-                              <ul className="space-y-4 sm:space-y-5">
-                                {[
-                                  "Store in a cool, dry place, away from direct sunlight and moisture.",
-                                  "Always use a clean, dry spoon to maintain purity and freshness.",
-                                  "No refrigeration required — the ghee stays fresh naturally.",
-                                ].map((item, index) => (
-                                  <li
-                                    key={index}
-                                    className="flex items-start space-x-3 sm:space-x-4"
-                                  >
-                                    <Circle className="w-2 h-2 sm:w-3 sm:h-3 fill-black mt-2 flex-shrink-0" />
-                                    <p className="text-gray-700 text-sm sm:text-base font-medium flex-1">
-                                      {item}
-                                    </p>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
+                            </span>
                           </div>
-                        </DialogContent>
-                      </Dialog>
+                        </Button>
+                      </DialogTrigger>
 
-                      {/* Who Should Use This */}
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="bg-white hover:bg-red-50 hover:text-orange-700 text-gray-800 py-4 sm:py-5 px-6 w-full border-2 border-gray-300 hover:border-red-300 transition-all duration-300 "
-                          >
-                            <div className="flex items-center justify-center space-x-3">
-                              
-                              <span className="font-semibold text-sm sm:text-base">
-                                Who Should Use This?
-                              </span>
-                            </div>
-                          </Button>
-                        </DialogTrigger>
+                      <DialogContent className="max-w-md sm:max-w-lg lg:max-w-2xl bg-white p-0 overflow-hidden rounded-2xl">
+                        <DialogHeader className="p-0 sticky top-0 z-10">
+                          <DialogTitle className="text-white bg-red-700 px-6 py-5 w-full text-lg sm:text-xl font-bold shadow-lg">
+                            Storage Information
+                          </DialogTitle>
+                        </DialogHeader>
 
-                        <DialogContent className="max-w-md sm:max-w-lg lg:max-w-2xl bg-white p-0 overflow-hidden rounded-2xl">
-                          <DialogHeader className="p-0 sticky top-0 z-10">
-                            <DialogTitle className="text-white bg-red-700 px-6 py-5 w-full text-lg sm:text-xl font-bold shadow-lg">
+                        <div className="p-6 sm:p-8">
+                          <div className="border-2 border-none rounded-xl bg-purple-50/50 p-6 sm:p-8">
+                            <ul className="space-y-4 sm:space-y-5">
+                              {[
+                                "Store in a cool, dry place, away from direct sunlight and moisture.",
+                                "Always use a clean, dry spoon to maintain purity and freshness.",
+                                "No refrigeration required — the ghee stays fresh naturally.",
+                              ].map((item, index) => (
+                                <li
+                                  key={index}
+                                  className="flex items-start space-x-3 sm:space-x-4"
+                                >
+                                  <Circle className="w-2 h-2 sm:w-3 sm:h-3 fill-black mt-2 flex-shrink-0" />
+                                  <p className="text-gray-700 text-sm sm:text-base font-medium flex-1">
+                                    {item}
+                                  </p>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+
+                    {/* Who Should Use This */}
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="bg-white hover:bg-red-50 hover:text-orange-700 text-gray-800 py-4 sm:py-5 px-6 w-full border-2 border-gray-300 hover:border-red-300 transition-all duration-300 "
+                        >
+                          <div className="flex items-center justify-center space-x-3">
+                            <span className="font-semibold text-sm sm:text-base">
                               Who Should Use This?
-                            </DialogTitle>
-                          </DialogHeader>
-
-                          <div className="p-6 sm:p-8">
-                            <div className="border-2 border-none rounded-xl bg-orange-50/50 p-6 sm:p-8">
-                              <p className="text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
-                                A2 Gir Cow Ghee is ideal for everyone looking
-                                for pure, nutritious, and traditional goodness
-                                in their daily routine.
-                                <br />
-                                <br />
-                                Perfect for families, health-conscious
-                                individuals, fitness enthusiasts, children, and
-                                the elderly — anyone who wants to support better
-                                digestion, immunity, and overall wellness
-                                naturally.
-                              </p>
-                            </div>
+                            </span>
                           </div>
-                        </DialogContent>
-                      </Dialog>
-                    </div>
-                  
+                        </Button>
+                      </DialogTrigger>
+
+                      <DialogContent className="max-w-md sm:max-w-lg lg:max-w-2xl bg-white p-0 overflow-hidden rounded-2xl">
+                        <DialogHeader className="p-0 sticky top-0 z-10">
+                          <DialogTitle className="text-white bg-red-700 px-6 py-5 w-full text-lg sm:text-xl font-bold shadow-lg">
+                            Who Should Use This?
+                          </DialogTitle>
+                        </DialogHeader>
+
+                        <div className="p-6 sm:p-8">
+                          <div className="border-2 border-none rounded-xl bg-orange-50/50 p-6 sm:p-8">
+                            <p className="text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
+                              A2 Gir Cow Ghee is ideal for everyone looking for
+                              pure, nutritious, and traditional goodness in
+                              their daily routine.
+                              <br />
+                              <br />
+                              Perfect for families, health-conscious
+                              individuals, fitness enthusiasts, children, and
+                              the elderly — anyone who wants to support better
+                              digestion, immunity, and overall wellness
+                              naturally.
+                            </p>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
                 </div>
               </div>
             </div>
@@ -989,563 +1016,598 @@ const Page = () => {
         </div>
 
         <div
-  className="relative min-h-96 w-full z-0 py-8 sm:py-12 md:py-16"
-  style={{
-    backgroundColor: "#f2f2f2",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  }}
->
-  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-    {/* Heading */}
-    <div className="relative z-40 flex h-full items-center justify-center mb-6 sm:mb-8 lg:mb-12">
-      <h1 className="text-[#613815] uppercase text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center px-4">
-        Not All Ghee Is Created Equal
-      </h1>
-    </div>
+          className="relative min-h-96 w-full z-0 py-8 sm:py-12 md:py-16"
+          style={{
+            backgroundColor: "#f2f2f2",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Heading */}
+            <div className="relative z-40 flex h-full items-center justify-center mb-6 sm:mb-8 lg:mb-12">
+              <h1 className="text-[#613815] uppercase text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center px-4">
+                Not All Ghee Is Created Equal
+              </h1>
+            </div>
 
-    {/* Comparison Table */}
-    <div className="relative z-40 bg-white rounded-lg sm:rounded-xl lg:rounded-2xl shadow-lg overflow-hidden max-w-4xl mx-auto">
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[500px] sm:min-w-full border-collapse">
-          <thead>
-            <tr className="bg-[#613815]">
-              <th className="w-2/5 py-3 sm:py-4 px-4 sm:px-6 text-white font-semibold text-sm sm:text-base text-left">
-                Features
-              </th>
-              <th className="w-1/5 py-3 sm:py-4 px-2 sm:px-4 text-white font-semibold text-sm sm:text-base text-center border-l border-white/20">
-                AOF A2 Gir Cow Ghee
-              </th>
-              <th className="w-1/5 py-3 sm:py-4 px-2 sm:px-4 text-white font-semibold text-sm sm:text-base text-center border-l border-white/20">
-                Regular Ghee (A1 Milk)
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-b hover:bg-gray-50">
-              <td className="py-3 sm:py-4 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
-                Made from Indigenous Gir Cow Milk
-              </td>
-              <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l bg-red-800">
-                <div className="flex justify-center">
-                  <span className="text-white font-bold text-lg sm:text-xl">✓</span>
-                </div>
-              </td>
-              <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-gray-200">
-                <div className="flex justify-center">
-                  <span className="text-red-600 font-bold text-lg sm:text-xl">
-                    ✗
-                  </span>
-                </div>
-              </td>
-            </tr>
-            <tr className="border-b border-gray-200 hover:bg-gray-50">
-              <td className="py-3 sm:py-4 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
-                Prepared Using Traditional Bilona Method
-              </td>
-              <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l bg-red-800">
-                <div className="flex justify-center">
-                  <span className="text-white font-bold text-lg sm:text-xl">✓</span>
-                </div>
-              </td>
-              <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l border-gray-200">
-                <div className="flex justify-center">
-                  <span className="text-red-600 font-bold text-lg sm:text-xl">
-                    ✗
-                  </span>
-                </div>
-              </td>
-            </tr>
-            <tr className="border-b border-gray-200 hover:bg-gray-50">
-              <td className="py-3 sm:py-4 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
-                Easier to Digest (A2 Beta-Casein)
-              </td>
-              <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l bg-red-800">
-                <div className="flex justify-center">
-                  <span className="text-white font-bold text-lg sm:text-xl">✓</span>
-                </div>
-              </td>
-              <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l border-gray-200">
-                <div className="flex justify-center">
-                  <span className="text-red-600 font-bold text-lg sm:text-xl">
-                    ✗
-                  </span>
-                </div>
-              </td>
-            </tr>
-            <tr className="border-b border-gray-200 hover:bg-gray-50">
-              <td className="py-3 sm:py-4 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
-                Made from curd, not cream
-              </td>
-              <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l bg-red-800">
-                <div className="flex justify-center">
-                  <span className="text-white font-bold text-lg sm:text-xl">✓</span>
-                </div>
-              </td>
-              <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l border-gray-200">
-                <div className="flex justify-center">
-                  <span className="text-red-600 font-bold text-lg sm:text-xl">
-                    ✗
-                  </span>
-                </div>
-              </td>
-            </tr>
-            <tr className="border-b border-gray-200 hover:bg-gray-50">
-              <td className="py-3 sm:py-4 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
-                Naturally Aromatic & Flavourful
-              </td>
-              <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l bg-red-800">
-                <div className="flex justify-center">
-                  <span className="text-white font-bold text-lg sm:text-xl">✓</span>
-                </div>
-              </td>
-              <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l border-gray-200">
-                <div className="flex justify-center">
-                  <span className="text-red-600 font-bold text-lg sm:text-xl">
-                    ✗
-                  </span>
-                </div>
-              </td>
-            </tr>
-            <tr className="hover:bg-gray-50">
-              <td className="py-3 sm:py-4 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
-                No Additives or Preservatives
-              </td>
-              <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l bg-red-800">
-                <div className="flex justify-center">
-                  <span className="text-white font-bold text-lg sm:text-xl">✓</span>
-                </div>
-              </td>
-              <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l border-gray-200">
-                <div className="flex justify-center">
-                  <span className="text-red-600 font-bold text-lg sm:text-xl">
-                    ✗
-                  </span>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
+            {/* Comparison Table */}
+            <div className="relative z-40 bg-white rounded-lg sm:rounded-xl lg:rounded-2xl shadow-lg overflow-hidden max-w-4xl mx-auto">
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[500px] sm:min-w-full border-collapse">
+                  <thead>
+                    <tr className="bg-[#613815]">
+                      <th className="w-2/5 py-3 sm:py-4 px-4 sm:px-6 text-white font-semibold text-sm sm:text-base text-left">
+                        Features
+                      </th>
+                      <th className="w-1/5 py-3 sm:py-4 px-2 sm:px-4 text-white font-semibold text-sm sm:text-base text-center border-l border-white/20">
+                        AOF A2 Gir Cow Ghee
+                      </th>
+                      <th className="w-1/5 py-3 sm:py-4 px-2 sm:px-4 text-white font-semibold text-sm sm:text-base text-center border-l border-white/20">
+                        Regular Ghee (A1 Milk)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b hover:bg-gray-50">
+                      <td className="py-3 sm:py-4 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
+                        Made from Indigenous Gir Cow Milk
+                      </td>
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l bg-red-800">
+                        <div className="flex justify-center">
+                          <span className="text-white font-bold text-lg sm:text-xl">
+                            ✓
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-gray-200">
+                        <div className="flex justify-center">
+                          <span className="text-red-600 font-bold text-lg sm:text-xl">
+                            ✗
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr className="border-b border-gray-200 hover:bg-gray-50">
+                      <td className="py-3 sm:py-4 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
+                        Prepared Using Traditional Bilona Method
+                      </td>
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l bg-red-800">
+                        <div className="flex justify-center">
+                          <span className="text-white font-bold text-lg sm:text-xl">
+                            ✓
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l border-gray-200">
+                        <div className="flex justify-center">
+                          <span className="text-red-600 font-bold text-lg sm:text-xl">
+                            ✗
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr className="border-b border-gray-200 hover:bg-gray-50">
+                      <td className="py-3 sm:py-4 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
+                        Easier to Digest (A2 Beta-Casein)
+                      </td>
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l bg-red-800">
+                        <div className="flex justify-center">
+                          <span className="text-white font-bold text-lg sm:text-xl">
+                            ✓
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l border-gray-200">
+                        <div className="flex justify-center">
+                          <span className="text-red-600 font-bold text-lg sm:text-xl">
+                            ✗
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr className="border-b border-gray-200 hover:bg-gray-50">
+                      <td className="py-3 sm:py-4 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
+                        Made from curd, not cream
+                      </td>
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l bg-red-800">
+                        <div className="flex justify-center">
+                          <span className="text-white font-bold text-lg sm:text-xl">
+                            ✓
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l border-gray-200">
+                        <div className="flex justify-center">
+                          <span className="text-red-600 font-bold text-lg sm:text-xl">
+                            ✗
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr className="border-b border-gray-200 hover:bg-gray-50">
+                      <td className="py-3 sm:py-4 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
+                        Naturally Aromatic & Flavourful
+                      </td>
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l bg-red-800">
+                        <div className="flex justify-center">
+                          <span className="text-white font-bold text-lg sm:text-xl">
+                            ✓
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l border-gray-200">
+                        <div className="flex justify-center">
+                          <span className="text-red-600 font-bold text-lg sm:text-xl">
+                            ✗
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="py-3 sm:py-4 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
+                        No Additives or Preservatives
+                      </td>
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l bg-red-800">
+                        <div className="flex justify-center">
+                          <span className="text-white font-bold text-lg sm:text-xl">
+                            ✓
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center border-l border-gray-200">
+                        <div className="flex justify-center">
+                          <span className="text-red-600 font-bold text-lg sm:text-xl">
+                            ✗
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div
-  className="relative min-h-96 w-full z-0 py-16 sm:py-20 md:py-24"
-  style={{
-    backgroundColor: "#ffffff",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  }}
->
-  <div className="relative z-40 flex h-full items-center justify-center mb-8 sm:mb-10">
-    <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-6xl px-4 sm:px-6 lg:px-8 gap-8 md:gap-0">
-      
-      {/* Mobile & Tablet: Stack vertically, Desktop: Side by side */}
-      <div className="w-full md:w-1/2 flex justify-center order-2 md:order-1">
-        <Image 
-          src={Sec2Bnr1} 
-          alt="Banner-Section" 
-          className="w-full max-w-md md:max-w-full md:w-full object-contain" 
-        />
-      </div>
-      
-      {/* Mobile & Tablet: Stack vertically, Desktop: Overlapping */}
-      <div className="w-full md:w-1/2 flex justify-center order-1 md:order-2 md:-ml-40 lg:-ml-48 xl:-ml-56">
-        <Image
-          src={Sec2Bnr2}
-          alt="Banner-Section"
-          // className="w-full object-contain h-56"
-          className="w-full max-w-full md:max-w-full md:w-full h-56 sm:h-40 md:h-36 xl:h-56 object-contain"
-        />
-      </div>
-      
-    </div>
-  </div>
-</div>
+          className="relative min-h-96 w-full z-0 py-16 sm:py-20 md:py-24"
+          style={{
+            backgroundColor: "#ffffff",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          <div className="relative z-40 flex h-full items-center justify-center mb-8 sm:mb-10">
+            <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-6xl px-4 sm:px-6 lg:px-8 gap-8 md:gap-0">
+              {/* Mobile & Tablet: Stack vertically, Desktop: Side by side */}
+              <div className="w-full md:w-1/2 flex justify-center order-2 md:order-1">
+                <Image
+                  src={Sec2Bnr1}
+                  alt="Banner-Section"
+                  className="w-full max-w-md md:max-w-full md:w-full object-contain"
+                />
+              </div>
 
-       <div
-  className="relative w-full z-0 py-12 sm:py-16 md:py-20 lg:py-24"
-  style={{
-    backgroundImage: `url(${Frequent.src})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    backgroundAttachment: "fixed",
-  }}
->
-  {/* Overlay for better readability */}
-  <div className="absolute inset-0 bg-black/50 z-10"></div>
-  
-  <div className="relative z-40">
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      {/* Left side - Heading (Fixed position to prevent movement) */}
-      <div className="lg:col-span-5 xl:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-start">
-        <div className="mb-6 sm:mb-8"> {/* Added sticky to prevent movement */}
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-widest text-white mb-4">
-            Frequently Asked
-          </h1>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-widest text-white  mb-4">
-            Questions About
-          </h1>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-widest text-white leading-tight">
-            Product
-          </h1>
+              {/* Mobile & Tablet: Stack vertically, Desktop: Overlapping */}
+              <div className="w-full md:w-1/2 flex justify-center order-1 md:order-2 md:-ml-40 lg:-ml-48 xl:-ml-56">
+                <Image
+                  src={Sec2Bnr2}
+                  alt="Banner-Section"
+                  // className="w-full object-contain h-56"
+                  className="w-full max-w-full md:max-w-full md:w-full h-56 sm:h-40 md:h-36 xl:h-56 object-contain"
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
-        <button className="border-none py-3 px-8 sm:px-10 text-sm sm:text-base font-semibold mt-6 cursor-pointer bg-white text-green-900 hover:bg-green-800 hover:text-white transition-all duration-300 rounded-lg shadow-lg"> {/* Added sticky */}
-          View all
-        </button>
-      </div>
+        <div
+          className="relative w-full z-0 py-12 sm:py-16 md:py-20 lg:py-24"
+          style={{
+            backgroundImage: `url(${Frequent.src})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundAttachment: "fixed",
+          }}
+        >
+          {/* Overlay for better readability */}
+          <div className="absolute inset-0 bg-black/50 z-10"></div>
 
-      {/* Right Side - FAQ Dropdowns (No scrollbar) */}
-      <div className="lg:col-span-7 xl:col-span-8">
-        <div className="space-y-3 sm:space-y-4"> {/* Removed max-height and overflow */}
-          {faqs.map((feq, index) => (
-            <div
-              key={index}
-              className="rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 hover:border-white/50 transition-all duration-300"
-            >
-              <div
-                className="flex justify-between items-center p-4 sm:p-6 cursor-pointer hover:bg-white/10 transition-colors w-full"
-                onClick={() =>
-                  setOpenIndex(openIndex === index ? -1 : index)
-                }
-              >
-                <span className="font-medium text-white text-sm sm:text-base lg:text-lg pr-4 text-left flex-1">
-                  {feq.question}
-                </span>
-                <span
-                  className={`text-white text-lg sm:text-xl transition-transform duration-300 flex-shrink-0 ${openIndex === index ? "rotate-90" : ""}`}
-                >
-                  ▼
-                </span>
-              </div>
-              <div
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                  openIndex === index ? "max-h-48 sm:max-h-56 opacity-100" : "max-h-0 opacity-0"
-                }`}
-              >
-                <div className="p-4 sm:p-6 pt-0 sm:pt-0">
-                  <p className="text-white/90 text-sm sm:text-base lg:text-lg leading-relaxed sm:leading-loose">
-                    {feq.answer}
-                  </p>
+          <div className="relative z-40">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              {/* Left side - Heading (Fixed position to prevent movement) */}
+              <div className="lg:col-span-5 xl:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-start">
+                <div className="mb-6 sm:mb-8">
+                  {" "}
+                  {/* Added sticky to prevent movement */}
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-widest text-white mb-4">
+                    Frequently Asked
+                  </h1>
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-widest text-white  mb-4">
+                    Questions About
+                  </h1>
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-widest text-white leading-tight">
+                    Product
+                  </h1>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-    <div
-  className="relative w-full z-0 py-12 sm:py-16 lg:py-20 bg-[#fffff6]"
->
-  <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-20">
-    <div className="relative">
-      
-      {/* Header Section */}
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black text-center sm:text-left">
-          Customer Reviews
-        </h1>
-        <Dialog>
-          <DialogTrigger asChild>
-            <div className="flex justify-between items-center gap-3 cursor-pointer">
-              <SquarePen className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
-              <span className="text-xs sm:text-sm lg:text-base text-black font-medium">
-                Write a Review
-              </span>
-            </div>
-          </DialogTrigger>
-          <DialogContent className="w-[95vw] sm:max-w-[500px] md:max-w-[600px] lg:max-w-[700px]p-4 sm:p-6 rounded-lg mx-2 sm:mx-0">
-            {/* Review form - Responsive */}
-            <div className="space-y-4 sm:space-y-6">
-              {/* Header */}
-              <div className="text-center">
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-black">
-                  Write a Review
-                </h2>
+                <button className="border-none py-3 px-8 sm:px-10 text-sm sm:text-base font-semibold mt-6 cursor-pointer bg-white text-green-900 hover:bg-green-800 hover:text-white transition-all duration-300 rounded-lg shadow-lg">
+                  {" "}
+                  {/* Added sticky */}
+                  View all
+                </button>
               </div>
 
-              {/* Rating Section */}
-              <div className="space-y-3 sm:space-y-4">
-                <h3 className="text-sm sm:text-base font-medium text-black">
-                  Rating
-                </h3>
-                <div className="flex space-x-1 justify-center sm:justify-start mb-2">
-                  {[...Array(5)].map((str, index) => {
-                    const starVal = index + 1;
-                    return (
-                      <Star
-                        key={index}
-                        onClick={() => setRating(starVal)}
-                        className={`w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 cursor-pointer transition-colors duration-200 ${
-                          starVal <= rating
-                            ? "fill-yellow-400 text-yellow-400"
-                            : "text-gray-300"
+              {/* Right Side - FAQ Dropdowns (No scrollbar) */}
+              <div className="lg:col-span-7 xl:col-span-8">
+                <div className="space-y-3 sm:space-y-4">
+                  {" "}
+                  {/* Removed max-height and overflow */}
+                  {faqs.map((feq, index) => (
+                    <div
+                      key={index}
+                      className="rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 hover:border-white/50 transition-all duration-300"
+                    >
+                      <div
+                        className="flex justify-between items-center p-4 sm:p-6 cursor-pointer hover:bg-white/10 transition-colors w-full"
+                        onClick={() =>
+                          setOpenIndex(openIndex === index ? -1 : index)
+                        }
+                      >
+                        <span className="font-medium text-white text-sm sm:text-base lg:text-lg pr-4 text-left flex-1">
+                          {feq.question}
+                        </span>
+                        <span
+                          className={`text-white text-lg sm:text-xl transition-transform duration-300 flex-shrink-0 ${openIndex === index ? "rotate-90" : ""}`}
+                        >
+                          ▼
+                        </span>
+                      </div>
+                      <div
+                        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                          openIndex === index
+                            ? "max-h-48 sm:max-h-56 opacity-100"
+                            : "max-h-0 opacity-0"
                         }`}
-                      />
-                    );
-                  })}
+                      >
+                        <div className="p-4 sm:p-6 pt-0 sm:pt-0">
+                          <p className="text-white/90 text-sm sm:text-base lg:text-lg leading-relaxed sm:leading-loose">
+                            {feq.answer}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                {/* Name and Email */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm sm:text-base font-normal text-black">
-                      Your Name
-                    </label>
-                    <Input
-                      placeholder="Enter your name"
-                      className="bg-white border border-gray-300 text-black h-10 sm:h-12"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm sm:text-base font-normal text-black">
-                      Email ID
-                    </label>
-                    <Input
-                      placeholder="Enter your Email"
-                      className="bg-white border border-gray-300 text-black h-10 sm:h-12"
-                    />
-                  </div>
-                </div>
-
-                {/* Review Text */}
-                <div className="space-y-2">
-                  <label className="text-sm sm:text-base font-normal text-black">
-                    Write a Review
-                  </label>
-                  <Textarea
-                    placeholder="Share your experience..."
-                    className="bg-white border border-gray-300 text-black min-h-[120px] sm:min-h-[140px] resize-none"
-                  />
-                </div>
-
-                {/* Upload image */}
-                <div className="space-y-2">
-                  <label className="text-sm sm:text-base font-normal text-black">
-                    Upload images{" "}
-                    <span className="text-xs text-gray-500">
-                      (Optional)
-                    </span>
-                  </label>
-                  <div className="w-full h-20 sm:h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
-                    <div className="text-center">
-                      <Images className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400 mx-auto mb-1" />
-                      <span className="text-xs sm:text-sm text-gray-500">
-                        Upload images
+        <div className="relative w-full z-0 py-12 sm:py-16 lg:py-20 bg-[#fffff6]">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-20">
+            <div className="relative">
+              {/* Header Section */}
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 mb-6 sm:mb-8">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black text-center sm:text-left">
+                  Customer Reviews
+                </h1>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <div className="flex justify-between items-center gap-3 cursor-pointer">
+                      <SquarePen className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
+                      <span className="text-xs sm:text-sm lg:text-base text-black font-medium">
+                        Write a Review
                       </span>
                     </div>
+                  </DialogTrigger>
+                  <DialogContent className="w-[95vw] sm:max-w-[500px] md:max-w-[600px] lg:max-w-[700px]p-4 sm:p-6 rounded-lg mx-2 sm:mx-0">
+                    {/* Review form - Responsive */}
+                    <div className="space-y-4 sm:space-y-6">
+                      {/* Header */}
+                      <div className="text-center">
+                        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-black">
+                          Write a Review
+                        </h2>
+                      </div>
+
+                      {/* Rating Section */}
+                      <div className="space-y-3 sm:space-y-4">
+                        <h3 className="text-sm sm:text-base font-medium text-black">
+                          Rating
+                        </h3>
+                        <div className="flex space-x-1 justify-center sm:justify-start mb-2">
+                          {[...Array(5)].map((str, index) => {
+                            const starVal = index + 1;
+                            return (
+                              <Star
+                                key={index}
+                                onClick={() => setRating(starVal)}
+                                className={`w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 cursor-pointer transition-colors duration-200 ${
+                                  starVal <= rating
+                                    ? "fill-yellow-400 text-yellow-400"
+                                    : "text-gray-300"
+                                }`}
+                              />
+                            );
+                          })}
+                        </div>
+
+                        {/* Name and Email */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                          <div className="space-y-2">
+                            <label className="text-sm sm:text-base font-normal text-black">
+                              Your Name
+                            </label>
+                            <Input
+                              placeholder="Enter your name"
+                              className="bg-white border border-gray-300 text-black h-10 sm:h-12"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm sm:text-base font-normal text-black">
+                              Email ID
+                            </label>
+                            <Input
+                              placeholder="Enter your Email"
+                              className="bg-white border border-gray-300 text-black h-10 sm:h-12"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Review Text */}
+                        <div className="space-y-2">
+                          <label className="text-sm sm:text-base font-normal text-black">
+                            Write a Review
+                          </label>
+                          <Textarea
+                            placeholder="Share your experience..."
+                            className="bg-white border border-gray-300 text-black min-h-[120px] sm:min-h-[140px] resize-none"
+                          />
+                        </div>
+
+                        {/* Upload image */}
+                        <div className="space-y-2">
+                          <label className="text-sm sm:text-base font-normal text-black">
+                            Upload images{" "}
+                            <span className="text-xs text-gray-500">
+                              (Optional)
+                            </span>
+                          </label>
+                          <div className="w-full h-20 sm:h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
+                            <div className="text-center">
+                              <Images className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400 mx-auto mb-1" />
+                              <span className="text-xs sm:text-sm text-gray-500">
+                                Upload images
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 pt-4">
+                          <Button
+                            variant="outline"
+                            className="bg-white border-red-800 text-red-950 hover:bg-red-700 hover:text-white transition-all duration-200 order-2 sm:order-1"
+                          >
+                            Cancel
+                          </Button>
+                          <Button className="bg-red-700 hover:bg-green-700 text-white order-1 sm:order-2">
+                            Submit Review
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+
+              <hr className="my-6 sm:my-8 border-gray-300" />
+
+              {/* Rating Overview - Grid System */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mt-8">
+                {/* Overall Rating - Left Section */}
+                <div className="lg:col-span-4 xl:col-span-3 relative">
+                  <div className="flex flex-col items-center text-center p-6">
+                    <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-black mb-2">
+                      4.5
+                    </div>
+                    <div className="flex justify-center gap-1 mb-3">
+                      {[...Array(5)].map((_, index) => (
+                        <span
+                          key={index}
+                          className={`text-xl sm:text-2xl ${index < 4 ? "text-yellow-400" : "text-gray-300"}`}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                    <div className="text-sm sm:text-base text-gray-600">
+                      (10k ratings)
+                    </div>
                   </div>
+
+                  {/* Vertical Line for Desktop */}
+                  <div className="hidden lg:block absolute top-1/2 right-0 transform -translate-y-1/2 h-32 w-px bg-gray-300"></div>
+
+                  {/* Horizontal Line for Mobile */}
+                  <div className="lg:hidden w-full h-px bg-gray-300 mt-4"></div>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 pt-4">
-                  <Button
-                    variant="outline"
-                    className="bg-white border-red-800 text-red-950 hover:bg-red-700 hover:text-white transition-all duration-200 order-2 sm:order-1"
-                  >
-                    Cancel
-                  </Button>
-                  <Button className="bg-red-700 hover:bg-green-700 text-white order-1 sm:order-2">
-                    Submit Review
-                  </Button>
+                {/* Rating Bars - Middle Section */}
+                <div className="lg:col-span-5 xl:col-span-6 relative">
+                  <div className="rounded-2xl p-6 h-full">
+                    <div className="space-y-3 sm:space-y-4">
+                      {[
+                        { rating: 5, count: "7.5k", width: "90%" },
+                        { rating: 4, count: "1.5k", width: "70%" },
+                        { rating: 3, count: "1k", width: "50%" },
+                        { rating: 2, count: "0.4k", width: "30%" },
+                        { rating: 1, count: "0.1k", width: "10%" },
+                      ].map((item, index) => (
+                        <div key={index} className="flex items-center gap-3">
+                          <div className="flex items-center gap-2 w-16 sm:w-20">
+                            <span className="text-black text-sm sm:text-base font-medium">
+                              {item.rating}
+                            </span>
+                            <span className="text-yellow-400 text-lg sm:text-xl">
+                              ★
+                            </span>
+                          </div>
+                          <div className="flex-1 bg-gray-200 rounded-full h-2 sm:h-3">
+                            <div
+                              className="bg-red-950 h-2 sm:h-3 rounded-full transition-all duration-500"
+                              style={{ width: item.width }}
+                            ></div>
+                          </div>
+                          <span className="text-xs sm:text-sm text-gray-600 w-12 sm:w-16 text-right">
+                            {item.count}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Vertical Line for Desktop */}
+                  <div className="hidden lg:block absolute top-1/2 right-0 transform -translate-y-1/2 h-32 w-px bg-gray-300"></div>
+
+                  {/* Horizontal Line for Mobile */}
+                  <div className="lg:hidden w-full h-px bg-gray-300 mt-4"></div>
+                </div>
+
+                {/* Star Summary - Right Section */}
+                <div className="lg:col-span-3 xl:col-span-3">
+                  <div className="rounded-2xl p-6 h-full">
+                    <div className="space-y-3">
+                      {[
+                        { stars: "5.0", reviews: "7.5k reviews" },
+                        { stars: "4.0", reviews: "1.5k reviews" },
+                        { stars: "3.0", reviews: "1k reviews" },
+                        { stars: "2.0", reviews: "0.4k reviews" },
+                        { stars: "1.0", reviews: "0.1k reviews" },
+                      ].map((item, index) => (
+                        <div
+                          key={index}
+                          className="flex justify-between items-center"
+                        >
+                          <span className="text-sm sm:text-base text-gray-700">
+                            ⭐ {item.stars}
+                          </span>
+                          <span className="text-sm sm:text-base font-medium text-gray-900">
+                            {item.reviews}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Reviews List */}
+              <div className="space-y-0 sm:space-y-8 mt-8 sm:mt-12">
+                <div className="space-y-0">
+                  {/* Review 1 */}
+                  <div className="flex items-start gap-4 sm:gap-6 p-4 sm:p-6 border-b border-gray-300 lg:border-none">
+                    <div className="flex-shrink-0">
+                      <Image
+                        src={review1}
+                        alt="Review1"
+                        className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-cover rounded-full"
+                        width={56}
+                        height={56}
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+                        <div className="font-semibold text-black text-base sm:text-lg">
+                          Priya Menon - Bengaluru
+                        </div>
+                        <div className="flex text-yellow-400 text-base sm:text-lg">
+                          {"★".repeat(5)}
+                        </div>
+                      </div>
+                      <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                        "The Gir Cow A2 Bilona Ghee tastes just like the one my
+                        grandmother used to make. Rich aroma, authentic flavor,
+                        and amazing quality -- I won't go back to any other
+                        brand."
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Review 2 */}
+                  <div className="flex items-start gap-4 sm:gap-6 p-4 sm:p-6 border-b border-gray-300 lg:border-none">
+                    <div className="flex-shrink-0">
+                      <Image
+                        src={review2}
+                        alt="Review2"
+                        className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-cover rounded-full"
+                        width={56}
+                        height={56}
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+                        <div className="font-semibold text-black text-base sm:text-lg">
+                          Rajesh Kumar - Mumbai
+                        </div>
+                        <div className="flex text-yellow-400 text-base sm:text-lg">
+                          {"★".repeat(5)}
+                        </div>
+                      </div>
+                      <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                        "The Gir Cow A2 Bilona Ghee tastes just like the one my
+                        grandmother used to make. Rich aroma, authentic flavor,
+                        and amazing quality -- I won't go back to any other
+                        brand."
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Review 3 */}
+                  <div className="flex items-start gap-4 sm:gap-6 p-4 sm:p-6 border-b border-gray-300 lg:border-none">
+                    <div className="flex-shrink-0">
+                      <Image
+                        src={review3}
+                        alt="Review3"
+                        className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-cover rounded-full"
+                        width={56}
+                        height={56}
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+                        <div className="font-semibold text-black text-base sm:text-lg">
+                          Anjali Sharma - Delhi
+                        </div>
+                        <div className="flex text-yellow-400 text-base sm:text-lg">
+                          {"★".repeat(5)}
+                        </div>
+                      </div>
+                      <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                        "The Gir Cow A2 Bilona Ghee tastes just like the one my
+                        grandmother used to make. Rich aroma, authentic flavor,
+                        and amazing quality -- I won't go back to any other
+                        brand."
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Read More */}
+                  <div className="text-left pt-10">
+                    <div className="text-red-700 text-base sm:text-lg font-semibold cursor-pointer hover:underline">
+                      Read all reviews
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      <hr className="my-6 sm:my-8 border-gray-300" />
-
-      {/* Rating Overview - Grid System */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mt-8">
-  
-  {/* Overall Rating - Left Section */}
-  <div className="lg:col-span-4 xl:col-span-3 relative">
-    <div className="flex flex-col items-center text-center p-6">
-      <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-black mb-2">4.5</div>
-      <div className="flex justify-center gap-1 mb-3">
-        {[...Array(5)].map((_, index) => (
-          <span
-            key={index}
-            className={`text-xl sm:text-2xl ${index < 4 ? "text-yellow-400" : "text-gray-300"}`}
-          >
-            ★
-          </span>
-        ))}
-      </div>
-      <div className="text-sm sm:text-base text-gray-600">(10k ratings)</div>
-    </div>
-    
-    {/* Vertical Line for Desktop */}
-    <div className="hidden lg:block absolute top-1/2 right-0 transform -translate-y-1/2 h-32 w-px bg-gray-300"></div>
-    
-    {/* Horizontal Line for Mobile */}
-    <div className="lg:hidden w-full h-px bg-gray-300 mt-4"></div>
-  </div>
-
-  {/* Rating Bars - Middle Section */}
-  <div className="lg:col-span-5 xl:col-span-6 relative">
-    <div className="rounded-2xl p-6 h-full">
-      <div className="space-y-3 sm:space-y-4">
-        {[
-          { rating: 5, count: "7.5k", width: "90%" },
-          { rating: 4, count: "1.5k", width: "70%" },
-          { rating: 3, count: "1k", width: "50%" },
-          { rating: 2, count: "0.4k", width: "30%" },
-          { rating: 1, count: "0.1k", width: "10%" },
-        ].map((item, index) => (
-          <div key={index} className="flex items-center gap-3">
-            <div className="flex items-center gap-2 w-16 sm:w-20">
-              <span className="text-black text-sm sm:text-base font-medium">
-                {item.rating}
-              </span>
-              <span className="text-yellow-400 text-lg sm:text-xl">★</span>
-            </div>
-            <div className="flex-1 bg-gray-200 rounded-full h-2 sm:h-3">
-              <div
-                className="bg-red-950 h-2 sm:h-3 rounded-full transition-all duration-500"
-                style={{ width: item.width }}
-              ></div>
-            </div>
-            <span className="text-xs sm:text-sm text-gray-600 w-12 sm:w-16 text-right">
-              {item.count}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-    
-    {/* Vertical Line for Desktop */}
-    <div className="hidden lg:block absolute top-1/2 right-0 transform -translate-y-1/2 h-32 w-px bg-gray-300"></div>
-    
-    {/* Horizontal Line for Mobile */}
-    <div className="lg:hidden w-full h-px bg-gray-300 mt-4"></div>
-  </div>
-
-  {/* Star Summary - Right Section */}
-  <div className="lg:col-span-3 xl:col-span-3">
-    <div className="rounded-2xl p-6 h-full">
-      <div className="space-y-3">
-        {[
-          { stars: "5.0", reviews: "7.5k reviews" },
-          { stars: "4.0", reviews: "1.5k reviews" },
-          { stars: "3.0", reviews: "1k reviews" },
-          { stars: "2.0", reviews: "0.4k reviews" },
-          { stars: "1.0", reviews: "0.1k reviews" },
-        ].map((item, index) => (
-          <div key={index} className="flex justify-between items-center">
-            <span className="text-sm sm:text-base text-gray-700">⭐ {item.stars}</span>
-            <span className="text-sm sm:text-base font-medium text-gray-900">{item.reviews}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
-</div>
-
-{/* Reviews List */}
-<div className="space-y-0 sm:space-y-8 mt-8 sm:mt-12">
-  <div className="space-y-0">
-    {/* Review 1 */}
-    <div className="flex items-start gap-4 sm:gap-6 p-4 sm:p-6 border-b border-gray-300 lg:border-none">
-      <div className="flex-shrink-0">
-        <Image
-          src={review1}
-          alt="Review1"
-          className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-cover rounded-full"
-          width={56}
-          height={56}
-        />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
-          <div className="font-semibold text-black text-base sm:text-lg">
-            Priya Menon - Bengaluru
-          </div>
-          <div className="flex text-yellow-400 text-base sm:text-lg">
-            {"★".repeat(5)}
           </div>
         </div>
-        <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-          "The Gir Cow A2 Bilona Ghee tastes just like the one my grandmother used to make. Rich aroma, authentic flavor, and amazing quality -- I won't go back to any other brand."
-        </p>
-      </div>
-    </div>
-
-    {/* Review 2 */}
-    <div className="flex items-start gap-4 sm:gap-6 p-4 sm:p-6 border-b border-gray-300 lg:border-none">
-      <div className="flex-shrink-0">
-        <Image
-          src={review2}
-          alt="Review2"
-          className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-cover rounded-full"
-          width={56}
-          height={56}
-        />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
-          <div className="font-semibold text-black text-base sm:text-lg">
-            Rajesh Kumar - Mumbai
-          </div>
-          <div className="flex text-yellow-400 text-base sm:text-lg">
-            {"★".repeat(5)}
-          </div>
-        </div>
-        <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-          "The Gir Cow A2 Bilona Ghee tastes just like the one my grandmother used to make. Rich aroma, authentic flavor, and amazing quality -- I won't go back to any other brand."
-        </p>
-      </div>
-    </div>
-
-    {/* Review 3 */}
-    <div className="flex items-start gap-4 sm:gap-6 p-4 sm:p-6 border-b border-gray-300 lg:border-none">
-      <div className="flex-shrink-0">
-        <Image
-          src={review3}
-          alt="Review3"
-          className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-cover rounded-full"
-          width={56}
-          height={56}
-        />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
-          <div className="font-semibold text-black text-base sm:text-lg">
-            Anjali Sharma - Delhi
-          </div>
-          <div className="flex text-yellow-400 text-base sm:text-lg">
-            {"★".repeat(5)}
-          </div>
-        </div>
-        <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-          "The Gir Cow A2 Bilona Ghee tastes just like the one my grandmother used to make. Rich aroma, authentic flavor, and amazing quality -- I won't go back to any other brand."
-        </p>
-      </div>
-    </div>
-
-    {/* Read More */}
-    <div className="text-left pt-10">
-      <div className="text-red-700 text-base sm:text-lg font-semibold cursor-pointer hover:underline">
-        Read all reviews
-      </div>
-    </div>
-  </div>
-</div>
-    </div>
-  </div>
-</div>
 
         <YouMayAlsoLike
           products={recommendedProducts}
