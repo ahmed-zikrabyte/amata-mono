@@ -22,6 +22,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+// ✅ tell Express to trust the proxy (e.g. if deployed behind Nginx or Vercel)
+app.set('trust proxy', 1);
+
 const limiter = rateLimit({
   windowMs: config.rateLimiter.windowMs,
   max: config.rateLimiter.maxRequests,

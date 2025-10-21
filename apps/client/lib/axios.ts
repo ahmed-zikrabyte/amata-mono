@@ -6,14 +6,21 @@ const axiosInstance = axios.create({
   baseURL: ServerUrl,
 });
 
+// Safe localStorage access for SSR
+const getToken = (): string | null => {
+  if (typeof window !== "undefined") {
+    return localStorage?.getItem("token");
+  }
+  return null;
+};
+
+// Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token =
-      typeof window !== "undefined" ? localStorage?.getItem("token") : null;
+    const token = getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
   },
   (error) => {
@@ -21,25 +28,19 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+// Response interceptor
 axiosInstance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
-    return Promise.reject(error);
-  }
-);
-
-axiosInstance.interceptors.response.use(
-  (response) => response, // Pass through successful responses
-  (error) => {
-    if (
-      error.response &&
-      error.response.status === 401 &&
-      typeof window !== "undefined"
-    ) {
+    if (error.response?.status === 401 && typeof window !== "undefined") {
       localStorage.removeItem("token");
     }
+    
+    // Better error handling
+    if (error.code === 'NETWORK_ERROR' || error.message === 'Network Error') {
+      console.error('Network error - check if backend server is running');
+    }
+    
     return Promise.reject(error);
   }
 );
