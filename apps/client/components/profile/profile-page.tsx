@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from "react";
 import ProfileSidebar from "./profile-sidebar";
@@ -22,16 +22,15 @@ const Profile = () => {
   }, [searchParams.get("tab")]);
 
   return (
-    <div className="flex pr-20">
-      <ProfileSidebar currentTab={currentTab} />
-      <div className="p-5 w-full">
-        {currentTab === "profile" ? 
-        <ProfileSection /> :
-        currentTab === "orders" ?
-        <OrderSection /> : 
+    <div>
+      {/* <ProfileSidebar currentTab={currentTab} /> */}
+      {currentTab === "profile" ? (
+        <ProfileSection />
+      ) : currentTab === "orders" ? (
+        <OrderSection />
+      ) : (
         <PaymentSection />
-        }
-      </div>
+      )}
     </div>
   );
 };
