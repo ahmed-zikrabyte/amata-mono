@@ -4,7 +4,6 @@ import userRoutes from "./routes/client/user.route";
 
 const mainRouter: Router = Router();
 
-// mainRouter.use('/auth', authRouter);
 mainRouter.use('/admin', adminRoutes)
 mainRouter.use('/user', userRoutes)
 
