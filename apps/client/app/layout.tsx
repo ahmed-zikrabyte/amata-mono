@@ -4,6 +4,7 @@ import "@workspace/ui/globals.css";
 import { Providers } from "@/components/providers";
 import Navbar from "../components/global/navbar";
 import {Toaster} from "@workspace/ui/components/sonner"
+import FooterSec from "../components/global/FooterSec";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -29,6 +30,8 @@ export default function RootLayout({
           <Navbar />
           <div className="mt-20">{children}</div>
           <Toaster position="top-center" />
+
+          <FooterSec />
         </Providers>
       </body>
     </html>
