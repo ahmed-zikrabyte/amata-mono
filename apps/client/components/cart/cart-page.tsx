@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Breadcrumb,
@@ -14,8 +16,10 @@ import CartItems from "./cart-items";
 import { X } from "lucide-react";
 import JoinOurPureLivingCommunityBanner from "../global/join-our-pure-living-banner";
 import FeatureCards from "../global/feature-cards";
+import { useRouter } from "next/navigation";
 
 const CartPage = () => {
+  const router = useRouter();
   return (
     <div>
       <div className="py-5 px-6 lg:px-20">
@@ -92,7 +96,12 @@ const CartPage = () => {
                   <span>3434</span>
                 </p>
               </div>
-              <Button className="h-12 w-full">Proceed to Checkout</Button>
+              <Button
+                className="h-12 w-full cursor-pointer"
+                onClick={() => router.push("/checkout")}
+              >
+                Proceed to Checkout
+              </Button>
             </div>
           </div>
         </div>

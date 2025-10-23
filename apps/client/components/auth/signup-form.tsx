@@ -16,23 +16,30 @@ import { Input } from "@workspace/ui/components/input";
 import { Button } from "@workspace/ui/components/button";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useApi } from "../../hooks/useApi";
+import { authApi } from "../../lib/api/authApi";
+import { toast } from "sonner";
+import OtpModal from "./otp-modal";
 
 // ✅ Validation Schema
-const signupSchema = z
-  .object({
-    fullName: z
-      .string()
-      .min(3, { message: "Full name must be at least 3 characters long" }),
-    email: z.string().email({ message: "Please enter a valid email address" }),
-    password: z
-      .string()
-      .min(6, { message: "Password must be at least 6 characters long" }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+const signupSchema = z.object({
+  fullName: z
+    .string()
+    .min(3, { message: "Full name must be at least 3 characters long" }),
+  phone: z
+    .string()
+    .min(10, { message: "Please enter a valid phone number" })
+    .max(10, { message: "Please enter a valid phone number" }),
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  // password: z
+  //   .string()
+  //   .min(6, { message: "Password must be at least 6 characters long" }),
+  // confirmPassword: z.string(),
+});
+// .refine((data) => data.password === data.confirmPassword, {
+//   message: "Passwords do not match",
+//   path: ["confirmPassword"],
+// });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
@@ -41,18 +48,33 @@ export default function SignupForm() {
     resolver: zodResolver(signupSchema),
     defaultValues: {
       fullName: "",
+      phone: "",
       email: "",
-      password: "",
-      confirmPassword: "",
+      // password: "",
+      // confirmPassword: "",
     },
   });
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
+  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { execute, data, loading } = useApi();
+  const [showOtpModal, setShowOtpModal] = useState<boolean>(false);
+  const [signupData, setSignupData] = useState<SignupFormValues>()
 
-  const onSubmit = (values: SignupFormValues) => {
+  console.log({ data });
+
+  const onSubmit = async (values: SignupFormValues) => {
     console.log("Signup data:", values);
-    // TODO: Integrate your signup API or logic here
+    try {
+      const response = await execute(
+        authApi.register(values).then((res) => res.data)
+      );
+      console.log({ response });
+      setSignupData(values)
+      setShowOtpModal(true)
+    } catch (error: any) {
+      toast.error(error?.response.data.message);
+    }
   };
 
   return (
@@ -73,6 +95,26 @@ export default function SignupForm() {
                 <FormControl>
                   <Input
                     placeholder="Enter your full name"
+                    className="h-12 bg-white"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Phone */}
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="Enter your phone no."
                     className="h-12 bg-white"
                     {...field}
                   />
@@ -103,7 +145,7 @@ export default function SignupForm() {
           />
 
           {/* Password */}
-          <FormField
+          {/* <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
@@ -133,10 +175,10 @@ export default function SignupForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
           {/* Confirm Password */}
-          <FormField
+          {/* <FormField
             control={form.control}
             name="confirmPassword"
             render={({ field }) => (
@@ -166,7 +208,7 @@ export default function SignupForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
           <Button type="submit" className="w-full h-12">
             Sign Up
@@ -179,6 +221,7 @@ export default function SignupForm() {
           Login
         </Link>
       </p>
+      <OtpModal values={signupData} type="signup" open={showOtpModal} setOpen={setShowOtpModal} />
     </div>
   );
 }

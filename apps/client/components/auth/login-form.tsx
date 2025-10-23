@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,13 +16,17 @@ import { Input } from "@workspace/ui/components/input";
 import { Button } from "@workspace/ui/components/button";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useApi } from "../../hooks/useApi";
+import { authApi } from "../../lib/api/authApi";
+import { toast } from "sonner";
+import OtpModal from "./otp-modal";
 
 // Validation schema
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters long" }),
+  // password: z
+  //   .string()
+  //   .min(6, { message: "Password must be at least 6 characters long" }),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -30,18 +34,33 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 export default function LoginForm() {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: "" },
   });
 
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
+  const { execute, loading } = useApi();
+  const [showOtpModal, setShowOtpModal] = useState(false)
+  const [loginData, setLoginData] = useState<LoginFormValues>()
 
-  const onSubmit = (values: LoginFormValues) => {
+  const onSubmit = async (values: LoginFormValues) => {
     console.log("Login data:", values);
+    try {
+      const response = await execute(
+        authApi.login(values).then((res) => res.data)
+      );
+      console.log({ response });
+      setLoginData(values)
+      setShowOtpModal(true)
+    } catch (error: any) {
+      toast.error(error?.response.data.message);
+    }
   };
 
   return (
     <div className="w-full md:w-2/3 mx-auto mt-10">
-      <h2 className="text-xl md:text-3xl font-semibold mb-6 text-center md:text-start">Login to your account!</h2>
+      <h2 className="text-xl md:text-3xl font-semibold mb-6 text-center md:text-start">
+        Login to your account!
+      </h2>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -66,7 +85,7 @@ export default function LoginForm() {
           />
 
           {/* Password Field with Eye Icon */}
-          <FormField
+          {/* <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
@@ -96,16 +115,20 @@ export default function LoginForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
-          <Button type="submit" className="w-full h-12">
+          <Button type="submit" className="w-full h-12" disabled={loading}>
             Login
           </Button>
         </form>
       </Form>
       <p className="text-center mt-5">
-        Don't have an account? <Link href={'/signup'} className="text-amber-950">Sign Up</Link>
+        Don't have an account?{" "}
+        <Link href={"/signup"} className="text-amber-950">
+          Sign Up
+        </Link>
       </p>
+      <OtpModal values={loginData} type="login" open={showOtpModal} setOpen={setShowOtpModal} />
     </div>
   );
 }

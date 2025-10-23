@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Profile from '../../components/profile/profile-page'
 
 const ProfilePage = () => {
   return (
-    <Profile />
+    <Suspense fallback={<div>Loading...</div>}>
+      <Profile />
+    </Suspense>
   )
 }
 
