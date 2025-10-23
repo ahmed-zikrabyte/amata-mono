@@ -10,7 +10,7 @@ interface YouMayAlsoLikeProps {
   buttonText?: string;
   backgroundColor?: string;
   padding?: string;
-  currentProductId?: number;
+  currentProductId?: string;
 }
 
 const YouMayAlsoLike = ({
@@ -26,7 +26,7 @@ const YouMayAlsoLike = ({
 }: YouMayAlsoLikeProps) => {
   // Filter out current product if provided
   const filteredProducts = currentProductId 
-    ? products.filter(product => product.id !== currentProductId)
+    ? products.filter(product => product._id !== currentProductId)
     : products;
 
   if (!filteredProducts || filteredProducts.length === 0) {
