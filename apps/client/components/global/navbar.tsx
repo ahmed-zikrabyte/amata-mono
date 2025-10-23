@@ -1,8 +1,9 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import logoIcon from "../../assets/Group.png";
 import Image from "next/image";
 import { Search, ShoppingCart, Menu, X } from "lucide-react";
+import Link from "next/link";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,25 +18,36 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo Section */}
           <div className="flex items-center">
-            <Image 
-              src={logoIcon} 
-              alt="Amata logo" 
-              className="h-10 w-14 md:h-12 md:w-16 lg:h-14 lg:w-20 object-contain" 
+            <Image
+              src={logoIcon}
+              alt="Amata logo"
+              className="h-10 w-14 md:h-12 md:w-16 lg:h-14 lg:w-20 object-contain"
             />
           </div>
 
           {/* Nav-link Section - Desktop */}
           <div className="hidden lg:flex justify-center flex-1 mx-8">
             <ul className="flex items-center space-x-14">
-              <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-sm cursor-pointer">
-                Products
-              </li>
-              <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-sm cursor-pointer">
-                About Us
-              </li>
-              <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-sm cursor-pointer">
-                Contact
-              </li>
+              <Link href={"/products"}>
+                <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-sm cursor-pointer">
+                  Shop
+                </li>
+              </Link>
+              <Link href={"/our-process"}>
+                <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-sm cursor-pointer">
+                  Our Process
+                </li>
+              </Link>
+              <Link href={"/about"}>
+                <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-sm cursor-pointer">
+                  About Us
+                </li>
+              </Link>
+              <Link href={"/lab-report"}>
+                <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-sm cursor-pointer">
+                  Lab Report
+                </li>
+              </Link>
             </ul>
           </div>
 
@@ -73,21 +85,29 @@ const Navbar = () => {
             <button className="text-gray-800 hover:text-gray-600 transition-colors">
               <ShoppingCart className="w-5 h-5" />
             </button>
-            
+
             {/* Mobile Menu Button */}
-            <button 
+            <button
               className="text-gray-800 hover:text-gray-600 transition-colors"
               onClick={toggleMenu}
             >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
-        <div className={`lg:hidden w-full bg-[#dfd7d0] border-t border-gray-300 transition-all duration-300 ease-in-out ${
-          isMenuOpen ? 'max-h-96 opacity-100 visible' : 'max-h-0 opacity-0 invisible'
-        }`}>
+        <div
+          className={`lg:hidden w-full bg-[#dfd7d0] border-t border-gray-300 transition-all duration-300 ease-in-out ${
+            isMenuOpen
+              ? "max-h-96 opacity-100 visible"
+              : "max-h-0 opacity-0 invisible"
+          }`}
+        >
           <div className="px-4 py-4">
             {/* Mobile Search Bar */}
             <div className="flex items-center bg-white rounded-lg px-3 py-2 border border-gray-300 mb-4">
