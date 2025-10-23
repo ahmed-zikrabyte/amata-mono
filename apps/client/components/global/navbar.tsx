@@ -17,13 +17,15 @@ const Navbar = () => {
       <nav className="w-full py-3 px-4 md:px-8 lg:px-24">
         <div className="flex items-center justify-between">
           {/* Logo Section */}
-          <div className="flex items-center">
-            <Image
-              src={logoIcon}
-              alt="Amata logo"
-              className="h-10 w-14 md:h-12 md:w-16 lg:h-14 lg:w-20 object-contain"
-            />
-          </div>
+          <Link href={"/"}>
+            <div className="flex items-center">
+              <Image
+                src={logoIcon}
+                alt="Amata logo"
+                className="h-10 w-14 md:h-12 md:w-16 lg:h-14 lg:w-20 object-contain"
+              />
+            </div>
+          </Link>
 
           {/* Nav-link Section - Desktop */}
           <div className="hidden lg:flex justify-center flex-1 mx-8">
@@ -64,16 +66,20 @@ const Navbar = () => {
 
             {/* Cart icon Section */}
             <div className="flex items-center">
-              <button className="text-gray-800 hover:text-gray-600 transition-colors">
-                <ShoppingCart className="w-5 h-5" />
-              </button>
+              <Link href={"/cart"}>
+                <div className="text-gray-800 hover:text-gray-600 transition-colors">
+                  <ShoppingCart className="w-5 h-5" />
+                </div>
+              </Link>
             </div>
 
             {/* Button Section */}
             <div className="flex items-center">
-              <button className="bg-[#613815] text-white px-6 py-2 rounded-lg hover:bg-[#7A6348] transition-colors text-sm font-medium">
-                Sign In
-              </button>
+              <Link href={"/signup"}>
+                <div className="bg-[#613815] text-white px-6 py-2 rounded-lg hover:bg-[#7A6348] transition-colors text-sm font-medium">
+                  Sign In
+                </div>
+              </Link>
             </div>
           </div>
 
@@ -121,22 +127,30 @@ const Navbar = () => {
 
             {/* Mobile Navigation Links */}
             <ul className="space-y-3 mb-4">
-              <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-base cursor-pointer py-2 border-b border-gray-300">
-                Products
-              </li>
-              <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-base cursor-pointer py-2 border-b border-gray-300">
-                About Us
-              </li>
-              <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-base cursor-pointer py-2 border-b border-gray-300">
-                Contact
-              </li>
+              <Link href={"/products"}>
+                <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-base cursor-pointer py-2 border-b border-gray-300">
+                  Products
+                </li>
+              </Link>
+              <Link href={"/about"}>
+                <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-base cursor-pointer py-2 border-b border-gray-300">
+                  About Us
+                </li>
+              </Link>
+              <Link href={"/contact"}>
+                <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-base cursor-pointer py-2 border-b border-gray-300">
+                  Contact
+                </li>
+              </Link>
             </ul>
 
             {/* Mobile Sign In Button */}
             <div className="pt-2">
-              <button className="bg-[#613815] text-white w-full py-3 rounded-lg hover:bg-[#7A6348] transition-colors text-base font-medium">
-                Sign In
-              </button>
+              <Link href={"/signup"}>
+                <button className="bg-[#613815] text-white w-full py-3 rounded-lg hover:bg-[#7A6348] transition-colors text-base font-medium">
+                  Sign In
+                </button>
+              </Link>
             </div>
           </div>
         </div>

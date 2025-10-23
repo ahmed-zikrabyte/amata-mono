@@ -33,7 +33,7 @@ const ProductCarousel = ({ products, onAddToCart, onShopNow }: ProductCarouselPr
     >
       <CarouselContent>
         {products.map((product) => (
-          <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+          <CarouselItem key={product._id} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
             <ProductCard
               product={product}
               onAddToCart={onAddToCart}

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@workspace/ui/globals.css";
 import { Providers } from "@/components/providers";
 import Navbar from "../components/global/navbar";
+import {Toaster} from "@workspace/ui/components/sonner"
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function RootLayout({
         <Providers>
           <Navbar />
           <div className="mt-20">{children}</div>
+          <Toaster position="top-center" />
         </Providers>
       </body>
     </html>

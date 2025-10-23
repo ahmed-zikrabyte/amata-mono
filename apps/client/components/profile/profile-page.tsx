@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ProfileSidebar from "./profile-sidebar";
 import { useSearchParams } from "next/navigation";
 import ProfileSection from "./profile-section";
 import OrderSection from "./orders-section";
