@@ -392,7 +392,7 @@ const Page = () => {
                 <div className="w-full max-w-sm sm:max-w-md lg:max-w-full mx-auto lg:mx-0">
                   <Carousel className="w-full">
                     <CarouselContent>
-                      {product.images.map((img, idx) => (
+                      {product.images.map((img: string, idx: number) => (
                         <CarouselItem
                           key={idx}
                           className="basis-1/3 sm:basis-1/3 lg:basis-1/4 pl-1"
@@ -473,7 +473,7 @@ const Page = () => {
                   Size
                 </h1>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-2 sm:gap-3 lg:gap-4">
-                  {product?.variants.map((variant, index) => (
+                  {product?.variants.map((variant: any, index: number) => (
                     <div
                       key={variant._id}
                       className="border border-gray-300 bg-gray-50 rounded-lg sm:rounded-xl lg:rounded-2xl p-2 sm:p-3 text-center hover:bg-amber-50 cursor-pointer transition-colors relative"
@@ -1661,7 +1661,7 @@ const Page = () => {
           </div>
         </div>
 
-        <YouMayAlsoLike
+        {/* <YouMayAlsoLike
           products={recommendedProducts as unknown as Product[]}
           onAddToCart={handleAddToCart}
           onShopNow={handleShopNow}
@@ -1670,7 +1670,7 @@ const Page = () => {
           buttonText="View All"
           backgroundColor="#fff"
           padding="py-20 px-4 sm:px-8 lg:px-20"
-        />
+        /> */}
       </div>
     </div>
   );

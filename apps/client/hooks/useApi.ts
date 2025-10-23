@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 import { ApiResponse } from '@/lib/types/product';
 
 interface UseApiState<T> {
-  data: T | null;
+  data: any | null;
   loading: boolean;
   error: string | null;
 }

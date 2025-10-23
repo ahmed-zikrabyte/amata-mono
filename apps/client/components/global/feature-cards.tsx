@@ -5,7 +5,7 @@ import { TbTruckReturn } from "react-icons/tb";
 
 const FeatureCards = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-evenly py-10 max-md:space-y-7">
+    <div className="flex flex-col md:flex-row items-center justify-evenly py-16 max-md:space-y-7">
       <Cards
         title="Lab Certified"
         description="All product tested for purity and quality"
