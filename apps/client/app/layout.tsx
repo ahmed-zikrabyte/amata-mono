@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@workspace/ui/globals.css";
 import { Providers } from "@/components/providers";
 import Navbar from "../components/global/navbar";
+import {Toaster} from "@workspace/ui/components/sonner"
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -22,11 +23,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
+        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased bg-[#A8A6A6]/10`}
       >
         <Providers>
           <Navbar />
           <div className="mt-20">{children}</div>
+          <Toaster position="top-center" />
         </Providers>
       </body>
     </html>

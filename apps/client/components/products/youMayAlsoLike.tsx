@@ -1,24 +1,16 @@
 import ProductCarousel from "./productCarousel";
-
-interface Product {
-  id: number;
-  image: any;
-  category: string;
-  title: string;
-  rating: number;
-  price: string;
-  badge?: string;
-}
+import { Product } from "@/lib/types/product";
 
 interface YouMayAlsoLikeProps {
   products: Product[];
-  onAddToCart: (productId: number) => void;
-  onShopNow: (productId: number) => void;
+  onAddToCart: (product: Product) => void;
+  onShopNow: (product: Product) => void;
   onViewAll?: () => void;
   title?: string;
   buttonText?: string;
   backgroundColor?: string;
   padding?: string;
+  currentProductId?: string;
 }
 
 const YouMayAlsoLike = ({
@@ -29,8 +21,18 @@ const YouMayAlsoLike = ({
   title = "You May Also Like",
   buttonText = "View All",
   backgroundColor = "#fff",
-  padding = "py-20 px-4 sm:px-8 lg:px-20"
+  padding = "py-20 px-4 sm:px-8 lg:px-20",
+  currentProductId
 }: YouMayAlsoLikeProps) => {
+  // Filter out current product if provided
+  const filteredProducts = currentProductId 
+    ? products.filter(product => product._id !== currentProductId)
+    : products;
+
+  if (!filteredProducts || filteredProducts.length === 0) {
+    return null;
+  }
+
   return (
     <div
       className={`relative min-h-96 w-full z-0 ${padding}`}
@@ -48,7 +50,7 @@ const YouMayAlsoLike = ({
           </h1>
           {onViewAll && (
             <button 
-              className="py-2 px-4 bg-[#613815] text-white rounded-md hover:bg-green-700 transition-colors"
+              className="py-2 px-4 bg-[#613815] text-white rounded-md hover:bg-green-700 transition-colors text-sm"
               onClick={onViewAll}
             >
               {buttonText}
@@ -59,7 +61,7 @@ const YouMayAlsoLike = ({
 
       <div className="mt-10 lg:mt-20">
         <ProductCarousel
-          products={products}
+          products={filteredProducts.slice(0, 8)} // Limit to 8 products
           onAddToCart={onAddToCart}
           onShopNow={onShopNow}
         />

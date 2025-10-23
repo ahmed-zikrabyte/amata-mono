@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { protect } from "../../../../middleware/auth.middleware";
-import { getUsers } from "../../controllers/admin/user.controller";
 import adminAuthRoute from "./auth.admin.route";
 import adminFaqRoute from "./faqs.admin.route";
 import adminContactUsRoute from "./contact-us.admin.route";
