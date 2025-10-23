@@ -38,7 +38,7 @@ const ProfileSection = () => {
         <div className="h-auto w-full flex flex-col space-y-4 items-center justify-center py-6">
           {/* 2. Replaced non-standard h-25 w-25 with standard h-24 w-24 */}
           <div className="relative h-24 w-24 rounded-full border-2"> 
-            <Image src={pfp} fill alt="pfp" className="rounded-full" />
+            <Image src={pfp.src} fill alt="pfp" className="rounded-full" />
             <Button
               className="absolute rounded-full bottom-0 right-0 h-8 w-8 p-1" 
               size={"sm"}

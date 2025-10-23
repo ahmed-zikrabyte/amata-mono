@@ -73,12 +73,12 @@ const OrderCard = () => {
         {/* Footer */}
         <div className="flex items-center justify-between">
           <p className="font-medium text-sm sm:text-base">Total</p>
-          <Link
-            href={"/order-details"}
+          <button
+            // href={"/order-details"}
             className="text-amber-950 hover:text-amber-800 underline text-sm sm:text-base"
           >
             View Details
-          </Link>
+          </button>
         </div>
       </div>
     </Link>

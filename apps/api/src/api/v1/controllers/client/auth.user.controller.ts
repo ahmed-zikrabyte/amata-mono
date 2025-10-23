@@ -7,9 +7,9 @@ const userAuthService = new UserAuthService();
 
 export default class UserAuthController {
   register = catchAsync(async (req: Request, res: Response) => {
-    const { name, phone, email } = req.body;
+    const { fullName, phone, email } = req.body;
 
-    const response = await userAuthService.register(name, email, phone);
+    const response = await userAuthService.register(fullName, email, phone);
 
     return ApiResponse.success({
       res,
@@ -19,10 +19,10 @@ export default class UserAuthController {
   });
 
   registerVerify = catchAsync(async (req: Request, res: Response) => {
-    const { name, phone, email, otp } = req.body;
+    const { fullName, phone, email, otp } = req.body;
 
     const response = await userAuthService.registerVerify(
-      name,
+      fullName,
       email,
       phone,
       otp

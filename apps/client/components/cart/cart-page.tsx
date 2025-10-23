@@ -15,9 +15,11 @@ import { X } from "lucide-react";
 import CartItems from "./cart-items";
 import JoinOurPureLivingCommunityBanner from "../global/join-our-pure-living-banner";
 import FeatureCards from "../global/feature-cards";
+import { useRouter } from "next/navigation";
 import { getCart, removeFromCart, CartItem } from "../../lib/api/cartApi";
 
 const CartPage: React.FC = () => {
+  const router = useRouter();
   const [cart, setCart] = useState<CartItem[]>([]);
 
   async function fetchCart() {
@@ -108,7 +110,12 @@ const CartPage: React.FC = () => {
                   <span>{totalAmount + 60}</span>
                 </p>
               </div>
-              <Button className="h-12 w-full">Proceed to Checkout</Button>
+              <Button
+                className="h-12 w-full cursor-pointer"
+                onClick={() => router.push("/checkout")}
+              >
+                Proceed to Checkout
+              </Button>
             </div>
           </div>
         </div>
