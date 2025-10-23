@@ -50,7 +50,7 @@ const Banner10 = () => {
                         className="object-contain"
                       />
                     </div>
-                    <div className="flex items-start gap-2">
+                    <div className="flex items-start gap-2 p-2">
                       <span className="flex-shrink-0 w-6 h-6 bg-amber-900 text-white rounded-full flex items-center justify-center text-xs font-bold">
                         1
                       </span>
@@ -71,7 +71,7 @@ const Banner10 = () => {
                         className="object-contain"
                       />
                     </div>
-                    <div className="flex items-start gap-2">
+                    <div className="flex items-start gap-2 p-2">
                       <span className="flex-shrink-0 w-6 h-6 bg-amber-900 text-white rounded-full flex items-center justify-center text-xs font-bold">
                         2
                       </span>
@@ -92,7 +92,7 @@ const Banner10 = () => {
                         className="object-contain"
                       />
                     </div>
-                    <div className="flex items-start gap-2">
+                    <div className="flex items-start gap-2 p-2">
                       <span className="flex-shrink-0 w-6 h-6 bg-amber-900 text-white rounded-full flex items-center justify-center text-xs font-bold">
                         3
                       </span>
@@ -113,7 +113,7 @@ const Banner10 = () => {
                         className="object-contain"
                       />
                     </div>
-                    <div className="flex items-start gap-2">
+                    <div className="flex items-start gap-2 p-2">
                       <span className="flex-shrink-0 w-6 h-6 bg-amber-900 text-white rounded-full flex items-center justify-center text-xs font-bold">
                         4
                       </span>

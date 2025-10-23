@@ -6,6 +6,8 @@ import subBlog1 from "../../../assets/bgSec11SubBlog1.png";
 import subBlog2 from "../../../assets/bgSec11SubBlog2.png";
 import subBlog3 from "../../../assets/bgSec11SubBlog3.png";
 import { Button } from "../../../../../packages/ui/src/components/button";
+import ProductListPage from "../../products/ProductListPage";
+import TestimonialCustomers from "../../global/testimonial-customers";
 
 const Banner11 = () => {
   return (
@@ -174,6 +176,10 @@ const Banner11 = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="px-5 md:px-20 py-8">
+        
+      <TestimonialCustomers/>
       </div>
     </div>
   );

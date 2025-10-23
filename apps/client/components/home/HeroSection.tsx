@@ -42,7 +42,7 @@ const HeroSection = () => {
     {
       image: carousel1,
       alt: "Pure A2 Gir Cow Ghee",
-      className: "object-cover",
+      className: "object-cover object-[77%_center] md:object-[70%_center]",
       tagline: "Not the famous ghee. The best ghee.",
       heading:
         "Pure A2 Gir Cow Bilona Ghee - Delivered from our farm to your kitchen",
@@ -62,7 +62,7 @@ const HeroSection = () => {
     {
       image: carousel2,
       alt: "Limited Batch Bilona Ghee",
-      className: "object-bottom-right",
+      className: "object-cover object-[83%_center] md:object-[80%_center]",
       tagline: "Limited Batch Bilona Ghee - Fresh From Our Farms.",
       heading:
         "Crafted using traditional methods, this limited batch ghee is fresh, pure and available for a short time only.",
@@ -77,7 +77,7 @@ const HeroSection = () => {
     {
       image: carousel3,
       alt: "Premium A2 Ghee Collection",
-      className: "object-bottom-right",
+      className: "object-cover object-[77%_center] md:object-[75%_center]",
       tagline: "Discover Our Premium A2 Ghee Collection",
       heading:
         "Savor the richness of tradition with ghee crafted from the finest cow's milk, farm to jar.",
@@ -265,7 +265,7 @@ const HeroSection = () => {
             {/* Right Side */}
             <div className="flex items-center justify-center lg:justify-end order-1 lg:order-2">
               <div className="w-full max-w-md lg:max-w-lg text-white">
-                <div className="border-t border-gray-400 pt-2 mb-6">
+                <div className="border-t border-gray-400 pt-2 mb-6 space-y-4">
                   <h3 className="text-lg sm:text-xl font-semibold mb-4 text-black">
                     Purity Backed by Science
                   </h3>
@@ -274,8 +274,8 @@ const HeroSection = () => {
                     Cow Ghee:
                   </p>
 
-                  <ul className="text-sm sm:text-base mb-4">
-                    <li className="flex items-start justify-center pr-20 gap-1">
+                  <ul className="text-sm sm:text-base mb-4 space-y-2">
+                    <li className="flex items-start justify-center pr-20 gap-2">
                       <Image
                         src={Cookie}
                         alt="Cookie"
@@ -285,7 +285,7 @@ const HeroSection = () => {
                         Has 99.87% healthy fats with minimal moisture content
                       </span>
                     </li>
-                    <li className="flex items-start justify-center pr-20 gap-1">
+                    <li className="flex items-start justify-center pr-20 gap-2">
                       <Image
                         src={love}
                         alt="heart"
@@ -296,7 +296,7 @@ const HeroSection = () => {
                         health.
                       </span>
                     </li>
-                    <li className="flex items-start justify-center pr-20 gap-1">
+                    <li className="flex items-start justify-center pr-20 gap-2">
                       <Image
                         src={NoCem}
                         alt="No-Cem"
@@ -379,42 +379,44 @@ const HeroSection = () => {
               
               {/* Filter Bar */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-                {/* Filter Buttons */}
-                <div className="flex items-center gap-2 flex-nowrap overflow-x-auto pb-2 w-full sm:w-auto scrollbar-hide">
-                  {["All", "500 ml", "1 Litre", "2 Litres", "5 Litres"].map((label, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setSelectedFilter(label)}
-                      className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium text-xs sm:text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0 ${
-                        selectedFilter === label
-                          ? "bg-[#4B2C20] text-white"
-                          : "border border-[#4B2C20] text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white"
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
+  {/* Filter Buttons */}
+  <div className="flex items-center gap-2 flex-nowrap overflow-x-auto pb-2 w-full sm:w-auto scrollbar-hide">
+    {["All", "500 ml", "1 Litre", "2 Litres", "5 Litres"].map((label, idx) => (
+      <button
+        key={idx}
+        onClick={() => setSelectedFilter(label)}
+        className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium text-xs sm:text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0 ${
+          selectedFilter === label
+            ? "bg-[#4B2C20] text-white"
+            : "border border-[#4B2C20] text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white"
+        }`}
+      >
+        {label}
+      </button>
+    ))}
+  </div>
 
-                {/* Navigation Arrows */}
-                <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
-                  <div className="hidden sm:block h-px bg-[#4B2C20]/40 flex-1 max-w-[100px] mx-2"></div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <button 
-                      onClick={scrollPrev}
-                      className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-[#4B2C20]/40 text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white transition"
-                    >
-                      <span className="text-sm sm:text-lg">&larr;</span>
-                    </button>
-                    <button 
-                      onClick={scrollNext}
-                      className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-[#4B20]/40 text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white transition"
-                    >
-                      <span className="text-sm sm:text-lg">&rarr;</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
+  {/* Navigation Arrows with Horizontal Line (Desktop only) */}
+  <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
+    {/* Horizontal Line - Only visible on desktop (lg breakpoint and above) */}
+    <div className="hidden lg:block h-px bg-[#4B2C20]/40 flex-1 max-w-[100px] mx-2"></div>
+    
+    <div className="flex items-center gap-2 shrink-0">
+      <button 
+        onClick={scrollPrev}
+        className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-[#4B2C20]/40 text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white transition"
+      >
+        <span className="text-sm sm:text-lg">&larr;</span>
+      </button>
+      <button 
+        onClick={scrollNext}
+        className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-[#4B2C20]/40 text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white transition"
+      >
+        <span className="text-sm sm:text-lg">&rarr;</span>
+      </button>
+    </div>
+  </div>
+</div>
 
               {/* Products Carousel */}
               <div className="embla overflow-hidden" ref={productEmblaRef}>

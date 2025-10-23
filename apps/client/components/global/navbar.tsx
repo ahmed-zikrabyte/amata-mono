@@ -13,8 +13,8 @@ const Navbar = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-[#dfd7d0]">
-      <nav className="w-full py-3 px-4 md:px-8 lg:px-24">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-[rgb(223,215,208)]">
+      <nav className="w-full py-3 px-4 md:px-8 lg:px-24 h-20">
         <div className="flex items-center justify-between">
           {/* Logo Section */}
           <div className="flex items-center">

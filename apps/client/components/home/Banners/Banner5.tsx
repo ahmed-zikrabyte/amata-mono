@@ -76,110 +76,121 @@ const Banner5 = () => {
 
   return (
     <div>
+      <div
+        className="relative w-full z-0 min-h-[600px] sm:min-h-[650px] lg:min-h-[700px]"
+        style={{
+          backgroundImage: `url(${BgSec5.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <div className="relative z-20 h-full">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center pt-10">
+            <div className="w-full max-w-7xl mx-auto">
+              {/* Header Section */}
+              <div className="text-center mb-8 sm:mb-12">
+                <h1 className="text-black font-bold text-xl sm:text-2xl lg:text-3xl mb-2">
+                  Our Pure Ghee Collection
+                </h1>
+                <p className="text-black font-medium text-xs sm:text-sm lg:text-base max-w-2xl mx-auto">
+                  Explore our range of traditionally crafted ghees - pure,
+                  nutritious, and full of flavor.
+                </p>
+              </div>
 
-    
-    <div
-      className="relative w-full z-0 min-h-[600px] sm:min-h-[650px] lg:min-h-[700px]"
-      style={{
-        backgroundImage: `url(${BgSec5.src})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      <div className="relative z-20 h-full">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center pt-10">
-          <div className="w-full max-w-7xl mx-auto">
-            {/* Header Section */}
-            <div className="text-center mb-8 sm:mb-12">
-              <h1 className="text-black font-bold text-xl sm:text-2xl lg:text-3xl mb-2">
-                Our Pure Ghee Collection
-              </h1>
-              <p className="text-black font-medium text-xs sm:text-sm lg:text-base max-w-2xl mx-auto">
-                Explore our range of traditionally crafted ghees - pure, nutritious, and full of flavor.
-              </p>
-            </div>
+              {/* Shadcn UI Carousel */}
+              <Carousel
+                opts={{
+                  align: "start",
+                }}
+                className="w-full"
+              >
+                <CarouselContent>
+                  {products.map((product, index) => (
+                    <CarouselItem
+                      key={index}
+                      className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                    >
+                      <div className="px-5">
+                        <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-[#e8e3df]">
+                          <CardContent className="px-4">
+                            {/* Product Image */}
+                            <div className="relative h-40 sm:h-36 lg:h-40">
+                              {/* Sale Tag */}
+                              <div className="absolute top-2 right-2 z-10">
+                                <span className="bg-[#ecc09a] text-black px-3 py-1 text-xs font-medium rounded-md">
+                                  Sale
+                                </span>
+                              </div>
+                              <Image
+                                src={product.image}
+                                alt={product.title}
+                                fill
+                                className="object-cover rounded-t-lg"
+                              />
+                            </div>
 
-            {/* Shadcn UI Carousel */}
-            <Carousel
-              opts={{
-                align: "start",
-              }}
-              className="w-full"
-            >
-              <CarouselContent>
-                {products.map((product, index) => (
-                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                    <div className="px-4">
-                      <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-                        <CardContent className="p-0">
-                          {/* Product Image */}
-                          <div className="relative h-40 sm:h-36 lg:h-40">
-                            <Image
-                              src={product.image}
-                              alt={product.title}
-                              fill
-                              className="object-cover rounded-t-lg"
-                            />
-                          </div>
-                          
-                          {/* Product Info */}
-                          <div className="p-4 sm:p-6">
-                            {/* Category */}
-                            <p className="text-gray-600 font-medium text-[8px] sm:text-[10px] mb-2">
-                              Category: {product.category}
-                            </p>
-                            
-                            <div className="flex justify-between items-center">
+                            {/* Product Info */}
+                            <div className="p-2 sm:p-1">
+                              {/* Category */}
+                              <p className="text-gray-600 font-medium text-[8px] sm:text-[10px] mb-1 mt-2">
+                                Category: {product.category}
+                              </p>
+
+                              <div className="flex justify-between items-center mt-2">
                                 {/* Title */}
-                            <h3 className="font-medium text-gray-800 text-[10px] sm:text-[13px] lg:text-[15px]">
-                              {product.title}
-                            </h3>
-                            
-                            {/* Rating */}
-                            <div className="">
-                              <span className="text-yellow-400 text-sm">⭐</span>
-                              <span className="text-gray-600 text-xs sm:text-sm">{product.rating}*</span>
-                            </div>
-                            </div>
-                            
-                            
-                            {/* Price */}
-                            <p className="text-amber-700 font-bold text-base sm:text-lg lg:text-lg mt-2">
-                              {product.price}
-                            </p>
-                            
-                            {/* Buttons */}
-                            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-5">
-                                <Button className="border-2 border-red-700 px-4 py-2 bg-white text-red-600 font-semibold text-sm hover:text-white">
-                                    Add to cart
-                                </Button>
-                                <Button>
-                                    Show Now
-                                </Button>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="ml-7"/>
-              <CarouselNext className="mr-7" />
-            </Carousel>
+                                <h3 className="font-medium text-gray-800 text-[10px] sm:text-[13px] lg:text-[15px]">
+                                  {product.title}
+                                </h3>
 
-            {/* View All Button */}
-            <div className="text-center mt-8 sm:mt-12">
-              <Button className="bg-red-700 hover:bg-amber-700 text-white font-semibold py-4 px-8 sm:py-4 sm:px-12 rounded-lg text-sm sm:text-base lg:text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
-                View all
-              </Button>
+                                {/* Rating */}
+                                <div className="">
+                                  <span className="text-yellow-400 text-sm">
+                                    ⭐
+                                  </span>
+                                  <span className="text-gray-600 text-xs sm:text-sm">
+                                    {product.rating}*
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Price */}
+                              <p className="text-amber-700 font-bold text-base sm:text-lg lg:text-lg mt-1">
+                                {product.price}
+                              </p>
+
+                              {/* Buttons */}
+                              <div className="flex flex-col lg:flex-row gap-2 sm:gap-3 mt-5 sm:justify-evenly lg:justify-between">
+                                <button className="px-3 py-1 border-2 border-red-700 rounded-lg bg-[#e8e3df] text-red-600 font-semibold text-sm hover:bg-red-700 hover:text-white transition-all duration-300 text-center">
+                                  Add to cart
+                                </button>
+                                <button className="px-3 py-1 rounded-lg bg-red-700 hover:bg-red-800 text-white font-semibold text-sm transition-all duration-300 text-center">
+                                  Shop Now
+                                </button>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="ml-8" />
+                <CarouselNext className="mr-8 bg-black text-white" />
+              </Carousel>
+
+              {/* View All Button */}
+              <div className="text-center mt-8 sm:mt-12">
+                <Button className="bg-red-700 hover:bg-amber-700 text-white font-semibold py-4 px-8 sm:py-4 sm:px-12 rounded-lg text-sm sm:text-base lg:text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                  View all
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <Banner6/>
+      <Banner6 />
     </div>
   );
 };
