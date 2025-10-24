@@ -22,13 +22,12 @@ import { Product } from "@/lib/types/product";
 import { productApi } from "@/lib/api/productApi";
 import { Button } from "@workspace/ui/components/button";
 import TrendingProductsSection from "./Banners/TrendingProductSection";
+import Link from "next/link";
 
 const HeroSection = () => {
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 3000 }),
   ]);
-
-
 
   const carouselData = [
     {
@@ -239,12 +238,14 @@ const HeroSection = () => {
                       {/* Buttons Container */}
                       <div className="flex flex-col gap-2 sm:gap-3 md:flex-row md:gap-4 w-full md:w-auto">
                         {slide.buttons.map((button, btnIndex) => (
-                          <button
-                            key={btnIndex}
-                            className={`font-semibold text-xs sm:text-sm md:text-base py-2 px-4 sm:py-2.5 sm:px-5 md:py-3 md:px-8 lg:py-4 lg:px-10 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg hover:shadow-xl text-center ${button.className}`}
-                          >
-                            {button.text}
-                          </button>
+                          <Link href={'/products'}>
+                            <button
+                              key={btnIndex}
+                              className={`font-semibold text-xs sm:text-sm md:text-base py-2 px-4 sm:py-2.5 sm:px-5 md:py-3 md:px-8 lg:py-4 lg:px-10 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg hover:shadow-xl text-center ${button.className}`}
+                            >
+                              {button.text}
+                            </button>
+                          </Link>
                         ))}
                       </div>
                     </div>
@@ -335,9 +336,11 @@ const HeroSection = () => {
 
                 {/* Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3">
+                  <Link href={'/products'}>
                   <button className="bg-red-800 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
                     Order Now
                   </button>
+                  </Link>
                   <button className="bg-white hover:bg-amber-800 text-black hover:text-white font-semibold py-3 px-6 rounded-lg border-none border-amber-400 transition duration-300 ease-in-out transform hover:scale-105">
                     View Full Lab Report
                   </button>
@@ -349,7 +352,7 @@ const HeroSection = () => {
       </div>
 
       {/* Section 3 - Trending Products */}
-      <TrendingProductsSection/>
+      <TrendingProductsSection />
       {/* Section 4 */}
       <Banner4 />
     </div>
