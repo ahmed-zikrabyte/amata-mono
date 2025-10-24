@@ -1,10 +1,10 @@
 import React from 'react'
-import ContactCard from '../../components/contact/contactCard'
+import ContactPage from '../../components/contact/contact-page'
 
 const page = () => {
   return (
     <div>
-        <ContactCard/>
+        <ContactPage/>
     </div>
   )
 }

@@ -73,7 +73,7 @@ const Navbar = () => {
               <input
                 type="text"
                 placeholder="Search"
-                className="bg-transparent outline-none text-black font-medium px-2 py-1 w-32"
+                className="bg-transparent outline-none text-black font-medium px-2 py-1 w-60"
               />
             </div>
 
