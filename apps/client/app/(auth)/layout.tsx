@@ -3,22 +3,27 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react"; // optional: spinner icon from lucide-react
+import { useAuthStore } from "../../hooks/useAuthStore";
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+export default function AuthLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const { checkAuth, isAuthenticated } = useAuthStore();
+
+  useEffect(() => checkAuth(), []);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      // If token exists, redirect to home page
+    console.log("working in auth layout");
+    if (isAuthenticated) {
       router.replace("/");
     } else {
-      // Allow access to login/signup
       setLoading(false);
     }
-  }, [router]);
+  }, [isAuthenticated]);
 
   if (loading) {
     return (

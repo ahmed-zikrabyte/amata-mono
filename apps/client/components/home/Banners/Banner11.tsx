@@ -7,7 +7,6 @@ import subBlog2 from "../../../assets/bgSec11SubBlog2.png";
 import subBlog3 from "../../../assets/bgSec11SubBlog3.png";
 import { Button } from "../../../../../packages/ui/src/components/button";
 import ProductListPage from "../../products/ProductListPage";
-import TestimonialCustomers from "../../global/testimonial-customers";
 
 const Banner11 = () => {
   return (
@@ -21,9 +20,9 @@ const Banner11 = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="relative z-20 h-full">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col py-10 md:py-14 lg:py-20">
-            <div className="w-full max-w-6xl mx-auto">
+        <div className="relative z-20 h-full px-4 lg:px-20 xl:px-24">
+          <div className="container h-full flex flex-col py-10 md:py-14 lg:py-20">
+            <div className="w-full mx-auto">
               {/* Heading Section */}
               <div className="mb-8 md:mb-12">
                 <span className="inline-block px-4 py-2 bg-gray-200 text-sm md:text-base rounded-full font-semibold text-gray-800">
@@ -35,9 +34,9 @@ const Banner11 = () => {
                       Learn the Science of Pure Ghee
                     </h1>
                     <p className="text-sm md:text-base text-gray-700">
-                      Explore our blog for insights, tips, and traditional wisdom
-                      on ghee — from ancient Ayurvedic practices to modern health
-                      benefits.
+                      Explore our blog for insights, tips, and traditional
+                      wisdom on ghee — from ancient Ayurvedic practices to
+                      modern health benefits.
                     </p>
                   </div>
                   <Button className="bg-amber-900 hover:bg-amber-800 text-white px-6 py-2 rounded-lg whitespace-nowrap">
@@ -65,14 +64,24 @@ const Banner11 = () => {
                     </h2>
                     <p className="text-sm md:text-base text-gray-600 mb-4 flex-1">
                       Discover how A2 Ghee supports digestion, immunity, and
-                      energy. Learn why it's considered a superfood in Ayurveda and
-                      modern wellness.
+                      energy. Learn why it's considered a superfood in Ayurveda
+                      and modern wellness.
                     </p>
                     <div className="flex items-center justify-between text-sm text-gray-500">
                       <span>Sept 15, 2025</span>
                       <div className="flex items-center gap-1">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
                         </svg>
                         <span>4 min read</span>
                       </div>
@@ -98,13 +107,24 @@ const Banner11 = () => {
                         Bilona Method: The Ancient Secret Behind Pure Ghee
                       </h3>
                       <p className="text-sm text-gray-600 mb-3 flex-1">
-                        Understand the traditional hand-churning Bilona process — ...
+                        Understand the traditional hand-churning Bilona process
+                        — ...
                       </p>
                       <div className="flex items-center justify-between text-xs md:text-sm text-gray-500">
                         <span>Sept 15, 2025</span>
                         <div className="flex items-center gap-1">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
                           </svg>
                           <span>4 min read</span>
                         </div>
@@ -128,13 +148,24 @@ const Banner11 = () => {
                         How to Identify Pure Ghee at Home
                       </h3>
                       <p className="text-sm text-gray-600 mb-3 flex-1">
-                        Learn simple tests and tips to check ghee purity using smell..
+                        Learn simple tests and tips to check ghee purity using
+                        smell..
                       </p>
                       <div className="flex items-center justify-between text-xs md:text-sm text-gray-500">
                         <span>Sept 15, 2025</span>
                         <div className="flex items-center gap-1">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
                           </svg>
                           <span>4 min read</span>
                         </div>
@@ -155,16 +186,28 @@ const Banner11 = () => {
                     </div>
                     <div className="p-5 md:p-6 flex-1 flex flex-col">
                       <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
-                        Cooking with Ghee: Modern Recipes for a Traditional Touch
+                        Cooking with Ghee: Modern Recipes for a Traditional
+                        Touch
                       </h3>
                       <p className="text-sm text-gray-600 mb-3 flex-1">
-                        From sautéing veggies to baking desserts — explore delicio ...
+                        From sautéing veggies to baking desserts — explore
+                        delicio ...
                       </p>
                       <div className="flex items-center justify-between text-xs md:text-sm text-gray-500">
                         <span>Sept 15, 2025</span>
                         <div className="flex items-center gap-1">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
                           </svg>
                           <span>4 min read</span>
                         </div>
@@ -176,10 +219,6 @@ const Banner11 = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="px-5 md:px-20 py-8">
-        
-      <TestimonialCustomers/>
       </div>
     </div>
   );

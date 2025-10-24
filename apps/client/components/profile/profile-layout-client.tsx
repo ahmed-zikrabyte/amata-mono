@@ -6,7 +6,7 @@ import { useSearchParams, usePathname } from "next/navigation";
 
 const ProfileLayoutClient = ({ children }: { children: ReactNode }) => {
   const [currentTab, setCurrentTab] = useState<
-    "profile" | "orders" | "payments"
+    "profile" | "orders"
   >("profile");
 
   const searchParams = useSearchParams();
@@ -19,7 +19,7 @@ const ProfileLayoutClient = ({ children }: { children: ReactNode }) => {
     }
 
     const tab =
-      (searchParams.get("tab") as "profile" | "orders" | "payments") ||
+      (searchParams.get("tab") as "profile" | "orders") ||
       "profile";
     setCurrentTab(tab);
   }, [searchParams, pathname]);

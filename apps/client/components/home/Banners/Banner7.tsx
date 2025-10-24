@@ -6,7 +6,6 @@ import homeSecLogo3 from "../../../assets/homeSecLogo3.png";
 import homeSecLogo4 from "../../../assets/homeSecLogo4.png";
 import homeSecLogo5 from "../../../assets/homeSecLogo5.png";
 import homeSecLogo6 from "../../../assets/homeSecLogo6.png";
-import Banner8 from "./Banner8";
 
 const Banner7 = () => {
   const benefits = [
@@ -14,38 +13,43 @@ const Banner7 = () => {
       id: 1,
       icon: homeSecLogo1,
       title: "Supports Digestion Naturally",
-      description: "The butyric acid in ghee helps maintain gut health and reduces inflammation"
+      description:
+        "The butyric acid in ghee helps maintain gut health and reduces inflammation",
     },
     {
       id: 2,
       icon: homeSecLogo2,
       title: "Boosts Immunity",
-      description: "Rich in fat-soluble vitamins A, D, E, and K, which are essential for overall well-being."
+      description:
+        "Rich in fat-soluble vitamins A, D, E, and K, which are essential for overall well-being.",
     },
     {
       id: 3,
       icon: homeSecLogo3,
       title: "Promotes Heart Health",
-      description: "When consumed in moderation, its healthy fats can support cholesterol balance."
+      description:
+        "When consumed in moderation, its healthy fats can support cholesterol balance.",
     },
     {
       id: 4,
       icon: homeSecLogo4,
       title: "Enhances Brain Function",
-      description: "Ghee is a natural source of Omega-3 fatty acids, known to improve memory and cognitive function."
+      description:
+        "Ghee is a natural source of Omega-3 fatty acids, known to improve memory and cognitive function.",
     },
     {
       id: 5,
       icon: homeSecLogo5,
       title: "Detoxifies the Body",
-      description: "Acts as a carrier for Ayurvedic medicines, helping them reach deeper tissues."
+      description:
+        "Acts as a carrier for Ayurvedic medicines, helping them reach deeper tissues.",
     },
     {
       id: 6,
       icon: homeSecLogo6,
       title: "Natural Skin Nourishment",
-      description: "Keeps skin soft and radiant when consumed or applied."
-    }
+      description: "Keeps skin soft and radiant when consumed or applied.",
+    },
   ];
 
   return (
@@ -72,9 +76,8 @@ const Banner7 = () => {
                 </p>
               </div>
 
-              
               <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-                {benefits.slice(0,4).map((benefit, index) => (
+                {benefits.slice(0, 4).map((benefit, index) => (
                   <div
                     key={benefit.id}
                     className="bg-white border border-amber-400 rounded-lg p-3 sm:p-4 lg:p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
@@ -82,18 +85,18 @@ const Banner7 = () => {
                     <div className="flex flex-col">
                       {/* Icon */}
                       <div className="mb-1 sm:mb-2 lg:mb-2">
-                        <img 
-                          src={benefit.icon.src} 
+                        <img
+                          src={benefit.icon.src}
                           alt={benefit.title}
                           className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 object-contain"
                         />
                       </div>
-                      
+
                       {/* Title */}
                       <h3 className="text-[10px] sm:text-xs lg:text-sm font-semibold text-gray-800 mb-1 sm:mb-2 leading-tight">
                         {benefit.title}
                       </h3>
-                      
+
                       {/* Description */}
                       <p className="text-[8px] sm:text-[10px] lg:text-xs text-gray-600 leading-tight">
                         {benefit.description}
@@ -112,8 +115,8 @@ const Banner7 = () => {
                     >
                       <div className="flex flex-col">
                         <div className="mb-1 sm:mb-2 lg:mb-2">
-                          <img 
-                            src={benefit.icon.src} 
+                          <img
+                            src={benefit.icon.src}
                             alt={benefit.title}
                             className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 object-contain"
                           />
@@ -133,9 +136,6 @@ const Banner7 = () => {
           </div>
         </div>
       </div>
-
-      {/* Section 8 */}
-      <Banner8/>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { Star } from "lucide-react";
 import { Product } from "@/lib/types/product";
 import Link from "next/link";
 import { Badge } from "@workspace/ui/components/badge";
+import { formatToRupee } from "../../lib/utils/formatToRupee";
 
 interface ProductCardProps {
   product: Product;
@@ -49,7 +50,7 @@ const SpecialOfferProductCard = ({
 
           <div className="flex gap-2 pt-2">
             <div className="text-[15px] w-1/2 font-bold text-amber-900">
-              {product.variants[0]?.price}
+              {formatToRupee(product.variants[0]?.price || 0)}
             </div>
             <Button
               className="flex-1 bg-amber-900 hover:bg-amber-800 text-xs"
