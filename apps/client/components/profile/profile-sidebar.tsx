@@ -24,20 +24,8 @@ const ProfileSidebar = ({ currentTab }: { currentTab: string }) => {
               <span className="font-medium ml-2">My Orders</span>
             </div>
           </Link>
-          <Link href={"/profile?tab=payments"}>
-            <div
-              className={`h-16 w-full md:pl-10 lg:pl-20 flex items-center justify-start px-4 ${currentTab === "payments" ? "bg-amber-800 text-white" : "text-black"}`}
-            >
-              <CreditCard />
-              <span className="font-medium ml-2">Payment Details</span>
-            </div>
-          </Link>
         </div>
         <div className="w-full">
-          <div className="h-16 w-full md:pl-10 lg:pl-20 hover:bg-gray-300 duration-150 flex items-center justify-start px-4 cursor-pointer">
-            <Settings />
-            <span className="font-medium ml-2">Settings</span>
-          </div>
           <div className="h-16 w-full md:pl-10 lg:pl-20 hover:bg-gray-300 flex items-center justify-start px-4 cursor-pointer">
             <LogOut />
             <span className="font-medium ml-2">Logout</span>
@@ -47,25 +35,22 @@ const ProfileSidebar = ({ currentTab }: { currentTab: string }) => {
       <div className=" flex md:hidden items-center justify-evenly w-full p-3">
         <Link href={"/profile?tab=profile"}>
           <div
-            className={`h-16 w-full flex items-center justify-start rounded-xl px-4 ${currentTab === "profile" ? "bg-amber-800 text-white" : " text-black"}`}
+            className={`h-16 flex items-center justify-start px-4 duration-150 rounded-md ${currentTab === "profile" ? "bg-amber-800 text-white hover:bg-amber-950" : " text-black hover:bg-gray-200"}`}
           >
             <span className="font-medium ml-2">My Profile</span>
           </div>
         </Link>
         <Link href={"/profile?tab=orders"}>
           <div
-            className={`h-16 w-full flex items-center justify-start rounded-xl px-4 ${currentTab === "orders" ? "bg-amber-800 text-white" : "text-black"} `}
+            className={`h-16 flex items-center justify-start px-4 duration-150 rounded-md ${currentTab === "orders" ? "bg-amber-800 text-white hover:bg-amber-950" : "text-black hover:bg-gray-200"} `}
           >
             <span className="font-medium ml-2">My Orders</span>
           </div>
         </Link>
-        <Link href={"/profile?tab=payments"}>
-          <div
-            className={`h-16 w-full flex items-center justify-start rounded-xl px-4 ${currentTab === "payments" ? "bg-amber-800 text-white" : "text-black"}`}
-          >
-            <span className="font-medium ml-2">Payment Details</span>
-          </div>
-        </Link>
+        <div className="h-16 flex items-center justify-start px-4 cursor-pointer hover:bg-gray-200 duration-150 rounded-md">
+          <LogOut />
+          <span className="font-medium ml-2">Logout</span>
+        </div>
       </div>
     </div>
   );

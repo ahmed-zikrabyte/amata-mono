@@ -49,6 +49,7 @@ export default class UserAddressController {
     const data = req.body;
     const { addressId } = req.params;
     const userId = req.user.id;
+    console.log({addressId})
     const newData = { userId, ...data };
     console.log({ data });
     console.log({ newData });

@@ -20,7 +20,6 @@ import product4 from "../../../assets/ProdutCorsolImg2.png";
 import product5 from "../../../assets/ProductCorsolImg1.png";
 import product6 from "../../../assets/ProdutCorsolImg2.png";
 import { Button } from "@workspace/ui/components/button";
-import Banner6 from "./Banner6";
 
 const Banner5 = () => {
   const products = [
@@ -190,7 +189,6 @@ const Banner5 = () => {
           </div>
         </div>
       </div>
-      <Banner6 />
     </div>
   );
 };

@@ -1,16 +1,29 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logoIcon from "../../assets/Group.png";
 import Image from "next/image";
 import { Search, ShoppingCart, Menu, X } from "lucide-react";
 import Link from "next/link";
+import { useAuthStore } from "../../hooks/useAuthStore";
+import { usePathname } from "next/navigation";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@workspace/ui/components/avatar";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated, checkAuth } = useAuthStore();
+  const pathname = usePathname();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  useEffect(() => {
+    checkAuth();
+  }, [pathname]);
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 bg-[rgb(223,215,208)]">
@@ -30,14 +43,14 @@ const Navbar = () => {
           {/* Nav-link Section - Desktop */}
           <div className="hidden lg:flex justify-center flex-1 mx-8">
             <ul className="flex items-center space-x-14">
-              <Link href={"/products"}>
+              <Link href={"/"}>
                 <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-sm cursor-pointer">
-                  Shop
+                  Home
                 </li>
               </Link>
-              <Link href={"/our-process"}>
+              <Link href={"/products"}>
                 <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-sm cursor-pointer">
-                  Our Process
+                  Products
                 </li>
               </Link>
               <Link href={"/about"}>
@@ -45,9 +58,9 @@ const Navbar = () => {
                   About Us
                 </li>
               </Link>
-              <Link href={"/lab-report"}>
+              <Link href={"/contact"}>
                 <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-sm cursor-pointer">
-                  Lab Report
+                  Contact Us
                 </li>
               </Link>
             </ul>
@@ -75,11 +88,23 @@ const Navbar = () => {
 
             {/* Button Section */}
             <div className="flex items-center">
-              <Link href={"/signup"}>
-                <div className="bg-[#613815] text-white px-6 py-2 rounded-lg hover:bg-[#7A6348] transition-colors text-sm font-medium">
-                  Sign In
-                </div>
-              </Link>
+              {isAuthenticated ? (
+                <Link href={"/profile"}>
+                  <Avatar>
+                    <AvatarImage
+                      src={`https://www.freepik.com/free-photos-vectors/profile`}
+                      alt="pfp"
+                    />
+                    <AvatarFallback>pfp</AvatarFallback>
+                  </Avatar>
+                </Link>
+              ) : (
+                <Link href={"/signup"}>
+                  <div className="bg-[#613815] text-white px-6 py-2 rounded-lg hover:bg-[#7A6348] transition-colors text-sm font-medium">
+                    Sign In
+                  </div>
+                </Link>
+              )}
             </div>
           </div>
 
@@ -108,7 +133,7 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         <div
-          className={`lg:hidden w-full bg-[#dfd7d0] border-t border-gray-300 transition-all duration-300 ease-in-out ${
+          className={`lg:hidden w-full bg-[#dfd7d0] border-gray-300 rounded-b-md transition-all duration-300 ease-in-out ${
             isMenuOpen
               ? "max-h-96 opacity-100 visible"
               : "max-h-0 opacity-0 invisible"
@@ -128,29 +153,38 @@ const Navbar = () => {
             {/* Mobile Navigation Links */}
             <ul className="space-y-3 mb-4">
               <Link href={"/products"}>
-                <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-base cursor-pointer py-2 border-b border-gray-300">
+                <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-base cursor-pointer py-2 border-gray-300">
                   Products
                 </li>
               </Link>
               <Link href={"/about"}>
-                <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-base cursor-pointer py-2 border-b border-gray-300">
+                <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-base cursor-pointer py-2 border-gray-300">
                   About Us
                 </li>
               </Link>
               <Link href={"/contact"}>
-                <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-base cursor-pointer py-2 border-b border-gray-300">
+                <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-base cursor-pointer py-2 border-gray-300">
                   Contact
                 </li>
               </Link>
+              {isAuthenticated && (
+                <Link href={"/profile"}>
+                  <li className="text-gray-800 hover:text-gray-600 transition-colors font-medium text-base cursor-pointer py-2 border-gray-300">
+                    Profile
+                  </li>
+                </Link>
+              )}
             </ul>
 
             {/* Mobile Sign In Button */}
             <div className="pt-2">
-              <Link href={"/signup"}>
-                <button className="bg-[#613815] text-white w-full py-3 rounded-lg hover:bg-[#7A6348] transition-colors text-base font-medium">
-                  Sign In
-                </button>
-              </Link>
+              {!isAuthenticated && (
+                <Link href={"/signup"}>
+                  <button className="bg-[#613815] text-white w-full py-3 rounded-lg hover:bg-[#7A6348] transition-colors text-base font-medium">
+                    Sign In
+                  </button>
+                </Link>
+              )}
             </div>
           </div>
         </div>

@@ -16,7 +16,6 @@ import Autoplay from "embla-carousel-autoplay";
 import { Product } from "../../lib/types/product";
 import productCorsoul1 from "../../assets/ProductCorsolImg1.png";
 import productCorsoul2 from "../../assets/ProdutCorsolImg2.png";
-import Banner4 from "./Banners/Banner4";
 
 const HeroSection = () => {
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
@@ -24,10 +23,10 @@ const HeroSection = () => {
   ]);
 
   // Product carousel state
-  const [productEmblaRef, productEmblaApi] = useEmblaCarousel({ 
-    loop: false, 
+  const [productEmblaRef, productEmblaApi] = useEmblaCarousel({
+    loop: false,
     align: "start",
-    containScroll: "trimSnaps"
+    containScroll: "trimSnaps",
   });
 
   const scrollPrev = useCallback(() => {
@@ -171,9 +170,12 @@ const HeroSection = () => {
     console.log("View all products");
   };
 
-  const filteredProducts = selectedFilter === "All" 
-    ? localProducts 
-    : localProducts.filter(product => product.badge.toLowerCase().includes(selectedFilter.toLowerCase()));
+  const filteredProducts =
+    selectedFilter === "All"
+      ? localProducts
+      : localProducts.filter((product) =>
+          product.badge.toLowerCase().includes(selectedFilter.toLowerCase())
+        );
 
   return (
     <div className="relative w-full overflow-hidden mt-16">
@@ -197,7 +199,7 @@ const HeroSection = () => {
 
                 {/* Content Overlay - Same positioning for all screen sizes */}
                 <div className="absolute inset-0 flex items-center">
-                  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="container px-4 sm:px-6 lg:px-20 xl:px-24">
                     <div className="max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg">
                       {/* Tagline */}
                       <p
@@ -245,7 +247,7 @@ const HeroSection = () => {
       >
         <div className="absolute inset-0 z-10"></div>
         <div className="relative z-20 h-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 h-full w-full mx-auto px-4 sm:px-6 lg:px-20 xl:px-24 py-8 lg:py-16">
             {/* Left side */}
             <div className="flex items-center justify-center lg:justify-start order-2 lg:order-1">
               <div className="relative w-full max-w-md sm:max-w-lg lg:max-w-xl">
@@ -349,11 +351,10 @@ const HeroSection = () => {
           </div>
 
           {/* Main Content */}
-          <div className="flex flex-col lg:flex-row items-center justify-between max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 gap-6 lg:gap-10">
-            
+          <div className="flex flex-col lg:flex-row items-center justify-between w-full mx-auto px-4 sm:px-6 lg:px-20 xl:px-24 py-8 gap-4">
             {/* Left Side Offer Card */}
             <div className="relative flex-shrink-0 w-full sm:w-[70%] lg:w-[30%]">
-              <div className="relative w-96 sm:w-80 md:w-full h-72 sm:h-80 lg:h-[480px] rounded-2xl overflow-hidden shadow-xl">
+              <div className="relative h-72 max-lg:w-full sm:h-80 lg:h-[550px] xl:aspect-[10/16] rounded-2xl overflow-hidden shadow-xl">
                 <Image
                   src={BgSec3Img}
                   alt="Offer Image"
@@ -375,55 +376,56 @@ const HeroSection = () => {
             </div>
 
             {/* Right Side - Products Carousel */}
-            <div className="flex-grow w-full lg:w-[65%]">
-              
+            <div className="flex-grow w-full lg:w-[67%]">
               {/* Filter Bar */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-  {/* Filter Buttons */}
-  <div className="flex items-center gap-2 flex-nowrap overflow-x-auto pb-2 w-full sm:w-auto scrollbar-hide">
-    {["All", "500 ml", "1 Litre", "2 Litres", "5 Litres"].map((label, idx) => (
-      <button
-        key={idx}
-        onClick={() => setSelectedFilter(label)}
-        className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium text-xs sm:text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0 ${
-          selectedFilter === label
-            ? "bg-[#4B2C20] text-white"
-            : "border border-[#4B2C20] text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white"
-        }`}
-      >
-        {label}
-      </button>
-    ))}
-  </div>
+                {/* Filter Buttons */}
+                <div className="flex items-center gap-2 flex-nowrap overflow-x-auto pb-2 w-full sm:w-auto scrollbar-hide">
+                  {["All", "500 ml", "1 Litre", "2 Litres", "5 Litres"].map(
+                    (label, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setSelectedFilter(label)}
+                        className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium text-xs sm:text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0 ${
+                          selectedFilter === label
+                            ? "bg-[#4B2C20] text-white"
+                            : "border border-[#4B2C20] text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white"
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    )
+                  )}
+                </div>
 
-  {/* Navigation Arrows with Horizontal Line (Desktop only) */}
-  <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
-    {/* Horizontal Line - Only visible on desktop (lg breakpoint and above) */}
-    <div className="hidden lg:block h-px bg-[#4B2C20]/40 flex-1 max-w-[100px] mx-2"></div>
-    
-    <div className="flex items-center gap-2 shrink-0">
-      <button 
-        onClick={scrollPrev}
-        className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-[#4B2C20]/40 text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white transition"
-      >
-        <span className="text-sm sm:text-lg">&larr;</span>
-      </button>
-      <button 
-        onClick={scrollNext}
-        className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-[#4B2C20]/40 text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white transition"
-      >
-        <span className="text-sm sm:text-lg">&rarr;</span>
-      </button>
-    </div>
-  </div>
-</div>
+                {/* Navigation Arrows with Horizontal Line (Desktop only) */}
+                <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
+                  {/* Horizontal Line - Only visible on desktop (lg breakpoint and above) */}
+                  <div className="hidden lg:block h-px bg-[#4B2C20]/40 flex-1 max-w-[100px] mx-2"></div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      onClick={scrollPrev}
+                      className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-[#4B2C20]/40 text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white transition"
+                    >
+                      <span className="text-sm sm:text-lg">&larr;</span>
+                    </button>
+                    <button
+                      onClick={scrollNext}
+                      className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-[#4B2C20]/40 text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white transition"
+                    >
+                      <span className="text-sm sm:text-lg">&rarr;</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
 
               {/* Products Carousel */}
               <div className="embla overflow-hidden" ref={productEmblaRef}>
                 <div className="embla__container flex gap-4">
                   {filteredProducts.map((product, index) => (
-                    <div 
-                      className="embla__slide flex-[0_0_280px] sm:flex-[0_0_300px] min-w-0" 
+                    <div
+                      className="embla__slide flex-[0_0_280px] sm:flex-[0_0_300px] min-w-0"
                       key={product.id}
                     >
                       <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
@@ -448,7 +450,9 @@ const HeroSection = () => {
                             </span>
                             <div className="flex items-center gap-1">
                               <span className="text-yellow-500">⭐</span>
-                              <span className="text-xs text-gray-600">{product.rating}</span>
+                              <span className="text-xs text-gray-600">
+                                {product.rating}
+                              </span>
                             </div>
                           </div>
                           <button className="w-full mt-3 bg-[#4B2C20] hover:bg-[#3a2116] text-white py-2 rounded-lg text-sm font-medium transition-colors">
@@ -464,9 +468,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-
-      {/* Section 4 */}
-      <Banner4/>
     </div>
   );
 };
