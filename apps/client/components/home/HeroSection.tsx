@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useCallback } from "react";
+
+import React, { useState, useCallback, useEffect } from "react";
 import carousel1 from "../../assets/carousel1.png";
 import carousel2 from "../../assets/carousel2.png";
 import carousel3 from "../../assets/carousel3.png";
@@ -13,30 +14,19 @@ import BgSec3Img from "../../assets/homeBgSec3Img.png";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { Product } from "../../lib/types/product";
 import productCorsoul1 from "../../assets/ProductCorsolImg1.png";
 import productCorsoul2 from "../../assets/ProdutCorsolImg2.png";
 import Banner4 from "./Banners/Banner4";
+import ProductCard from "../products/productCard";
+import { Product } from "@/lib/types/product";
+import { productApi } from "@/lib/api/productApi";
+import { Button } from "@workspace/ui/components/button";
+import TrendingProductsSection from "./Banners/TrendingProductSection";
 
 const HeroSection = () => {
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 3000 }),
   ]);
-
-  // Product carousel state
-  const [productEmblaRef, productEmblaApi] = useEmblaCarousel({ 
-    loop: false, 
-    align: "start",
-    containScroll: "trimSnaps"
-  });
-
-  const scrollPrev = useCallback(() => {
-    if (productEmblaApi) productEmblaApi.scrollPrev();
-  }, [productEmblaApi]);
-
-  const scrollNext = useCallback(() => {
-    if (productEmblaApi) productEmblaApi.scrollNext();
-  }, [productEmblaApi]);
 
   const carouselData = [
     {
@@ -99,7 +89,8 @@ const HeroSection = () => {
   };
 
   interface LocalProduct {
-    id: number;
+    id: string;
+    variantId: string;
     category: string;
     title: string;
     rating: number;
@@ -110,7 +101,8 @@ const HeroSection = () => {
 
   const localProducts: LocalProduct[] = [
     {
-      id: 1,
+      id: "1",
+      variantId: "v1",
       category: "Category Approach",
       title: "Ashwagandha Vitality",
       rating: 4.3,
@@ -119,7 +111,9 @@ const HeroSection = () => {
       badge: "Approach",
     },
     {
-      id: 2,
+      id: "2",
+
+      variantId: "v1",
       category: "Category Traditional",
       title: "Gir Cow A2 Bilona Ghee",
       rating: 4.4,
@@ -128,7 +122,8 @@ const HeroSection = () => {
       badge: "Traditional",
     },
     {
-      id: 3,
+      id: "3",
+      variantId: "v1",
       category: "Category Buffalo & Coal",
       title: "Buffalo A2 Cultured Ghee",
       rating: 4.3,
@@ -137,7 +132,8 @@ const HeroSection = () => {
       badge: "Buffalo & Coal",
     },
     {
-      id: 4,
+      id: "4",
+      variantId: "v1",
       category: "Category Aromatic",
       title: "Brahmi Herbal Ghee",
       rating: 4.3,
@@ -146,7 +142,9 @@ const HeroSection = () => {
       badge: "Aromatic",
     },
     {
-      id: 5,
+      id: "5",
+
+      variantId: "v1",
       category: "Category Approach",
       title: "Ashwagandha Vitality Pro",
       rating: 4.5,
@@ -156,24 +154,47 @@ const HeroSection = () => {
     },
   ];
 
-  const [recommendedProducts] = useState<LocalProduct[]>(localProducts);
+  const [products, setProducts] = useState<Product[]>([]);
   const [selectedFilter, setSelectedFilter] = useState("All");
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const handleAddToCart = (product: Product | LocalProduct) => {
-    console.log("Add to cart:", product);
-  };
+  // Product carousel state
+  const [productEmblaRef, productEmblaApi] = useEmblaCarousel({
+    loop: false,
+    align: "start",
+    containScroll: "trimSnaps",
+  });
 
-  const handleShopNow = (product: Product | LocalProduct) => {
-    console.log("Shop now:", product);
-  };
+  const scrollPrev = useCallback(() => {
+    if (productEmblaApi) productEmblaApi.scrollPrev();
+  }, [productEmblaApi]);
 
-  const handleViewAll = () => {
-    console.log("View all products");
-  };
+  const scrollNext = useCallback(() => {
+    if (productEmblaApi) productEmblaApi.scrollNext();
+  }, [productEmblaApi]);
 
-  const filteredProducts = selectedFilter === "All" 
-    ? localProducts 
-    : localProducts.filter(product => product.badge.toLowerCase().includes(selectedFilter.toLowerCase()));
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const res = await productApi.getAll();
+        if (res.success) setProducts(res.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  }, []);
+
+  const filteredProducts =
+    selectedFilter === "All"
+      ? products
+      : products.filter((p) =>
+          p.variants.some((v) =>
+            v.size.toString().includes(selectedFilter.replace(/\D/g, ""))
+          )
+        );
 
   return (
     <div className="relative w-full overflow-hidden mt-16">
@@ -182,8 +203,8 @@ const HeroSection = () => {
         <div className="embla__container flex">
           {carouselData.map((slide, index) => (
             <div
-              className="embla__slide flex-[0_0_100%] min-w-0 relative"
               key={index}
+              className="embla__slide flex-[0_0_100%] min-w-0 relative"
             >
               <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[70vh] lg:min-h-[560px] lg:max-h-[800px]">
                 <Image
@@ -266,7 +287,7 @@ const HeroSection = () => {
             <div className="flex items-center justify-center lg:justify-end order-1 lg:order-2">
               <div className="w-full max-w-md lg:max-w-lg text-white">
                 <div className="border-t border-gray-400 pt-2 mb-6 space-y-4">
-                  <h3 className="text-lg sm:text-xl font-semibold mb-4 text-black">
+                  <h3 className="text-xl sm:text-2xl font-semibold mb-4 text-black">
                     Purity Backed by Science
                   </h3>
                   <p className="text-base sm:text-sm mb-4 text-black">
@@ -326,147 +347,9 @@ const HeroSection = () => {
       </div>
 
       {/* Section 3 - Trending Products */}
-      <div
-        className="relative w-full z-0 min-h-[300px] sm:min-h-[350px] lg:min-h-[400px]"
-        style={{
-          backgroundImage: `url(${BgSec3.src})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="relative z-20 h-full">
-          {/* Section Heading */}
-          <div className="pt-6 sm:pt-8 lg:pt-10 text-center px-4">
-            <h1 className="font-bold text-xl sm:text-2xl lg:text-3xl">
-              Trending Now — Loved by Thousands!
-            </h1>
-            <p className="text-xs sm:text-sm lg:text-base font-medium tracking-wide max-w-2xl mx-auto mt-2">
-              Discover what's creating a buzz in every kitchen! Our most-loved
-              ghee selections are flying off the shelves — pure, traditional,
-              and packed with flavor.
-            </p>
-          </div>
-
-          {/* Main Content */}
-          <div className="flex flex-col lg:flex-row items-center justify-between max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 gap-6 lg:gap-10">
-            
-            {/* Left Side Offer Card */}
-            <div className="relative flex-shrink-0 w-full sm:w-[70%] lg:w-[30%]">
-              <div className="relative w-96 sm:w-80 md:w-full h-72 sm:h-80 lg:h-[480px] rounded-2xl overflow-hidden shadow-xl">
-                <Image
-                  src={BgSec3Img}
-                  alt="Offer Image"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end items-center pb-6 text-white text-center">
-                  <p className="text-sm sm:text-base font-semibold">
-                    Get{" "}
-                    <span className="text-yellow-300 italic">20% Discount</span>{" "}
-                    on your first order
-                  </p>
-                  <button className="mt-3 bg-amber-700 hover:bg-amber-600 text-white font-semibold py-2 px-5 sm:px-6 rounded-lg text-sm transition-transform duration-300 hover:scale-105">
-                    View all
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Side - Products Carousel */}
-            <div className="flex-grow w-full lg:w-[65%]">
-              
-              {/* Filter Bar */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-  {/* Filter Buttons */}
-  <div className="flex items-center gap-2 flex-nowrap overflow-x-auto pb-2 w-full sm:w-auto scrollbar-hide">
-    {["All", "500 ml", "1 Litre", "2 Litres", "5 Litres"].map((label, idx) => (
-      <button
-        key={idx}
-        onClick={() => setSelectedFilter(label)}
-        className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium text-xs sm:text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0 ${
-          selectedFilter === label
-            ? "bg-[#4B2C20] text-white"
-            : "border border-[#4B2C20] text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white"
-        }`}
-      >
-        {label}
-      </button>
-    ))}
-  </div>
-
-  {/* Navigation Arrows with Horizontal Line (Desktop only) */}
-  <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
-    {/* Horizontal Line - Only visible on desktop (lg breakpoint and above) */}
-    <div className="hidden lg:block h-px bg-[#4B2C20]/40 flex-1 max-w-[100px] mx-2"></div>
-    
-    <div className="flex items-center gap-2 shrink-0">
-      <button 
-        onClick={scrollPrev}
-        className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-[#4B2C20]/40 text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white transition"
-      >
-        <span className="text-sm sm:text-lg">&larr;</span>
-      </button>
-      <button 
-        onClick={scrollNext}
-        className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-[#4B2C20]/40 text-[#4B2C20] hover:bg-[#4B2C20] hover:text-white transition"
-      >
-        <span className="text-sm sm:text-lg">&rarr;</span>
-      </button>
-    </div>
-  </div>
-</div>
-
-              {/* Products Carousel */}
-              <div className="embla overflow-hidden" ref={productEmblaRef}>
-                <div className="embla__container flex gap-4">
-                  {filteredProducts.map((product, index) => (
-                    <div 
-                      className="embla__slide flex-[0_0_280px] sm:flex-[0_0_300px] min-w-0" 
-                      key={product.id}
-                    >
-                      <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                        <div className="relative h-48 sm:h-56">
-                          <Image
-                            src={product.image}
-                            alt={product.title}
-                            fill
-                            className="object-cover"
-                          />
-                          <div className="absolute top-3 right-3 bg-amber-800 text-white px-4 py-1 rounded-full text-xs font-medium">
-                            Sale
-                          </div>
-                        </div>
-                        <div className="p-4">
-                          <h3 className="font-semibold text-gray-800 text-sm sm:text-base mb-2">
-                            {product.title}
-                          </h3>
-                          <div className="flex items-center justify-between">
-                            <span className="text-amber-600 font-bold text-sm sm:text-base">
-                              {product.price}
-                            </span>
-                            <div className="flex items-center gap-1">
-                              <span className="text-yellow-500">⭐</span>
-                              <span className="text-xs text-gray-600">{product.rating}</span>
-                            </div>
-                          </div>
-                          <button className="w-full mt-3 bg-[#4B2C20] hover:bg-[#3a2116] text-white py-2 rounded-lg text-sm font-medium transition-colors">
-                            Add to Cart
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <TrendingProductsSection/>
       {/* Section 4 */}
-      <Banner4/>
+      <Banner4 />
     </div>
   );
 };

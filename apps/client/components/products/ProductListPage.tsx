@@ -17,7 +17,6 @@ import { productApi } from "../../lib/api/productApi";
 import JoinOurPureLivingCommunityBanner from "../global/join-our-pure-living-banner";
 import FeatureCards from "../global/feature-cards";
 import TestimonialCustomers from "../global/testimonial-customers";
-import Image from "next/image";
 import OurProductsBackgroundImg from "../../assets/images/background/background-img.png";
 import SpecialOfferProductCard from "./SpecialOfferProductCard";
 
@@ -62,7 +61,6 @@ const ProductListPage = () => {
           {/* Replace this section with your actual product cards */}
           {products?.map((product, i) => (
             <SpecialOfferProductCard
-              onAddToCart={handleAddToCart}
               onShopNow={handleShopNow}
               product={product}
               key={i}
@@ -126,7 +124,6 @@ const ProductListPage = () => {
           {/* Replace this section with your actual product cards */}
           {products?.map((product, i) => (
             <ProductCard
-              onAddToCart={handleAddToCart}
               onShopNow={handleShopNow}
               product={product}
               key={i}

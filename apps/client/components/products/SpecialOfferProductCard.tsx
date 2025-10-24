@@ -5,21 +5,21 @@ import { Star } from "lucide-react";
 import { Product } from "@/lib/types/product";
 import Link from "next/link";
 import { Badge } from "@workspace/ui/components/badge";
+import {useAddToCart} from "@/hooks/useAddToCart"
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart: (product: Product) => void;
   onShopNow: (product: Product) => void;
 }
 
 const SpecialOfferProductCard = ({
   product,
-  onAddToCart,
   onShopNow,
 }: ProductCardProps) => {
   if (!product) {
-    return;
+    return null;
   }
+  const {handleAddToCart, loading} = useAddToCart();
   return (
     <Link href={`/products/${product.slug}`}>
       <Card className="p-5 border-none bg-amber-200/40 rounded-2xl overflow-hidden mx-2 group hover:shadow-lg duration-150">
@@ -54,9 +54,12 @@ const SpecialOfferProductCard = ({
             <Button
               className="flex-1 bg-amber-900 hover:bg-amber-800 text-xs"
               size={"lg"}
-              onClick={() => onShopNow(product)}
+              onClick={(e) => {
+                e.preventDefault();
+                handleAddToCart(product)
+              }}
             >
-              Grab Now
+              {loading ? "Adding..." : "Grab Now"}
             </Button>
           </div>
         </CardContent>
@@ -66,3 +69,4 @@ const SpecialOfferProductCard = ({
 };
 
 export default SpecialOfferProductCard;
+

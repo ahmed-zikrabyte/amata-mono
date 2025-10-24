@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -10,7 +10,13 @@ import {
 } from "@workspace/ui/components/table";
 import { Button } from "@workspace/ui/components/button";
 import { Minus, Plus, Trash2 } from "lucide-react";
-import { getCart, updateCart, removeFromCart, CartItem } from "../../lib/api/cartApi";
+import {
+  getCart,
+  updateCart,
+  removeFromCart,
+  CartItem,
+} from "@/lib/api/cartApi";
+import { toast } from "sonner";
 
 const CartItems: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -23,7 +29,8 @@ const CartItems: React.FC = () => {
         const res = await getCart();
         if (res.success) setCart(res.data.items);
       } catch (err) {
-        console.error(err);
+        console.error("Fetch cart error:",err);
+        toast.error("failed to oad cart.")
       } finally {
         setLoading(false);
       }
@@ -31,18 +38,39 @@ const CartItems: React.FC = () => {
     fetchCart();
   }, []);
 
-  async function handleQuantity(
+  const handleQuantity = async (
     productId: string,
     variantId: string,
     action: "increment" | "decrement"
-  ) {
-    const res = await updateCart(productId, variantId, action);
-    if (res.success) setCart(res.data.items);
-  }
+  ) => {
+    try {
+      const res = await updateCart(productId, variantId, action);
+    if(res.success){
+      setCart(res.data.items)
+    }else {
+      toast.error(res.message)
+    }
+    } catch (error) {
+      console.error(error)
+      toast.error("Failed to update cart.")
+    }
+    
+  } 
 
-  async function handleRemove(productId: string, variantId: string) {
-    const res = await removeFromCart(productId, variantId);
-    if (res.success) setCart(res.data.items);
+  const handleRemove = async (productId: string, variantId: string) => {
+    try {
+      const res = await removeFromCart(productId, variantId);
+    if (res.success) {
+      setCart(res.data.items)
+      toast.success("Item removed from cart.")
+    } else {
+      toast.error(res.message)
+    }
+    
+    } catch (error) {
+      console.error(error)
+      toast.error("Failed to remove item.")
+    }
   }
 
   if (loading) return <p>Loading...</p>;
