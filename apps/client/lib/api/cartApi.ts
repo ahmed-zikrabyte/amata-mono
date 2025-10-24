@@ -1,11 +1,9 @@
-import axios from "axios";
-
-const API_URL = process.env.NEXT_PUBLIC_SERVER_URL as string;
+import axiosInstance from "../axios"; 
 
 export interface CartItem {
   _id: string;
-  product: string;
-  variant: string;
+  product: string; 
+  variant: string; 
   quantity: number;
   price?: number;
 }
@@ -21,60 +19,56 @@ export interface CartResponse {
   };
 }
 
-// ✅ Create a pre-configured axios instance
-const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+const handleResponse = async <T>(promise: Promise<{ data: T }>): Promise<T> => {
+  try {
+    const res = await promise;
+    return res.data;
+  } catch (error: any) {
+    console.error("Cart API Error:", error);
+    throw error.response?.data || {
+      success: false,
+      message: "Something went wrong",
+    };
+  }
+};
 
-const handleResponse = <T>(promise: Promise<{ data: T }>): Promise<T> =>
-  promise
-    .then((res) => res.data)
-    .catch((error) => {
-      console.error("API Error:", error);
-      throw (
-        error.response?.data || {
-          success: false,
-          message: "Something went wrong",
-        }
-      );
-    });
+// Get cart
+export const getCart = async (): Promise<CartResponse> =>
+  handleResponse(axiosInstance.get("/cart"));
 
-export const getCart = (): Promise<CartResponse> =>
-  handleResponse(api.get("/cart"));
-
-export const addToCart = (
+// Add item to cart
+export const addToCart = async (
   productId: string,
   variantId: string
 ): Promise<CartResponse> =>
   handleResponse(
-    api.post("/cart/add-to-cart", {
+    axiosInstance.post("/cart/add-to-cart", {
       productId,
       variantId,
     })
   );
 
-export const updateCart = (
+// Update cart item quantity
+export const updateCart = async (
   productId: string,
   variantId: string,
   action: "increment" | "decrement"
 ): Promise<CartResponse> =>
   handleResponse(
-    api.put("/cart/update-cart", {
+    axiosInstance.put("/cart/update-cart", {
       productId,
       variantId,
       action,
     })
   );
 
-export const removeFromCart = (
+// Remove item from cart
+export const removeFromCart = async (
   productId: string,
   variantId: string
 ): Promise<CartResponse> =>
   handleResponse(
-    api.delete("/cart/remove", {
+    axiosInstance.delete("/cart/remove", {
       data: { productId, variantId },
     })
   );
