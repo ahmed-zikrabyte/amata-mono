@@ -43,10 +43,6 @@ const ProductListPage = () => {
     console.log("Shop now:", product);
   };
 
-  if (products.length === 0) {
-    return;
-  }
-
   return (
     <div className="flex flex-col w-full">
       {/* Banner */}

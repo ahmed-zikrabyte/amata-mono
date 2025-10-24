@@ -1,6 +1,8 @@
 "use client";
 
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import GroupLogo from "../../assets/FooterLogo.png";
@@ -11,10 +13,15 @@ import whatsApp from "../../assets/whatappLogo.svg";
 import twitter from "../../assets/Twitter.svg";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
+import { usePathname } from "next/navigation";
 
 const FooterSec = () => {
+  const pathname = usePathname();
+  useEffect(() => {
+    console.log({ pathname });
+  }, [pathname]);
   return (
-    <footer className="w-full">
+    <footer className={`${pathname === "/profile" ? "hidden" : "w-full"} `}>
       <div
         className="relative w-full z-0"
         style={{
@@ -24,9 +31,9 @@ const FooterSec = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="relative z-20 h-full">
-          <div className="container mx-auto px-6 sm:px-8 md:px-10 lg:px-12 xl:px-20 py-10 sm:py-12 md:py-14 lg:py-16">
-            <div className="w-full max-w-7xl mx-auto">
+        <div className="relative z-20 h-full px-4 lg:px-20 xl:px-24">
+          <div className="container py-10 sm:py-12 md:py-14 lg:py-16">
+            <div className="w-full mx-auto">
               {/* Main Footer Content */}
               <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 xl:gap-20 mb-8 lg:mb-10">
                 {/* Left Side */}
@@ -151,13 +158,13 @@ const FooterSec = () => {
                   {/* Newsletter */}
                   <div className="sm:col-span-3 lg:col-span-1">
                     <div className="space-y-5">
-                      <div className="flex rounded-lg overflow-hidden border border-white/30">
+                      <div className="rounded-lg overflow-hidden border border-white/30 flex items-center">
                         <Input
                           type="email"
                           placeholder="Email address"
                           className="w-2/3 bg-transparent border-0 text-white placeholder:text-gray-300 text-sm focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                         />
-                        <Button className="w-1/3 bg-amber-800 hover:bg-amber-900 text-white font-medium rounded-none border-0 text-[13px] px-6">
+                        <Button className="w-1/3 bg-amber-800 hover:bg-amber-900 text-white font-medium rounded-l-none border-0 text-[13px] px-6">
                           Subscribe
                         </Button>
                       </div>

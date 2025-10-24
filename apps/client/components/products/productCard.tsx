@@ -7,6 +7,7 @@ import { Star } from "lucide-react";
 import Link from "next/link";
 import { Product } from "@/lib/types/product";
 import {useAddToCart} from "@/hooks/useAddToCart"
+import { formatToRupee } from "../../lib/utils/formatToRupee";
 
 interface ProductCardProps {
   product: Product;
@@ -49,7 +50,7 @@ const ProductCard = ({ product, onShopNow }: ProductCardProps) => {
           </div>
 
           <div className="text-[15px] font-bold text-amber-900">
-            {product.variants?.[0]?.price || "—"}
+            {formatToRupee(product.variants[0]?.price || 0)}
           </div>
 
           <div className="flex gap-2 pt-2">

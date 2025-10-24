@@ -46,7 +46,6 @@ const Banner4 = () => {
           </div>
         </div>
       </div>
-      <Banner5/>
     </div>
   );
 };

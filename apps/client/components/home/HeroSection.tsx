@@ -28,6 +28,8 @@ const HeroSection = () => {
     Autoplay({ delay: 3000 }),
   ]);
 
+
+
   const carouselData = [
     {
       image: carousel1,
@@ -218,7 +220,7 @@ const HeroSection = () => {
 
                 {/* Content Overlay - Same positioning for all screen sizes */}
                 <div className="absolute inset-0 flex items-center">
-                  <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="container px-4 sm:px-6 lg:px-20 xl:px-24">
                     <div className="max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg">
                       {/* Tagline */}
                       <p
@@ -266,7 +268,7 @@ const HeroSection = () => {
       >
         <div className="absolute inset-0 z-10"></div>
         <div className="relative z-20 h-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 h-full w-full mx-auto px-4 sm:px-6 lg:px-20 xl:px-24 py-8 lg:py-16">
             {/* Left side */}
             <div className="flex items-center justify-center lg:justify-start order-2 lg:order-1">
               <div className="relative w-full max-w-md sm:max-w-lg lg:max-w-xl">
