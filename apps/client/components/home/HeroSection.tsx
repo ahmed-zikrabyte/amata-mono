@@ -9,18 +9,13 @@ import BgSec1Img from "../../assets/homebgSec2Img.png";
 import love from "../../assets/Love.png";
 import Cookie from "../../assets/Cookie.png";
 import NoCem from "../../assets/NoCem.png";
-import BgSec3 from "../../assets/homeBgSec3.png";
-import BgSec3Img from "../../assets/homeBgSec3Img.png";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import productCorsoul1 from "../../assets/ProductCorsolImg1.png";
 import productCorsoul2 from "../../assets/ProdutCorsolImg2.png";
-import Banner4 from "./Banners/Banner4";
-import ProductCard from "../products/productCard";
 import { Product } from "@/lib/types/product";
 import { productApi } from "@/lib/api/productApi";
-import { Button } from "@workspace/ui/components/button";
 import TrendingProductsSection from "./Banners/TrendingProductSection";
 
 const HeroSection = () => {
@@ -350,8 +345,6 @@ const HeroSection = () => {
 
       {/* Section 3 - Trending Products */}
       <TrendingProductsSection/>
-      {/* Section 4 */}
-      <Banner4 />
     </div>
   );
 };

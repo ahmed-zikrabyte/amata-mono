@@ -2,11 +2,23 @@ import axiosInstance from "../axios";
 
 export interface CartItem {
   _id: string;
-  product: string; 
-  variant: string; 
+  product: {
+    _id: string;
+    name: string;
+    images?: string[];
+    category?: string;
+    variants?: {
+      _id: string;
+      size?: number;
+      price?: number;
+    }[];
+  };
+  variant: string;
   quantity: number;
   price?: number;
 }
+
+
 
 export interface CartResponse {
   success: boolean;
