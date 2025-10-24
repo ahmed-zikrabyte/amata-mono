@@ -28,7 +28,7 @@ const ProductCard = ({ product, onShopNow }: ProductCardProps) => {
           <Image
             src={product.images[0] || ""}
             alt={product.name}
-            className="object-cover"
+            className="object-cover rounded-md"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
           />
@@ -57,7 +57,7 @@ const ProductCard = ({ product, onShopNow }: ProductCardProps) => {
             {/* Add to Cart */}
             <Button
               variant="outline"
-              className="flex-1 border-amber-700 text-amber-700 hover:bg-red-700 hover:text-white text-xs"
+              className="flex-1 border-red-700 text-red-700 hover:bg-red-700 hover:text-white text-xs cursor-pointer"
              onClick={(e) => {
               e.preventDefault();
               handleAddToCart(product)
@@ -69,7 +69,7 @@ const ProductCard = ({ product, onShopNow }: ProductCardProps) => {
 
             {/* Shop Now */}
             <Button
-              className="flex-1 bg-amber-700 hover:bg-amber-800 text-xs"
+              className="flex-1 bg-red-700 hover:bg-amber-700 text-xs cursor-pointer"
               onClick={(e) => {
                 e.preventDefault();
                 onShopNow?.(product);

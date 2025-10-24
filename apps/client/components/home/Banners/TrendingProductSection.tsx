@@ -9,7 +9,6 @@ import Image from "next/image";
 import BgSec3 from "@/assets/images/background/background-img.png";
 import BgSec3Img from "@/assets/homeBgSec3Img.png";
 import useEmblaCarousel from "embla-carousel-react";
-import { Button } from "../../../../../packages/ui/src/components/button";
 
 const TrendingProductsSection = () => {
   const { execute, data, loading } = useApi<Product[]>();
@@ -82,50 +81,51 @@ const TrendingProductsSection = () => {
           {/* Right Side - Carousel with Filter & Arrows */}
           <div className="flex-grow w-full lg:w-[65%]">
             {/* Filter Bar + Arrows */}
-           {/* Filter Bar + Arrows */}
-<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-  {/* Filter Buttons */}
-  <div className="flex items-center gap-2 flex-nowrap overflow-x-auto pb-2 w-full sm:w-auto scrollbar-hide">
-    {["All", "500 ml", "1 Litre", "2 Litres", "5 Litres"].map((label, idx) => {
-      const isActive = label === "All";
-      return (
-        <button
-          key={idx}
-          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium text-xs sm:text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0
-            ${isActive
-              ? "bg-red-800 text-white border border-red-600"
-              : "bg-white text-red-600 border border-red-600 hover:bg-red-600 hover:text-white"
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+              {/* Filter Buttons */}
+              <div className="flex items-center gap-2 flex-nowrap overflow-x-auto pb-2 w-full sm:w-auto scrollbar-hide">
+                {["All", "500 ml", "1 Litre", "2 Litres", "5 Litres"].map(
+                  (label, idx) => {
+                    const isActive = label === "All";
+                    return (
+                      <button
+                        key={idx}
+                        className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium text-xs sm:text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0
+            ${
+              isActive
+                ? "bg-red-800 text-white border border-red-600"
+                : "bg-white text-red-600 border border-red-600 hover:bg-red-600 hover:text-white"
             }`}
-        >
-          {label}
-        </button>
-      );
-    })}
-  </div>
+                      >
+                        {label}
+                      </button>
+                    );
+                  }
+                )}
+              </div>
 
-  {/* Divider + Arrows */}
-  <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
-    <div className="hidden lg:block h-px bg-[#4B2C20]/40 flex-1 max-w-[100px] mx-2"></div>
-    <div className="flex items-center gap-2 shrink-0">
-      {/* Left Arrow - White */}
-      <button
-        onClick={scrollPrev}
-        className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-red-600 text-red-600 bg-white hover:bg-red-100 transition"
-      >
-        &larr;
-      </button>
+              {/* Divider + Arrows */}
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
+                <div className="hidden lg:block h-px bg-[#4B2C20]/40 flex-1 max-w-[100px] mx-2"></div>
+                <div className="flex items-center gap-2 shrink-0">
+                  {/* Left Arrow - White */}
+                  <button
+                    onClick={scrollPrev}
+                    className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-red-600 text-red-600 bg-white hover:bg-red-100 transition"
+                  >
+                    &larr;
+                  </button>
 
-      {/* Right Arrow - Red */}
-      <button
-        onClick={scrollNext}
-        className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-red-600 text-white bg-red-800 hover:bg-red-700 transition"
-      >
-        &rarr;
-      </button>
-    </div>
-  </div>
-</div>
-
+                  {/* Right Arrow - Red */}
+                  <button
+                    onClick={scrollNext}
+                    className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-red-600 text-white bg-red-800 hover:bg-red-700 transition"
+                  >
+                    &rarr;
+                  </button>
+                </div>
+              </div>
+            </div>
 
             {/* Product Cards Carousel */}
             {loading ? (

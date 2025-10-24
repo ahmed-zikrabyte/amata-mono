@@ -29,7 +29,7 @@ const CartPage: React.FC = () => {
 
   async function handleClearCart() {
     for (const item of cart) {
-      await removeFromCart(item.product, item.variant);
+      await removeFromCart(item.product._id, item.variant);
     }
     fetchCart();
   }

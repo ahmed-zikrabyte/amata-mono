@@ -1,7 +1,6 @@
 import React from "react";
 import BgSec4 from "../../../assets/homeBgSec4.png";
 import BgSec5 from "../../../assets/homeBgSec5.png";
-import Banner5 from "./PureGheeCollections";
 const Banner4 = () => {
   return (
     <div>
