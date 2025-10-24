@@ -4,18 +4,17 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import ProfileSection from "./profile-section";
 import OrderSection from "./orders-section";
-import PaymentSection from "./payments-section";
 
 const Profile = () => {
   const [currentTab, setCurrentTab] = useState<
-    "profile" | "orders" | "payments"
+    "profile" | "orders"
   >("profile");
 
   const searchParams = useSearchParams();
 
   useEffect(() => {
     setCurrentTab(
-      (searchParams.get("tab") as "profile" | "orders" | "payments") ||
+      (searchParams.get("tab") as "profile" | "orders") ||
         "profile"
     );
   }, [searchParams.get("tab")]);
@@ -25,10 +24,8 @@ const Profile = () => {
       {/* <ProfileSidebar currentTab={currentTab} /> */}
       {currentTab === "profile" ? (
         <ProfileSection />
-      ) : currentTab === "orders" ? (
-        <OrderSection />
       ) : (
-        <PaymentSection />
+        <OrderSection />
       )}
     </div>
   );

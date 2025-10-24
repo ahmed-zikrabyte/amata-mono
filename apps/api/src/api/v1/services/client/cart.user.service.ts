@@ -11,7 +11,7 @@ export default class UserCartService {
         throw new AppError("User id is required", HTTP.BAD_REQUEST);
       }
 
-      const cart = await CartModel.findOne({ userId });
+      const cart = await CartModel.findOne({ userId }).populate('items.product')
 
       return {
         data: cart || {},

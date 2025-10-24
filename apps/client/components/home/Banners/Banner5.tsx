@@ -1,9 +1,11 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import BgSec5 from "../../../assets/homeBgSec5.png";
 import Image from "next/image";
 
-// Shadcn UI Components
-import { Card, CardContent } from "@workspace/ui/components/card";
+// Components
+import { Button } from "@workspace/ui/components/button";
 import {
   Carousel,
   CarouselContent,
@@ -12,67 +14,30 @@ import {
   CarouselPrevious,
 } from "@workspace/ui/components/carousel";
 
-// Mock product images - replace with your actual imports
-import product1 from "../../../assets/ProductCorsolImg1.png";
-import product2 from "../../../assets/ProdutCorsolImg2.png";
-import product3 from "../../../assets/ProductCorsolImg1.png";
-import product4 from "../../../assets/ProdutCorsolImg2.png";
-import product5 from "../../../assets/ProductCorsolImg1.png";
-import product6 from "../../../assets/ProdutCorsolImg2.png";
-import { Button } from "@workspace/ui/components/button";
+// Hooks & APIs
+import { useApi } from "@/hooks/useApi";
+import { productApi } from "@/lib/api/productApi";
+import { Product } from "@/lib/types/product";
+
+// Custom Components
+import ProductCard from "@/components/products/productCard";
 import Banner6 from "./Banner6";
 
 const Banner5 = () => {
-  const products = [
-    {
-      id: 1,
-      category: "Traditional",
-      title: "Gir Cow A2 Bilona Ghee",
-      rating: 4.8,
-      price: "₹849/500ml",
-      image: product1,
-    },
-    {
-      id: 2,
-      category: "Buffalo A2 Oats",
-      title: "Buffalo A2 Cultured Ghee",
-      rating: 4.8,
-      price: "₹799/500ml",
-      image: product2,
-    },
-    {
-      id: 3,
-      category: "Aromatic",
-      title: "Brahmi Herbal Ghee",
-      rating: 4.8,
-      price: "₹799/500ml",
-      image: product3,
-    },
-    {
-      id: 4,
-      category: "Flavored",
-      title: "Garlic Infused Ghee",
-      rating: 4.8,
-      price: "₹799/500ml",
-      image: product4,
-    },
-    {
-      id: 5,
-      category: "Traditional",
-      title: "Gir Cow A2 Bilona Ghee",
-      rating: 4.8,
-      price: "₹849/500ml",
-      image: product5,
-    },
-    {
-      id: 6,
-      category: "Buffalo A2 Oats",
-      title: "Buffalo A2 Cultured Ghee",
-      rating: 4.8,
-      price: "₹799/500ml",
-      image: product6,
-    },
-  ];
+  const { execute, data, loading } = useApi<Product[]>();
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    execute(productApi.getAll());
+  }, []);
+
+  useEffect(() => {
+    if (data?.data?.products) {
+      setProducts(data.data.products);
+    } else if (Array.isArray(data?.data)) {
+      setProducts(data.data);
+    }
+  }, [data]);
 
   return (
     <div>
@@ -94,91 +59,41 @@ const Banner5 = () => {
                   Our Pure Ghee Collection
                 </h1>
                 <p className="text-black font-medium text-xs sm:text-sm lg:text-base max-w-2xl mx-auto">
-                  Explore our range of traditionally crafted ghees - pure,
+                  Explore our range of traditionally crafted ghees — pure,
                   nutritious, and full of flavor.
                 </p>
               </div>
 
-              {/* Shadcn UI Carousel */}
-              <Carousel
-                opts={{
-                  align: "start",
-                }}
-                className="w-full"
-              >
-                <CarouselContent>
-                  {products.map((product, index) => (
-                    <CarouselItem
-                      key={index}
-                      className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
-                    >
-                      <div className="px-5">
-                        <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-[#e8e3df]">
-                          <CardContent className="px-4">
-                            {/* Product Image */}
-                            <div className="relative h-40 sm:h-36 lg:h-40">
-                              {/* Sale Tag */}
-                              <div className="absolute top-2 right-2 z-10">
-                                <span className="bg-[#ecc09a] text-black px-3 py-1 text-xs font-medium rounded-md">
-                                  Sale
-                                </span>
-                              </div>
-                              <Image
-                                src={product.image}
-                                alt={product.title}
-                                fill
-                                className="object-cover rounded-t-lg"
-                              />
-                            </div>
+              {/* Product Carousel */}
+              {loading ? (
+                <p className="text-center text-gray-700 py-10">
+                  Loading products...
+                </p>
+              ) : products && products.length > 0 ? (
+                <Carousel opts={{ align: "start", loop: true }} className="w-full">
+                  <CarouselContent>
+                    {products.map((product) => (
+                      <CarouselItem
+                        key={product._id}
+                        className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 px-2"
+                      >
+                        <ProductCard
+                          product={product}
+                          onShopNow={(p) => console.log("Shop now:", p)}
+                        />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
 
-                            {/* Product Info */}
-                            <div className="p-2 sm:p-1">
-                              {/* Category */}
-                              <p className="text-gray-600 font-medium text-[8px] sm:text-[10px] mb-1 mt-2">
-                                Category: {product.category}
-                              </p>
-
-                              <div className="flex justify-between items-center mt-2">
-                                {/* Title */}
-                                <h3 className="font-medium text-gray-800 text-[10px] sm:text-[13px] lg:text-[15px]">
-                                  {product.title}
-                                </h3>
-
-                                {/* Rating */}
-                                <div className="">
-                                  <span className="text-yellow-400 text-sm">
-                                    ⭐
-                                  </span>
-                                  <span className="text-gray-600 text-xs sm:text-sm">
-                                    {product.rating}*
-                                  </span>
-                                </div>
-                              </div>
-
-                              {/* Price */}
-                              <p className="text-amber-700 font-bold text-base sm:text-lg lg:text-lg mt-1">
-                                {product.price}
-                              </p>
-
-                              {/* Buttons */}
-                              <div className="flex flex-col lg:flex-row gap-2 sm:gap-3 mt-5 sm:justify-evenly lg:justify-between">
-                                <button className="px-3 py-1 border-2 border-red-700 rounded-lg bg-[#e8e3df] text-red-600 font-semibold text-sm hover:bg-red-700 hover:text-white transition-all duration-300 text-center">
-                                  Add to cart
-                                </button>
-                                <button className="px-3 py-1 rounded-lg bg-red-700 hover:bg-red-800 text-white font-semibold text-sm transition-all duration-300 text-center">
-                                  Shop Now
-                                </button>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="ml-8" />
-                <CarouselNext className="mr-8 bg-black text-white" />
-              </Carousel>
+                  {/* Custom Arrows */}
+                  <CarouselPrevious className="ml-8 border border-red-600 text-red-600 bg-white hover:bg-red-100 transition" />
+                  <CarouselNext className="mr-8 bg-red-600 text-white hover:bg-red-700 transition" />
+                </Carousel>
+              ) : (
+                <p className="text-center text-gray-600 py-10">
+                  No products found
+                </p>
+              )}
 
               {/* View All Button */}
               <div className="text-center mt-8 sm:mt-12">
@@ -190,6 +105,7 @@ const Banner5 = () => {
           </div>
         </div>
       </div>
+
       <Banner6 />
     </div>
   );

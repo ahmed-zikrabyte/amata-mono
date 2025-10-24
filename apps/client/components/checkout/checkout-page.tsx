@@ -25,6 +25,10 @@ const CheckoutPage = () => {
   if (isOrderSuccess) {
     return <OrderSuccessfulPage />;
   }
+
+  const handleAddAddress = (values: any) => {
+    console.log({ values });
+  };
   return (
     <div>
       <div className="py-5 px-6 lg:px-20">
@@ -65,7 +69,10 @@ const CheckoutPage = () => {
             </div>
             <Separator />
             {showAddAddressSection ? (
-              <AddressAddForm setShowForm={setShowAddAddressSection} />
+              <AddressAddForm
+                setShowForm={setShowAddAddressSection}
+                onSubmit={handleAddAddress}
+              />
             ) : (
               <div className="text-center p-4 text-gray-600">
                 No addresses added
