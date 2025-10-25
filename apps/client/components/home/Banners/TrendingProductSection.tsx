@@ -56,7 +56,7 @@ const TrendingProductsSection = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex flex-col lg:flex-row items-center justify-between max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 gap-6 lg:gap-10">
+        <div className="flex flex-col lg:flex-row items-center justify-between max-w-7xl mx-auto px-4 sm:px-6 lg:px-24 py-6 gap-6 lg:gap-10">
           {/* Left Side Offer Card */}
           <div className="relative flex-shrink-0 w-full sm:w-[70%] lg:w-[30%]">
             <div className="relative w-96 sm:w-80 md:w-full h-72 sm:h-80 lg:h-[480px] rounded-2xl overflow-hidden shadow-xl">
@@ -64,7 +64,7 @@ const TrendingProductsSection = () => {
                 src={BgSec3Img}
                 alt="Offer Image"
                 fill
-                className="object-cover"
+                className="object-cover rounded-xl"
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end items-center pb-6 text-white text-center">

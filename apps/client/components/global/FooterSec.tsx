@@ -37,8 +37,8 @@ const FooterSec = () => {
               {/* Main Footer Content */}
               <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 xl:gap-20 mb-8 lg:mb-10">
                 {/* Left Side */}
-                <div className="lg:w-1/4 space-y-6">
-                  <div className="w-20 h-20 rounded-xl flex items-center justify-center p-3">
+                <div className="lg:w-1/4 space-y-6 flex flex-col items-center">
+                  <div className="w-20 h-20 rounded-xl flex justify-center items-center">
                     <Image
                       src={GroupLogo}
                       alt="Amata Farms Logo"
@@ -47,17 +47,17 @@ const FooterSec = () => {
                       className="object-contain"
                     />
                   </div>
-                  <p className="text-white text-sm leading-relaxed">
+                  <p className="text-white text-sm leading-relaxed text-center">
                     Welcome to our e-commerce company, where the future of Ghee
                     shopping has arrived. Experience seamless browsing,
                     effortless checkout, and premium products.
                   </p>
-                  <div className="flex">
+                  <div className="flex justify-center gap-4">
                     {[whatsApp, instaLogo, fbLogo, twitter].map((icon, i) => (
                       <a
                         key={i}
                         href="#"
-                        className="w-10 h-10 rounded flex items-center justify-center transition-colors"
+                        className="w-10 h-10 rounded flex items-center justify-center"
                       >
                         <Image
                           src={icon}
@@ -72,7 +72,7 @@ const FooterSec = () => {
                 </div>
 
                 {/* Right Side */}
-                <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8 lg:gap-10 xl:gap-12">
+                <div className="flex-1 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8 lg:gap-10 xl:gap-12">
                   {/* Quick Links */}
                   <div>
                     <h3 className="text-white font-semibold text-lg mb-2">
@@ -101,7 +101,7 @@ const FooterSec = () => {
                           Products
                         </Link>
                       </li>
-                       <li>
+                      <li>
                         <Link
                           href="/contact"
                           className="text-white text-sm hover:text-amber-400 transition-colors flex items-center gap-2 group"
@@ -112,7 +112,7 @@ const FooterSec = () => {
                           Contact Us
                         </Link>
                       </li>
-                       <li>
+                      <li>
                         <Link
                           href="/blogs"
                           className="text-white text-sm hover:text-amber-400 transition-colors flex items-center gap-2 group"
@@ -156,28 +156,33 @@ const FooterSec = () => {
                   </div>
 
                   {/* Newsletter */}
-                  <div className="sm:col-span-3 lg:col-span-1">
-                    <div className="space-y-5">
-                      <div className="rounded-lg overflow-hidden border border-white/30 flex items-center">
+                  <div className="col-span-2 sm:col-span-3 lg:col-span-1">
+                    <div className="space-y-5 text-center lg:text-left">
+                      {/* Input + Button */}
+                      <div className="rounded-lg overflow-hidden border border-white/30 flex flex-col sm:flex-row">
                         <Input
                           type="email"
                           placeholder="Email address"
-                          className="w-2/3 bg-transparent border-0 text-white placeholder:text-gray-300 text-sm focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                          className="bg-transparent text-center sm:text-start border-0 text-white placeholder:text-gray-300 text-sm focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-3 py-2"
                         />
-                        <Button className="w-1/3 bg-amber-800 hover:bg-amber-900 text-white font-medium rounded-l-none border-0 text-[13px] px-6">
+                        <Button className="bg-amber-800 hover:bg-amber-900 text-white font-medium border-0 text-sm px-6 py-2 rounded-none sm:rounded-l-none sm:w-auto w-full mt-3 sm:mt-0">
                           Subscribe
                         </Button>
                       </div>
-                      <p className="text-white text-sm leading-relaxed">
+
+                      {/* Description */}
+                      <p className="text-white text-sm leading-relaxed max-w-xs mx-auto lg:mx-0">
                         Get 10% off your first purchase and be the first to know
                         about new launches and exclusive deals!
                       </p>
-                      <div className="pt-2 sm:pt-20">
+
+                      {/* FSSAI Logo */}
+                      <div className="pt-4 sm:pt-10 flex justify-center lg:justify-start">
                         <Image
                           src={fssaiLogo}
                           alt="FSSAI Certified"
-                          width={100}
-                          height={40}
+                          width={120}
+                          height={50}
                           className="object-contain"
                         />
                       </div>
@@ -188,7 +193,7 @@ const FooterSec = () => {
 
               {/* Bottom Section */}
               <div className="border-t border-gray-600 pt-6">
-                <p className="text-white text-sm">
+                <p className="text-white text-sm text-center">
                   © Amata. All rights reserved.
                 </p>
               </div>
