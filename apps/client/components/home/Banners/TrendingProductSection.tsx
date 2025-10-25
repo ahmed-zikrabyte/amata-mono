@@ -9,6 +9,8 @@ import Image from "next/image";
 import BgSec3 from "@/assets/images/background/background-img.png";
 import BgSec3Img from "@/assets/homeBgSec3Img.png";
 import useEmblaCarousel from "embla-carousel-react";
+import { Button } from "../../../../../packages/ui/src/components/button";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const TrendingProductsSection = () => {
   const { execute, data, loading } = useApi<Product[]>();
@@ -16,7 +18,7 @@ const TrendingProductsSection = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
 
   useEffect(() => {
-    execute(productApi.getAll());
+    execute(productApi.getAll({category: "", search: ""}));
   }, []);
 
   useEffect(() => {
@@ -43,7 +45,7 @@ const TrendingProductsSection = () => {
       <div className="relative z-20 h-full">
         {/* Section Heading */}
         <div className="pt-6 sm:pt-8 lg:pt-10 text-center px-4">
-          <h1 className="font-bold text-xl sm:text-2xl lg:text-3xl text-[#4B2C20]">
+          <h1 className="font-bold text-2xl lg:text-3xl xl:text-4xl text-[#4B2C20]">
             Trending Now — Loved by Thousands!
           </h1>
           <p className="text-xs sm:text-sm lg:text-base font-medium tracking-wide max-w-2xl mx-auto mt-2 text-[#4B2C20]/80">
@@ -71,9 +73,9 @@ const TrendingProductsSection = () => {
                   <span className="text-yellow-300 italic">20% Discount</span>{" "}
                   on your first order
                 </p>
-                <button className="mt-3 bg-amber-700 hover:bg-amber-600 text-white font-semibold py-2 px-5 sm:px-6 rounded-lg text-sm transition-transform duration-300 hover:scale-105">
+                <Button className="mt-3 text-white font-semibold py-2 px-5 sm:px-6 rounded-lg text-sm transition-transform duration-300 hover:scale-105">
                   View all
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -93,8 +95,8 @@ const TrendingProductsSection = () => {
                         className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium text-xs sm:text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0
             ${
               isActive
-                ? "bg-red-800 text-white border border-red-600"
-                : "bg-white text-red-600 border border-red-600 hover:bg-red-600 hover:text-white"
+                ? "bg-primary text-white border border-primary"
+                : "bg-white text-primary border border-primary hover:bg-primary hover:text-white"
             }`}
                       >
                         {label}
@@ -111,17 +113,17 @@ const TrendingProductsSection = () => {
                   {/* Left Arrow - White */}
                   <button
                     onClick={scrollPrev}
-                    className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-red-600 text-red-600 bg-white hover:bg-red-100 transition"
+                    className="w-7 h-7 p-1 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-primary text-primary bg-white hover:bg-primary/10 transition"
                   >
-                    &larr;
+                    <ArrowLeft />
                   </button>
 
                   {/* Right Arrow - Red */}
                   <button
                     onClick={scrollNext}
-                    className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-red-600 text-white bg-red-800 hover:bg-red-700 transition"
+                    className="w-7 h-7 p-1 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-primary text-white bg-primary hover:bg-primary transition"
                   >
-                    &rarr;
+                    <ArrowRight />
                   </button>
                 </div>
               </div>

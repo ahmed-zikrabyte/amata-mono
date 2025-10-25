@@ -21,7 +21,7 @@ const Banner8 = () => {
               <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                 {/* Left Text Section */}
                 <div>
-                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#4B2C20]">
+                  <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-[#4B2C20]">
                     Why Amata Farms is Different?
                   </h2>
 
@@ -80,7 +80,7 @@ const Banner8 = () => {
 
                 {/* Right side Text */}
                 <div>
-                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#4B2C20]">
+                  <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-[#4B2C20]">
                     Why Choose Amata farms A2 Gir Cow Ghee?
                   </h2>
 

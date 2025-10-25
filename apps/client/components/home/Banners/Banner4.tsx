@@ -24,7 +24,7 @@ const Banner4 = () => {
               </div>
 
               {/* Main Heading */}
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white text-center mb-4 sm:mb-6 leading-tight">
+              <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-white text-center mb-4 sm:mb-6 leading-tight">
                 Get 15% Off on Your First Order
               </h1>
 

@@ -19,7 +19,7 @@ import { Star } from "lucide-react";
 
 const TestimonialCustomers = () => {
   return (
-    <div className="px-6 lg:px-20 py-6 md:py-8 w-full min-h-[430px] md:h-[430px] rounded-3xl bg-primary/90 flex flex-col md:flex-row justify-evenly items-center gap-6">
+    <div className="px-6 lg:px-20 py-6 md:py-8 w-full min-h-[430px] md:h-[430px] rounded-3xl bg-[#8B511F] flex flex-col md:flex-row justify-evenly items-center gap-6">
       {/* Image Section */}
       <div className="relative h-40 md:h-64 lg:h-full aspect-square shrink-0">
         <Image

@@ -4,6 +4,7 @@ import BgSecImg1 from "../../../assets/BgSec9Img1.png";
 import BgSecImg2 from "../../../assets/BgSec9Img2.png";
 import Image from "next/image";
 import { Button } from "../../../../../packages/ui/src/components/button";
+import Link from "next/link";
 
 const Banner9 = () => {
   return (
@@ -77,9 +78,11 @@ const Banner9 = () => {
                         of health.
                       </p>
 
-                      <Button className="mt-8 px-8 py-3 text-base bg-red-800 text-white font-semibold transition-colors">
-                        Read More
-                      </Button>
+                      <Link href={"/about"}>
+                        <Button className="mt-8 px-3 py-3 text-xs text-white font-medium transition-colors">
+                          Read More
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -137,9 +140,11 @@ const Banner9 = () => {
                         of health.
                       </p>
 
-                      <Button className="mt-10 px-10 py-4 text-lg bg-red-800 text-white font-semibold transition-colors">
-                        Read More
-                      </Button>
+                      <Link href={"/about"}>
+                        <Button className="mt-10 px-3 py-4 text-sm text-white font-medium transition-colors">
+                          Read More
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -198,10 +203,11 @@ const Banner9 = () => {
                         father knew – food is not just food, it's the foundation
                         of health.
                       </p>
-
-                      <Button className="mt-12 px-12 py-5 text-xl bg-red-800 text-white font-semibold transition-colors">
-                        Read More
-                      </Button>
+                      <Link href={"/about"}>
+                        <Button className="mt-12 px-3 py-5 text-sm text-white font-medium transition-colors">
+                          Read More
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </div>

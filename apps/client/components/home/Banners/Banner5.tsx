@@ -28,16 +28,17 @@ const Banner5 = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    execute(productApi.getAll());
+    fetchProducts()
   }, []);
 
-  useEffect(() => {
-    if (data?.data?.products) {
-      setProducts(data.data.products);
-    } else if (Array.isArray(data?.data)) {
-      setProducts(data.data);
+  const fetchProducts = async () => {
+    try {
+      const response: any = await execute(productApi.getAll({category: "", search: ""})).then(res => res.data)
+      setProducts(response.data.products as any)
+    } catch(error: any) {
+      console.log(error?.response.data)
     }
-  }, [data]);
+  }
 
   return (
     <div>
@@ -55,7 +56,7 @@ const Banner5 = () => {
             <div className="w-full max-w-7xl mx-auto">
               {/* Header Section */}
               <div className="text-center mb-8 sm:mb-12">
-                <h1 className="text-black font-bold text-xl sm:text-2xl lg:text-3xl mb-2">
+                <h1 className="text-black font-bold text-2xl lg:text-3xl xl:text-4x mb-2">
                   Our Pure Ghee Collection
                 </h1>
                 <p className="text-black font-medium text-xs sm:text-sm lg:text-base max-w-2xl mx-auto">
@@ -86,8 +87,8 @@ const Banner5 = () => {
                   </CarouselContent>
 
                   {/* Custom Arrows */}
-                  <CarouselPrevious className="ml-4 sm:ml-2 border border-red-600 text-red-600 bg-white hover:bg-red-100 transition" />
-                  <CarouselNext className="mr-7 sm:mr-5 bg-red-600 text-white hover:bg-red-700 transition" />
+                  <CarouselPrevious className="ml-4 sm:ml-2 border border-primary text-primary bg-white hover:bg-red-100 transition" />
+                  <CarouselNext className="mr-7 sm:mr-5 bg-primary text-white hover:bg-primary/70 hover:text-white transition" />
                 </Carousel>
               ) : (
                 <p className="text-center text-gray-600 py-10">
@@ -97,7 +98,7 @@ const Banner5 = () => {
 
               {/* View All Button */}
               <div className="text-center mt-8 sm:mt-12">
-                <Button className="bg-red-700 hover:bg-amber-700 text-white font-semibold py-4 px-8 sm:py-4 sm:px-12 rounded-lg text-sm sm:text-base lg:text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <Button className="text-white font-semibold py-4 px-4 sm:py-4 rounded-lg text-sm sm:text-base lg:text-sm transition-all duration-300 transform hover:scale-105 shadow-lg">
                   View all
                 </Button>
               </div>
@@ -105,8 +106,6 @@ const Banner5 = () => {
           </div>
         </div>
       </div>
-
-      <Banner6 />
     </div>
   );
 };

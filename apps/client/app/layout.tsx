@@ -5,6 +5,7 @@ import { Providers } from "@/components/providers";
 import Navbar from "../components/global/navbar";
 import {Toaster} from "@workspace/ui/components/sonner"
 import FooterSec from "../components/global/FooterSec";
+import GlobalLoaderWrapper from "../components/global/global-loader-wrapper";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body
         className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased bg-[#A8A6A6]/10`}
       >
+        <GlobalLoaderWrapper />
         <Providers>
           <Navbar />
           <div className="mt-20">{children}</div>

@@ -63,6 +63,7 @@ import { useApi } from "../../../hooks/useApi";
 import { updateCart, CartItem, addToCart } from "@/lib/api/cartApi";
 import { toast } from "sonner";
 import { useAddToCart } from "../../../hooks/useAddToCart";
+import Link from "next/link";
 
 // Define the API response type based on your API structure
 interface ApiProduct {
@@ -404,7 +405,7 @@ const Page = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-4 sm:py-6 mt-16">
         {/* Breadcrumb */}
         <div className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">
-          Home &gt; {product?.category} &gt; {product?.name}
+          <Link href={"/"}>Home</Link> &gt; {product?.category?.name} &gt; {product?.name}
         </div>
 
         {/* Section -1 */}
