@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, act } from "react";
 import { Star, Minus, Plus, SquarePen, Circle, Images } from "lucide-react";
 import {
   Carousel,
@@ -19,7 +19,6 @@ import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Textarea } from "@workspace/ui/components/textarea";
 import { useParams } from "next/navigation";
-
 import AmtRefund from "../../../assets/AmtRefund.png";
 import Box from "../../../assets/Box.png";
 import Box2 from "../../../assets/Box2.png";
@@ -58,11 +57,14 @@ import review2 from "../../../assets/Review2.png";
 import review3 from "../../../assets/Review3.png";
 import productCorsoul1 from "../../../assets/ProductCorsolImg1.png";
 import productCorsoul2 from "../../../assets/ProdutCorsolImg2.png";
-
-import YouMayAlsoLike from "../../../components/products/youMayAlsoLike";
 import { productApi } from "../../../lib/api/productApi";
 import { Product } from "../../../lib/types/product";
 import { useApi } from "../../../hooks/useApi";
+import { updateCart, CartItem, addToCart } from "@/lib/api/cartApi";
+import { toast } from "sonner";
+import { useAddToCart } from "../../../hooks/useAddToCart";
+import Link from "next/link";
+import ProductInfo from "../../../components/product-details/productInfo"
 
 // Define the API response type based on your API structure
 interface ApiProduct {
@@ -98,22 +100,21 @@ interface ApiResponse {
 const Page = () => {
   const [openIndex, setOpenIndex] = useState(0);
   const [rating, setRating] = useState(0);
-  const [activeImage, setActiveImage] = useState<number>(0);
   const [quantity, setQuantity] = useState(1);
   const params = useParams();
+  const [activeImageFlavour, setActiveImageFlavour] = useState(0);
+  const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
+  const [cart, setCart] = useState<CartItem[]>([]);
+
   const slug = params.slug as string;
 
   console.log("Slug from params:", slug);
 
-  const {
-    data: productResponse,
-    loading,
-    error,
-    execute,
-  } = useApi<ApiResponse>();
+  const { data: productResponse, error, execute } = useApi<ApiResponse>();
   const product = productResponse?.data;
 
   console.log("All product data:", product);
+  const [activeImage, setActiveImage] = useState<string | null>(null);
 
   const productImages = [
     ProductCor1,
@@ -333,10 +334,14 @@ const Page = () => {
     }
   }, [product]);
 
-  const handleAddToCart = (product: Product | LocalProduct) => {
-    console.log("Add to cart:", product);
-  };
+  useEffect(() => {
+    setQuantity(1);
+  }, [selectedVariant]);
 
+  const { handleAddToCart, loading } = useAddToCart();
+
+  const increment = () => setQuantity((q) => q + 1);
+  const decrement = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
   const handleShopNow = (product: Product | LocalProduct) => {
     console.log("Shop now:", product);
   };
@@ -345,8 +350,41 @@ const Page = () => {
     console.log("View all products");
   };
 
-  const handleQuantityChange = (change: number) => {
-    setQuantity((prev) => Math.max(1, prev + change));
+  const handleQuantity = async (
+    productId: string,
+    variantId: string,
+    action: "increment" | "decrement",
+    cartItems: CartItem[],
+    setCart: (items: CartItem[]) => void
+  ) => {
+    try {
+      const itemInCart = cartItems.find(
+        (item) => item.product._id === productId && item.variant === variantId
+      );
+
+      if (!itemInCart) {
+        // If item not in cart, always add it first
+        const res = await addToCart(productId, variantId);
+        if (res.success) {
+          setCart(res.data.items);
+          toast.success("Item added to cart");
+        } else {
+          toast.error(res.message);
+        }
+        return;
+      }
+
+      // Otherwise update quantity
+      const res = await updateCart(productId, variantId, action);
+      if (res.success) {
+        setCart(res.data.items);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error: any) {
+      console.error("Cart error:", error);
+      toast.error(error?.message || "Something went wrong");
+    }
   };
 
   if (loading)
@@ -365,244 +403,7 @@ const Page = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-4 sm:py-6 mt-16">
-        {/* Breadcrumb */}
-        <div className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">
-          Home &gt; {product?.category} &gt; {product?.name}
-        </div>
-
-        {/* Section -1 */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 xl:gap-12 relative max-w-full">
-          {/* Left side section */}
-          <div className="relative">
-            {/* Hero Section - Main Product Image */}
-            <div className="top-0 sticky space-y-4 lg:space-y-6">
-              <div className="flex justify-center lg:justify-start">
-                <Image
-                  src={product?.images?.[0] || ProductHero}
-                  alt="Cow Ghee Hero"
-                  className="w-full max-w-sm sm:max-w-md lg:max-w-full h-auto object-cover rounded-md"
-                  width={600}
-                  height={600}
-                />
-              </div>
-
-              {/* Carousel Section */}
-              {product?.images && product.images.length > 0 && (
-                <div className="w-full max-w-sm sm:max-w-md lg:max-w-full mx-auto lg:mx-0">
-                  <Carousel className="w-full">
-                    <CarouselContent>
-                      {product.images.map((img: string, idx: number) => (
-                        <CarouselItem
-                          key={idx}
-                          className="basis-1/3 sm:basis-1/3 lg:basis-1/4 pl-1"
-                        >
-                          <div className="pl-1">
-                            <div className="flex aspect-square items-center justify-center rounded-md border border-gray-200 bg-white p-1">
-                              <Image
-                                src={img}
-                                alt={`Cow Ghee ${idx + 1}`}
-                                className="w-full h-full object-contain"
-                                width={100}
-                                height={100}
-                              />
-                            </div>
-                          </div>
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="left-1 sm:left-2 size-5 sm:size-6 lg:size-8" />
-                    <CarouselNext className="right-1 sm:right-2 size-5 sm:size-6 lg:size-8" />
-                  </Carousel>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Right Side Section */}
-          <div className="relative w-full pl-0 lg:pl-4 xl:pl-5">
-            <div className="w-full">
-              {/* Product Title and Rating */}
-              <div className="mb-4 sm:mb-5 lg:mb-6">
-                <h1 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-red-700 mb-2 sm:mb-3">
-                  {product?.name}
-                </h1>
-                <div className="flex items-center space-x-1 sm:space-x-2">
-                  {[...Array(5)].map((item, index) => (
-                    <Star
-                      key={index}
-                      className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 fill-yellow-400 text-yellow-400"
-                    />
-                  ))}
-                  <span className="text-xs sm:text-sm lg:text-base xl:text-xl pl-2 sm:pl-3 lg:pl-5 text-gray-600">
-                    12 Reviews
-                  </span>
-                </div>
-              </div>
-
-              <hr className="my-3 sm:my-4 lg:my-5" />
-
-              {/* Features Section */}
-              <div className="space-y-3 sm:space-y-4 bg-gray-100 rounded-lg sm:rounded-xl lg:rounded-2xl p-3 sm:p-4 lg:p-6 my-3 sm:my-4 lg:my-6">
-                {features.map((feat, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start gap-2 sm:gap-3 lg:gap-4"
-                  >
-                    <div className="flex-shrink-0 mt-0.5">
-                      <Image
-                        src={feat.icon}
-                        alt="features-icons"
-                        className="h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8"
-                        width={32}
-                        height={32}
-                      />
-                    </div>
-                    <p className="text-xs sm:text-sm lg:text-base text-gray-700 flex-1 leading-relaxed">
-                      {feat.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <hr className="my-3 sm:my-4 lg:my-5" />
-
-              {/* Size Section */}
-              <div className="space-y-3 sm:space-y-4 my-3 sm:my-4 lg:my-6">
-                <h1 className="text-xs sm:text-sm lg:text-base text-gray-400 font-semibold">
-                  Size
-                </h1>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-2 sm:gap-3 lg:gap-4">
-                  {product?.variants.map((variant: any, index: number) => (
-                    <div
-                      key={variant._id}
-                      className="border border-gray-300 bg-gray-50 rounded-lg sm:rounded-xl lg:rounded-2xl p-2 sm:p-3 text-center hover:bg-amber-50 cursor-pointer transition-colors relative"
-                    >
-                      <div className="relative mb-1 sm:mb-2">
-                        <div className="font-semibold text-gray-900 text-xs sm:text-sm lg:text-base text-center">
-                          {variant.size} ml
-                        </div>
-                        {index === 0 && (
-                          <div className="absolute -top-1 -right-1 text-[8px] sm:text-[10px] lg:text-xs text-white px-1 sm:px-2 py-0.5 sm:py-1 font-medium bg-red-600 rounded-bl-lg sm:rounded-bl-xl lg:rounded-bl-2xl rounded-tr-lg sm:rounded-tr-xl lg:rounded-tr-2xl">
-                            25% off
-                          </div>
-                        )}
-                      </div>
-                      <div className="space-y-1 mt-2 sm:mt-3 lg:mt-4">
-                        <div className="border px-2 py-1 sm:px-3 sm:py-2 rounded sm:rounded-lg lg:rounded-xl bg-white">
-                          <div className="text-xs sm:text-sm lg:text-base font-bold text-gray-900">
-                            Rs. {variant.price}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <hr className="my-3 sm:my-4 lg:my-5" />
-
-              {/* Stock and Tax Info */}
-              <div className="space-y-2 sm:space-y-3 lg:space-y-4 my-3 sm:my-4 lg:my-6">
-                <h2 className="text-xs sm:text-sm lg:text-base text-gray-700">
-                  Tax included. Shipping is calculated at checkout
-                </h2>
-                <div className="border bg-amber-100 outline-none font-light px-3 sm:px-4 lg:px-5 py-2 rounded-lg sm:rounded-xl lg:rounded-2xl text-xs sm:text-sm lg:text-base">
-                  {product?.isActive ? "In Stock" : "Out of Stock"}
-                </div>
-              </div>
-
-              {/* Quantity and Buttons */}
-              <div className="my-3 sm:my-4 lg:my-6">
-                <h2 className="text-sm sm:text-base lg:text-lg font-medium mb-2 sm:mb-3">
-                  Quantity
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 lg:gap-4">
-                  {/* Quantity Selector */}
-                  <div className="border border-green-900 rounded-md sm:rounded-lg sm:col-span-1">
-                    <div className="flex justify-between items-center px-2 sm:px-3 lg:px-4 py-2 sm:py-3 h-10 sm:h-12 lg:h-14">
-                      <button
-                        onClick={() => handleQuantityChange(-1)}
-                        className="border border-green-900 w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 flex items-center justify-center hover:bg-[#613815] hover:text-white transition-colors rounded text-xs sm:text-sm"
-                      >
-                        <Minus className="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4" />
-                      </button>
-                      <span className="mx-1 sm:mx-2 text-sm sm:text-base lg:text-lg font-medium">
-                        {quantity}
-                      </span>
-                      <button
-                        onClick={() => handleQuantityChange(1)}
-                        className="border border-green-900 w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 flex items-center justify-center hover:bg-[#613815] hover:text-white transition-colors rounded text-xs sm:text-sm"
-                      >
-                        <Plus className="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Add to Cart Button */}
-                  <button
-                    onClick={() => handleAddToCart(product as any)}
-                    className="w-full h-10 sm:h-12 lg:h-14 border border-green-900 text-green-900 hover:bg-[#613815] hover:text-white rounded-md transition-colors font-medium text-xs sm:text-sm lg:text-base sm:col-span-1 flex items-center justify-center"
-                  >
-                    Add to Cart
-                  </button>
-
-                  {/* Check out Button */}
-                  <button className="w-full h-10 sm:h-12 lg:h-14 border border-green-900 bg-[#613815] text-white hover:bg-green-700 rounded-md transition-colors font-medium text-xs sm:text-sm lg:text-base sm:col-span-1 flex items-center justify-center">
-                    Check out
-                  </button>
-                </div>
-              </div>
-
-              {/* Benefits Section */}
-              <div className="flex flex-row justify-between items-center gap-2 sm:gap-4 lg:gap-6 xl:gap-8 py-3 sm:py-4 lg:py-6 border-t border-gray-200 pt-4 sm:pt-6">
-                <div className="flex flex-col items-center text-center flex-1">
-                  <Image
-                    src={Tag}
-                    alt="Tag"
-                    className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 xl:w-8 xl:h-8 mb-1"
-                    width={32}
-                    height={32}
-                  />
-                  <p className="text-[10px] xs:text-xs sm:text-sm lg:text-base font-medium text-gray-700 leading-tight">
-                    Extra 2% Off on Prepaid
-                  </p>
-                </div>
-
-                <div className="h-8 sm:h-10 lg:h-12 xl:h-16 w-px bg-gray-300 flex-shrink-0"></div>
-
-                <div className="flex flex-col items-center text-center flex-1">
-                  <Image
-                    src={DiscountLogo}
-                    alt="Discount"
-                    className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 xl:w-8 xl:h-8 mb-1"
-                    width={32}
-                    height={32}
-                  />
-                  <p className="text-[10px] xs:text-xs sm:text-sm lg:text-base font-medium text-gray-700 leading-tight">
-                    5% Off on First Order
-                  </p>
-                </div>
-
-                <div className="h-8 sm:h-10 lg:h-12 xl:h-16 w-px bg-gray-300 flex-shrink-0"></div>
-
-                <div className="flex flex-col items-center text-center flex-1">
-                  <Image
-                    src={AmtRefund}
-                    alt="Cash"
-                    className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 xl:w-8 xl:h-8 mb-1"
-                    width={32}
-                    height={32}
-                  />
-                  <p className="text-[10px] xs:text-xs sm:text-sm lg:text-base font-medium text-gray-700 leading-tight">
-                    Cash on delivery
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ProductInfo/>
 
       {/* Ayurvedic Superfood Banner */}
       <div className="sticky top-0 h-96 sm:h-64 lg:h-80 xl:h-96 shadow-lg transition-all duration-500 bg-gradient-to-r from-yellow-950 via-amber-800 to-orange-950 text-white py-4 sm:py-6 lg:py-8">
@@ -662,6 +463,7 @@ const Page = () => {
             </div>
           </div>
         </div>
+        
         {/* Cow Ghee Banner */}
         <div className="mb-5">
           <Image src={topView} alt="second banner" className="mb-0" />
@@ -687,9 +489,9 @@ const Page = () => {
                 {buttonData.map((btn, index) => (
                   <button
                     key={btn.id}
-                    onClick={() => setActiveImage(index)}
+                    onClick={() => setActiveImageFlavour(index)}
                     className={`w-full max-w-xs sm:max-w-sm mx-auto lg:mx-0 lg:w-full py-2 sm:py-3 rounded-full transition-all duration-300 border-none ${
-                      activeImage === index
+                      activeImageFlavour === index
                         ? "bg-amber-700 scale-95 shadow-lg"
                         : "bg-amber-800 hover:bg-amber-700 hover:scale-102"
                     }`}
@@ -715,8 +517,8 @@ const Page = () => {
             <div className="lg:col-span-7 xl:col-span-8 flex items-center justify-center">
               <div className="relative w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl h-48 sm:h-64 lg:h-80 xl:h-96">
                 <Image
-                  src={buttonData[activeImage]?.image || ""}
-                  alt={buttonData[activeImage]?.title || "Product image"}
+                  src={buttonData[activeImageFlavour]?.image || ""}
+                  alt={buttonData[activeImageFlavour]?.title || "Product image"}
                   className="object-contain transition-all duration-500 ease-in-out"
                   fill
                   sizes="(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw"
@@ -726,6 +528,7 @@ const Page = () => {
           </div>
         </div>
 
+        {/* What makes Amata unique */}
         <div className="relative overflow-hidden">
           {/* Background */}
           <div className="relative h-[500px] sm:h-[600px] lg:h-[700px]">
@@ -773,6 +576,8 @@ const Page = () => {
             </div>
           </div>
         </div>
+
+        {/* Nutrition Details*/}
         <div
           className="relative w-full z-0 min-h-[500px] sm:min-h-[600px] lg:min-h-[700px]"
           style={{
@@ -831,50 +636,31 @@ const Page = () => {
                         </DialogHeader>
 
                         <div className="p-6 sm:p-8 overflow-y-auto max-h-[70vh] sm:max-h-[80vh]">
-                          <div className="mb-6">
-                            <table className="w-full border-collapse rounded-lg overflow-hidden shadow-md">
-                              <thead>
-                                <tr className="bg-gradient-to-r from-red-600 to-red-700">
-                                  <th className="text-left py-4 px-4 sm:px-6 font-semibold text-white text-sm sm:text-base uppercase tracking-wide">
-                                    Nutrient
-                                  </th>
-                                  <th className="text-right py-4 px-4 sm:px-6 font-semibold text-white text-sm sm:text-base uppercase tracking-wide">
-                                    Value
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {[
-                                  { nutrient: "Energy", value: "897 kcal" },
-                                  { nutrient: "Total Fat", value: "99.7 g" },
-                                  {
-                                    nutrient: "Cholesterol",
-                                    value: "256 mg",
-                                  },
-                                  { nutrient: "Protein", value: "0 g" },
-                                  { nutrient: "Carbohydrates", value: "0 g" },
-                                  { nutrient: "Sugar", value: "0 g" },
-                                  { nutrient: "Trans Fat", value: "0 g" },
-                                  { nutrient: "Vitamin A", value: "840 µg" },
-                                  { nutrient: "Vitamin D", value: "13 µg" },
-                                  { nutrient: "Vitamin E", value: "1.8 µg" },
-                                  { nutrient: "Vitamin K", value: "8.6 µg" },
-                                ].map((item, index) => (
-                                  <tr
-                                    key={index}
-                                    className="border-b border-gray-200 even:bg-gray-50 hover:bg-gray-100 transition-colors duration-200"
-                                  >
-                                    <td className="py-3 px-4 sm:px-6 text-gray-700 font-medium text-sm sm:text-base">
-                                      {item.nutrient}
-                                    </td>
-                                    <td className="py-3 px-4 sm:px-6 text-right font-semibold text-gray-900 text-sm sm:text-base">
-                                      {item.value}
-                                    </td>
+                          {product?.nutritionInformation ? (
+                            <div className="mb-6">
+                              <table className="w-full border-collapse rounded-lg overflow-hidden shadow-md">
+                                <thead>
+                                  <tr className="bg-gradient-to-r from-red-600 to-red-700">
+                                    <th className="text-left py-4 px-4 sm:px-6 font-semibold text-white text-sm sm:text-base uppercase tracking-wide">
+                                      Nutrient
+                                    </th>
+                                    <th className="text-right py-4 px-4 sm:px-6 font-semibold text-white text-sm sm:text-base uppercase tracking-wide">
+                                      Value
+                                    </th>
                                   </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
+                                </thead>
+                                <tbody
+                                  dangerouslySetInnerHTML={{
+                                    __html: product.nutritionInformation,
+                                  }}
+                                />
+                              </table>
+                            </div>
+                          ) : (
+                            <p className="text-gray-500 text-center">
+                              No nutrition information available
+                            </p>
+                          )}
                         </div>
                       </DialogContent>
                     </Dialog>
@@ -896,41 +682,29 @@ const Page = () => {
 
                       <DialogContent className="max-w-md sm:max-w-lg lg:max-w-2xl bg-white p-0 overflow-hidden rounded-2xl">
                         <DialogHeader className="p-0 sticky top-0 z-10">
-                          <DialogTitle className="text-white bg-red-700 px-6 py-5 w-full text-lg sm:text-xl font-bold shadow-lg">
+                          <DialogTitle className="text-white bg-gradient-to-r from-red-700 to-red-800 px-6 py-5 w-full text-lg sm:text-xl font-bold shadow-lg">
                             Ingredients
                           </DialogTitle>
                         </DialogHeader>
 
-                        <div className="p-6 sm:p-8 overflow-y-auto max-h-[70vh] sm:max-h-[80vh]">
-                          <div className="border-2 border-none rounded-xl bg-green-50/50 p-6 sm:p-8">
-                            <p className="mb-4 text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
-                              Made from 100% pure A2 Gir Cow milk using the
-                              traditional Bilona method. Free from
-                              preservatives, additives, and artificial flavours
-                              for authentic purity.
+                        <div className="p-6 sm:p-8 overflow-y-auto max-h-[70vh] sm:max-h-[80vh] flex gap-2 items-center">
+                          <Image
+                            src={check}
+                            alt="check"
+                            className="w-7 h-7 object-contain"
+                          />
+                          {product?.ingredients ? (
+                            <div
+                              className="prose prose-sm sm:prose-base max-w-none"
+                              dangerouslySetInnerHTML={{
+                                __html: product.ingredients,
+                              }}
+                            />
+                          ) : (
+                            <p className="text-gray-500 text-center">
+                              No ingredients information available
                             </p>
-                            <ul className="space-y-3 sm:space-y-4">
-                              {[
-                                "100% A2 Gir Cow Milk — sourced from indigenous Gir cows",
-                                "Cultured Curd — prepared traditionally for hand-churning",
-                                "No Preservatives, Additives, or Artificial Flavours",
-                              ].map((item, index) => (
-                                <li
-                                  key={index}
-                                  className="flex items-start space-x-3 sm:space-x-4"
-                                >
-                                  <Image
-                                    src={check}
-                                    alt="check"
-                                    className="w-5 h-5 sm:w-6 sm:h-6 mt-0.5 flex-shrink-0"
-                                  />
-                                  <p className="text-gray-700 text-sm sm:text-base font-medium flex-1">
-                                    {item}
-                                  </p>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
+                          )}
                         </div>
                       </DialogContent>
                     </Dialog>
@@ -957,19 +731,19 @@ const Page = () => {
                           </DialogTitle>
                         </DialogHeader>
 
-                        <div className="p-6 sm:p-8 overflow-y-auto max-h-[70vh] sm:max-h-[80vh]">
-                          <div className="border-2 border-none rounded-xl bg-blue-50/50 p-6 sm:p-8">
-                            <p className="text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
-                              It can also be used for skin care, hair
-                              nourishment, and Ayurvedic rituals for holistic
-                              wellness.
-                              <br />
-                              <br />
-                              Enjoy Amata Organic Farms' A2 Gir Cow Ghee as a
-                              cooking medium, topping for rotis and rice, or a
-                              natural booster in milk and herbal drinks.
+                        <div className="border rounded-lg bg-[#f2f2f2] h-32 m-10 text-center pt-5 ">
+                          {product?.suggestedUse ? (
+                            <div
+                              className="prose prose-sm sm:prose-base max-w-none"
+                              dangerouslySetInnerHTML={{
+                                __html: product.suggestedUse,
+                              }}
+                            />
+                          ) : (
+                            <p className="text-gray-500 text-center">
+                              No suggested use information available
                             </p>
-                          </div>
+                          )}
                         </div>
                       </DialogContent>
                     </Dialog>
@@ -996,26 +770,19 @@ const Page = () => {
                           </DialogTitle>
                         </DialogHeader>
 
-                        <div className="p-6 sm:p-8">
-                          <div className="border-2 border-none rounded-xl bg-purple-50/50 p-6 sm:p-8">
-                            <ul className="space-y-4 sm:space-y-5">
-                              {[
-                                "Store in a cool, dry place, away from direct sunlight and moisture.",
-                                "Always use a clean, dry spoon to maintain purity and freshness.",
-                                "No refrigeration required — the ghee stays fresh naturally.",
-                              ].map((item, index) => (
-                                <li
-                                  key={index}
-                                  className="flex items-start space-x-3 sm:space-x-4"
-                                >
-                                  <Circle className="w-2 h-2 sm:w-3 sm:h-3 fill-black mt-2 flex-shrink-0" />
-                                  <p className="text-gray-700 text-sm sm:text-base font-medium flex-1">
-                                    {item}
-                                  </p>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
+                        <div className="border rounded-lg bg-[#f2f2f2] h-32 m-10 text-center pt-5">
+                          {product?.storageInfo ? (
+                            <div
+                              className="prose prose-sm sm:prose-base max-w-none"
+                              dangerouslySetInnerHTML={{
+                                __html: product.suggestedUse,
+                              }}
+                            />
+                          ) : (
+                            <p className="text-gray-500 text-center">
+                              No suggested use information available
+                            </p>
+                          )}
                         </div>
                       </DialogContent>
                     </Dialog>
@@ -1042,21 +809,19 @@ const Page = () => {
                           </DialogTitle>
                         </DialogHeader>
 
-                        <div className="p-6 sm:p-8">
-                          <div className="border-2 border-none rounded-xl bg-orange-50/50 p-6 sm:p-8">
-                            <p className="text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
-                              A2 Gir Cow Ghee is ideal for everyone looking for
-                              pure, nutritious, and traditional goodness in
-                              their daily routine.
-                              <br />
-                              <br />
-                              Perfect for families, health-conscious
-                              individuals, fitness enthusiasts, children, and
-                              the elderly — anyone who wants to support better
-                              digestion, immunity, and overall wellness
-                              naturally.
+                        <div className="border rounded-lg bg-[#f2f2f2] h-32 m-10 text-center pt-5">
+                          {product?.whyYouShouldUseThis ? (
+                            <div
+                              className="prose prose-sm sm:prose-base max-w-none"
+                              dangerouslySetInnerHTML={{
+                                __html: product.suggestedUse,
+                              }}
+                            />
+                          ) : (
+                            <p className="text-gray-500 text-center">
+                              No suggested use information available
                             </p>
-                          </div>
+                          )}
                         </div>
                       </DialogContent>
                     </Dialog>
@@ -1067,6 +832,7 @@ const Page = () => {
           </div>
         </div>
 
+        {/* Not All Ghee Is Created Equal */}
         <div
           className="relative min-h-96 w-full z-0 py-8 sm:py-12 md:py-16"
           style={{
@@ -1223,6 +989,7 @@ const Page = () => {
           </div>
         </div>
 
+        {/* Enjoy your Ghee */}
         <div
           className="relative min-h-96 w-full z-0 py-16 sm:py-20 md:py-24"
           style={{
@@ -1256,6 +1023,7 @@ const Page = () => {
           </div>
         </div>
 
+        {/* Frequently Asked Questions */}
         <div
           className="relative w-full z-0 py-12 sm:py-16 md:py-20 lg:py-24"
           style={{
@@ -1340,6 +1108,7 @@ const Page = () => {
           </div>
         </div>
 
+        {/* Customer Review */}
         <div className="relative w-full z-0 py-12 sm:py-16 lg:py-20 bg-[#fffff6]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-20">
             <div className="relative">
@@ -1660,17 +1429,6 @@ const Page = () => {
             </div>
           </div>
         </div>
-
-        {/* <YouMayAlsoLike
-          products={recommendedProducts as unknown as Product[]}
-          onAddToCart={handleAddToCart}
-          onShopNow={handleShopNow}
-          onViewAll={handleViewAll}
-          title="You May Also Like"
-          buttonText="View All"
-          backgroundColor="#fff"
-          padding="py-20 px-4 sm:px-8 lg:px-20"
-        /> */}
       </div>
     </div>
   );

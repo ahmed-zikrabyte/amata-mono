@@ -18,6 +18,7 @@ import { Product } from "@/lib/types/product";
 import { productApi } from "@/lib/api/productApi";
 import TrendingProductsSection from "./Banners/TrendingProductSection";
 import Link from "next/link";
+import { Button } from "../../../../packages/ui/src/components/button";
 
 const HeroSection = () => {
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
@@ -36,12 +37,12 @@ const HeroSection = () => {
       buttons: [
         {
           text: "Shop Now",
-          className: "bg-red-800 hover:bg-red-900 text-white",
+          className: "text-white",
         },
         {
           text: "Order from Amazon Fresh",
           className:
-            "bg-white hover:bg-orange-50 text-red-800 border-2 border-transparent hover:border-orange-200",
+            "bg-white hover:bg-white text-primary hover:border-2 hover:border-primary",
         },
       ],
     },
@@ -56,7 +57,7 @@ const HeroSection = () => {
       buttons: [
         {
           text: "Order Now",
-          className: "bg-red-800 hover:bg-red-900 text-white",
+          className: " text-white",
         },
       ],
     },
@@ -71,7 +72,7 @@ const HeroSection = () => {
       buttons: [
         {
           text: "Explore Collection",
-          className: "bg-red-800 hover:bg-red-900 text-white",
+          className: "text-white",
         },
       ],
     },
@@ -172,7 +173,7 @@ const HeroSection = () => {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await productApi.getAll();
+        const res = await productApi.getAll({category: "", search: ""});
         if (res.success) setProducts(res.data);
       } catch (err) {
         console.error(err);
@@ -193,7 +194,7 @@ const HeroSection = () => {
         );
 
   return (
-    <div className="relative w-full overflow-hidden mt-16">
+    <div className="relative w-full overflow-hidden">
       {/* Main Hero Carousel */}
       <div className="embla" ref={emblaRef}>
         <div className="embla__container flex">
@@ -218,7 +219,7 @@ const HeroSection = () => {
                     <div className="max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg">
                       {/* Tagline */}
                       <p
-                        className={`text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-bold mb-2 sm:mb-3 md:mb-4 text-left leading-tight ${slide.textColor}`}
+                        className={`text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-2 sm:mb-3 md:mb-4 text-left leading-tight ${slide.textColor}`}
                       >
                         {slide.tagline}
                       </p>
@@ -234,12 +235,12 @@ const HeroSection = () => {
                       <div className="flex flex-col gap-2 sm:gap-3 md:flex-row md:gap-4 w-full md:w-auto">
                         {slide.buttons.map((button, btnIndex) => (
                           <Link href={'/products'}>
-                            <button
+                            <Button
                               key={btnIndex}
-                              className={`font-semibold text-xs sm:text-sm md:text-base py-2 px-4 sm:py-2.5 sm:px-5 md:py-3 md:px-8 lg:py-4 lg:px-10 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg hover:shadow-xl text-center ${button.className}`}
+                              className={`font-semibold h-12 text-xs sm:text-sm md:text-base py-2 px-4 sm:py-2.5 sm:px-5 md:py-3 md:px-8 lg:py-4 lg:px-10 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg hover:shadow-xl text-center ${button.className}`}
                             >
                               {button.text}
-                            </button>
+                            </Button>
                           </Link>
                         ))}
                       </div>
@@ -284,8 +285,8 @@ const HeroSection = () => {
             {/* Right Side */}
             <div className="flex items-center justify-center lg:justify-end order-1 lg:order-2">
               <div className="w-full max-w-md lg:max-w-lg text-white">
-                <div className="border-t border-gray-400 pt-2 mb-6 space-y-4">
-                  <h3 className="text-xl sm:text-2xl font-semibold mb-4 text-black">
+                <div className="pt-2 mb-6 space-y-4">
+                  <h3 className="text-2xl lg:text-3xl xl:text-4xl font-semibold mb-4 text-black">
                     Purity Backed by Science
                   </h3>
                   <p className="text-base sm:text-sm mb-4 text-black">
@@ -330,15 +331,15 @@ const HeroSection = () => {
                 </div>
 
                 {/* Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex gap-3">
                   <Link href={'/products'}>
-                  <button className="bg-red-800 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                  <Button className=" font-semibold h-12 py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
                     Order Now
-                  </button>
+                  </Button>
                   </Link>
-                  <button className="bg-white hover:bg-amber-800 text-black hover:text-white font-semibold py-3 px-6 rounded-lg border-none border-amber-400 transition duration-300 ease-in-out transform hover:scale-105">
+                  <Button variant={"outline"} className="text-black h-12 font-semibold py-3 px-6 rounded-lg border-none border-amber-400 transition duration-300 ease-in-out transform hover:scale-105">
                     View Full Lab Report
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>

@@ -4,6 +4,7 @@ import BgSecImg1 from "../../../assets/BgSec9Img1.png";
 import BgSecImg2 from "../../../assets/BgSec9Img2.png";
 import Image from "next/image";
 import { Button } from "../../../../../packages/ui/src/components/button";
+import Link from "next/link";
 
 const Banner9 = () => {
   return (
@@ -22,7 +23,7 @@ const Banner9 = () => {
           <div className="absolute inset-0 bg-black/10 lg:bg-black/20 z-10"></div>
 
           <div className="relative z-20 h-full">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center py-10 md:py-14 lg:py-20">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-20 h-full flex items-center py-10 md:py-14 lg:py-20">
               <div className="w-full max-w-6xl mx-auto">
                 {/* Mobile Version (0px - 767px) */}
                 <div className="block md:hidden">
@@ -33,7 +34,7 @@ const Banner9 = () => {
                         <Image
                           src={BgSecImg1}
                           alt="Founder story image 1"
-                          className="object-cover"
+                          className="object-cover object-[90%_center] sm:object-[90%_center] lg:object-[90%_center]"
                           fill
                           sizes="(max-width: 640px) 144px, 176px"
                         />
@@ -42,7 +43,7 @@ const Banner9 = () => {
                         <Image
                           src={BgSecImg2}
                           alt="Founder story image 2"
-                          className="object-cover"
+                          className="object-contain object-[75%_center] md:object-[90%_center]"
                           fill
                           sizes="(max-width: 640px) 144px, 176px"
                         />
@@ -77,9 +78,11 @@ const Banner9 = () => {
                         of health.
                       </p>
 
-                      <Button className="mt-8 px-8 py-3 text-base bg-red-800 text-white font-semibold transition-colors">
-                        Read More
-                      </Button>
+                      <Link href={"/about"}>
+                        <Button className="mt-8 px-3 py-3 text-xs text-white font-medium transition-colors">
+                          Read More
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -137,9 +140,11 @@ const Banner9 = () => {
                         of health.
                       </p>
 
-                      <Button className="mt-10 px-10 py-4 text-lg bg-red-800 text-white font-semibold transition-colors">
-                        Read More
-                      </Button>
+                      <Link href={"/about"}>
+                        <Button className="mt-10 px-3 py-4 text-sm text-white font-medium transition-colors">
+                          Read More
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -198,10 +203,11 @@ const Banner9 = () => {
                         father knew – food is not just food, it's the foundation
                         of health.
                       </p>
-
-                      <Button className="mt-12 px-12 py-5 text-xl bg-red-800 text-white font-semibold transition-colors">
-                        Read More
-                      </Button>
+                      <Link href={"/about"}>
+                        <Button className="mt-12 px-3 py-5 text-sm text-white font-medium transition-colors">
+                          Read More
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </div>

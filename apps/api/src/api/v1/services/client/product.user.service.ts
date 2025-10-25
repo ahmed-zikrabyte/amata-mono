@@ -1,23 +1,36 @@
+import mongoose from "mongoose";
 import { HTTP } from "../../../../config/http-status.config";
 import { ProductModel } from "../../../../models/product.model";
 import { ServiceResponse } from "../../../../typings";
 import AppError from "../../../../utils/AppError";
+import { CategoryModel } from "../../../../models/category.model";
 
 export default class UserProductService {
   getAllProducts = async (
     page: number,
     limit: number,
-    search: string
+    search: string,
+    category: string
   ): ServiceResponse => {
     try {
       const skip = (page - 1) * limit;
       let query: any = {};
-      if (search && search.length > 0) {
-        query = { name: { $regex: search, $options: "i" } };
+      // Search by name (case-insensitive)
+      if (search && search.trim().length > 0) {
+        query.name = { $regex: search.trim(), $options: "i" };
       }
 
+      if (category && category.trim().length > 0) {
+        const categoryData = await CategoryModel.findOne({ slug: category });
+        if (categoryData) {
+          query.category = categoryData._id;
+        }
+      }
+
+      // Run both queries concurrently
       const [products, totalProducts] = await Promise.all([
         ProductModel.find(query)
+          .populate("category")
           .sort({ createdAt: -1 })
           .skip(skip)
           .limit(limit),
@@ -54,7 +67,7 @@ export default class UserProductService {
         throw new AppError("Slug required", HTTP.BAD_REQUEST);
       }
 
-      const product = await ProductModel.findOne({ slug });
+      const product = await ProductModel.findOne({ slug }).populate("category");
       if (!product) {
         throw new AppError("Product not found", HTTP.NOT_FOUND);
       }

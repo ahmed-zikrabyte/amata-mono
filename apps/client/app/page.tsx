@@ -11,7 +11,7 @@ import Banner11 from '../components/home/Banners/Banner11'
 import TestimonialCustomers from '../components/global/testimonial-customers'
 const page = () => {
   return (
-    <div>
+    <div className='overflow-x-hidden'>
       <HeroSection/>
       <Banner4 />
       <Banner5 />

@@ -3,7 +3,7 @@ import { Product, ApiResponse } from "../types/product";
 
 export const productApi = {
   // Get all products
-  getAll: (): Promise<ApiResponse<Product[]>> => axiosInstance.get("/products"),
+  getAll: (params: {category: string, search: string}): Promise<ApiResponse<any>> => axiosInstance.get(`/products`, {params}),
 
   //get product by slug
   getBySlug: (slug: string): Promise<ApiResponse<any>> => 

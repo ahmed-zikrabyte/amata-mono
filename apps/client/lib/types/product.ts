@@ -8,7 +8,10 @@ export interface Product {
     price: number;
     _id: string;
   }>;
-  category: string;
+  category: {
+    name: string;
+    _id: string;
+  };
   ingredients: string;
   images: string[];
   isDeleted: boolean;
