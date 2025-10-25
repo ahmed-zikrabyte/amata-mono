@@ -37,7 +37,7 @@ const HeroSection = () => {
       buttons: [
         {
           text: "Shop Now",
-          className: " text-white",
+          className: "text-white",
         },
         {
           text: "Order from Amazon Fresh",
