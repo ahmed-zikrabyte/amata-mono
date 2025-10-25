@@ -22,7 +22,7 @@ const Banner9 = () => {
           <div className="absolute inset-0 bg-black/10 lg:bg-black/20 z-10"></div>
 
           <div className="relative z-20 h-full">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center py-10 md:py-14 lg:py-20">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-20 h-full flex items-center py-10 md:py-14 lg:py-20">
               <div className="w-full max-w-6xl mx-auto">
                 {/* Mobile Version (0px - 767px) */}
                 <div className="block md:hidden">
@@ -33,7 +33,7 @@ const Banner9 = () => {
                         <Image
                           src={BgSecImg1}
                           alt="Founder story image 1"
-                          className="object-cover"
+                          className="object-cover object-[90%_center] sm:object-[90%_center] lg:object-[90%_center]"
                           fill
                           sizes="(max-width: 640px) 144px, 176px"
                         />
@@ -42,7 +42,7 @@ const Banner9 = () => {
                         <Image
                           src={BgSecImg2}
                           alt="Founder story image 2"
-                          className="object-cover"
+                          className="object-contain object-[75%_center] md:object-[90%_center]"
                           fill
                           sizes="(max-width: 640px) 144px, 176px"
                         />

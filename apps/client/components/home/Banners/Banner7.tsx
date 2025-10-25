@@ -64,20 +64,20 @@ const Banner7 = () => {
         }}
       >
         <div className="relative z-20 h-full">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center pt-10">
-            <div className="w-full max-w-7xl mx-auto">
+          <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-20 h-full flex items-center pt-10">
+            <div className="w-full max-w-2xl lg:max-w-6xl mx-auto">
               <div className="text-center mb-8 sm:mb-12">
                 <h1 className="text-black font-semibold text-xl sm:text-2xl lg:text-3xl mb-2">
                   Why is A2 Gir Cow Ghee Important?
                 </h1>
-                <p className="text-black font-normal text-[8px] sm:text-[10px] lg:text-[10px] max-w-2xl mx-auto">
+                <p className="text-black font-medium text-xs sm:text-sm lg:text-base max-w-2xl mx-auto">
                   In Ayurveda, ghee is not just a cooking ingredient - it's
                   medicinal food. <br /> A2 Gir Cow Ghee is valued because it.
                 </p>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-                {benefits.slice(0, 4).map((benefit, index) => (
+                {benefits.slice(0, 4).map((benefit) => (
                   <div
                     key={benefit.id}
                     className="bg-white border border-amber-400 rounded-lg p-3 sm:p-4 lg:p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
@@ -107,11 +107,11 @@ const Banner7 = () => {
               </div>
 
               <div className="flex justify-center mt-3 sm:mt-4 lg:mt-6 mb-8">
-                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-6 max-w-2xl">
+                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-6 lg:max-w-[540px] sm:max-w-2xl">
                   {benefits.slice(4, 6).map((benefit) => (
                     <div
                       key={benefit.id}
-                      className="bg-white border border-amber-400 rounded-lg p-3 sm:p-4 lg:p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
+                      className="bg-white border border-amber-400 rounded-lg p-3.5 sm:p-4 lg:p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
                     >
                       <div className="flex flex-col">
                         <div className="mb-1 sm:mb-2 lg:mb-2">

@@ -16,7 +16,7 @@ const Banner8 = () => {
         }}
       >
         <div className="relative z-20 h-full">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center py-10">
+          <div className="container mx-auto px-7 sm:px-12 lg:px-20 h-full flex items-center py-10">
             <div className="w-full max-w-6xl mx-auto">
               <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                 {/* Left Text Section */}

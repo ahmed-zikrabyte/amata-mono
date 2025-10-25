@@ -51,7 +51,7 @@ const Banner5 = () => {
         }}
       >
         <div className="relative z-20 h-full">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center pt-10">
+          <div className="container mx-auto px-9 sm:px-6 lg:px-20 h-full flex items-center pt-10">
             <div className="w-full max-w-7xl mx-auto">
               {/* Header Section */}
               <div className="text-center mb-8 sm:mb-12">
@@ -86,8 +86,8 @@ const Banner5 = () => {
                   </CarouselContent>
 
                   {/* Custom Arrows */}
-                  <CarouselPrevious className="ml-8 border border-red-600 text-red-600 bg-white hover:bg-red-100 transition" />
-                  <CarouselNext className="mr-8 bg-red-600 text-white hover:bg-red-700 transition" />
+                  <CarouselPrevious className="ml-4 sm:ml-2 border border-red-600 text-red-600 bg-white hover:bg-red-100 transition" />
+                  <CarouselNext className="mr-7 sm:mr-5 bg-red-600 text-white hover:bg-red-700 transition" />
                 </Carousel>
               ) : (
                 <p className="text-center text-gray-600 py-10">
