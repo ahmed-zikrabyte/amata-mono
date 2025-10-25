@@ -146,7 +146,7 @@ const CartItems: React.FC = () => {
               <TableRow key={item._id}>
                 {/* Product Info */}
                 <TableCell>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 border-0">
                     <div className="relative w-16 h-16 rounded-lg overflow-hidden border">
                       <Image
                         src={productImage as string}

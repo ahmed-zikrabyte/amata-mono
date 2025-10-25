@@ -14,7 +14,7 @@ const Banner4 = () => {
         }}
       >
         <div className="relative z-20 h-full">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-center pt-10 sm:pt-15 md:pt-20 lg:pt-30">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center pt-20">
             <div className="w-full max-w-4xl mx-auto">
               {/* Badge */}
               <div className="text-center mb-6">
@@ -29,7 +29,8 @@ const Banner4 = () => {
               </h1>
 
               {/* Description */}
-              <p className="text-sm md:text-base lg:text-lg font-medium text-white/90 text-center mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
+              {/* className="text-[6px] sm:text-[8px] lg:text-[13px] text-white/90 text-center mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed" */}
+              <p className="text-white/90 text-center font-medium text-[10px] sm:text-[13px] lg:text-[18px] leading-relaxed mb-6 sm:mb-8 max-w-2xl mx-auto">
                 Start your journey to purity with our handcrafted ghee — made
                 using traditional Bilona methods and 100% A2 milk. Enjoy the
                 richness of heritage, now with an exclusive first-time discount.
