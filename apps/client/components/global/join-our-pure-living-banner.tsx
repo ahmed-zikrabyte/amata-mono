@@ -25,9 +25,9 @@ const JoinOurPureLivingCommunityBanner = () => {
         <p className="text-sm lg:text-lg font-medium text-gray-200 max-w-xl">
           Get exclusive offers, health tips, and updates on new organic products.
         </p>
-        <div className="flex flex-col md:flex-row items-center max-md:space-y-3 md:space-x-3">
-          <Input placeholder="Enter your email address" className="bg-white h-12" />
-          <Button className="h-12" size={"lg"}>Subscribe</Button>
+        <div className="flex flex-col md:flex-row items-center max-md:space-y-3 md:space-x-3 md:w-1/3">
+          <Input placeholder="Enter your email address" className="bg-white h-12 w-full md:w-2/3" />
+          <Button className="h-12 w-full md:w-1/3" size={"lg"}>Subscribe</Button>
         </div>
       </div>
     </div>

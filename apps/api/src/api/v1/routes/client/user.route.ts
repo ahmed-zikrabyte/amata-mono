@@ -6,17 +6,19 @@ import userCartRoute from "./cart.user.route";
 import userAddressRoute from "./address.user.route";
 import userOrderRoute from "./order.user.route";
 import userProfileRoute from "./profile.user.route";
+import userCategoryRoute from "./category.user.route";
 
 const userRoutes: Router = Router();
 
 userRoutes.use("/auth", userAuthRoute);
 userRoutes.use("/products", userProductRoute);
+userRoutes.use("/category", userCategoryRoute);
 
 userRoutes.use(protect("client"));
 
 userRoutes.use("/cart", userCartRoute);
 userRoutes.use("/address", userAddressRoute);
 userRoutes.use("/order", userOrderRoute);
-userRoutes.use("/profile", userProfileRoute)
+userRoutes.use("/profile", userProfileRoute);
 
 export default userRoutes;

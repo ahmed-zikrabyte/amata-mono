@@ -23,7 +23,7 @@ const Banner10 = () => {
           <div className="container h-full flex flex-col py-10 md:py-14 lg:py-20">
             <div className="w-full mx-auto">
               {/* Header */}
-              <div className="mb-8 md:mb-12">
+              <div className="">
                 <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
                   How To Order
                 </h1>
@@ -37,7 +37,7 @@ const Banner10 = () => {
                 {/* Left Side - Cards */}
                 <div className="w-full lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                   {/* Card 1 */}
-                  <div className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-start">
+                  <div className="bg-[#faf9f0] rounded-2xl shadow-xl/20 p-6 flex flex-col items-start">
                     <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mb-4">
                       <Image
                         src={bgSeclogo1}
@@ -58,7 +58,7 @@ const Banner10 = () => {
                   </div>
 
                   {/* Card 2 */}
-                  <div className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-start">
+                  <div className="bg-[#faf9f0] rounded-2xl shadow-xl/20 p-6 flex flex-col items-start">
                     <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mb-4">
                       <Image
                         src={bgSeclogo2}
@@ -79,7 +79,7 @@ const Banner10 = () => {
                   </div>
 
                   {/* Card 3 */}
-                  <div className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-start">
+                  <div className="bg-[#faf9f0] rounded-2xl shadow-xl/20 p-6 flex flex-col items-start">
                     <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mb-4">
                       <Image
                         src={bgSeclogo3}
@@ -100,13 +100,12 @@ const Banner10 = () => {
                   </div>
 
                   {/* Card 4 */}
-                  <div className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-start">
-                    <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mb-4">
+                  <div className="bg-[#faf9f0] rounded-2xl shadow-xl/20 p-6 flex flex-col items-start">
+                    <div className="relative w-12 h-12 rounded-full flex items-center justify-center mb-4">
                       <Image
                         src={bgSeclogo4}
                         alt="Same day delivery"
-                        width={24}
-                        height={24}
+                        fill
                         className="object-contain"
                       />
                     </div>
@@ -128,7 +127,7 @@ const Banner10 = () => {
                       src={productImg}
                       alt="Amata Farms Product"
                       fill
-                      className="object-contain drop-shadow-2xl"
+                      className="object-contain rounded-2xl"
                       sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 400px, 500px"
                       priority
                     />

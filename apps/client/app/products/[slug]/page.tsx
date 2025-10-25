@@ -63,6 +63,7 @@ import YouMayAlsoLike from "../../../components/products/youMayAlsoLike";
 import { productApi } from "../../../lib/api/productApi";
 import { Product } from "../../../lib/types/product";
 import { useApi } from "../../../hooks/useApi";
+import Link from "next/link";
 
 // Define the API response type based on your API structure
 interface ApiProduct {
@@ -368,7 +369,7 @@ const Page = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-4 sm:py-6 mt-16">
         {/* Breadcrumb */}
         <div className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">
-          Home &gt; {product?.category} &gt; {product?.name}
+          <Link href={"/"}>Home</Link> &gt; {product?.category?.name} &gt; {product?.name}
         </div>
 
         {/* Section -1 */}

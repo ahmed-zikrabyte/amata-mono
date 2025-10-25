@@ -29,17 +29,17 @@ const SpecialOfferProductCard = ({
           <Image
             src={product.images[0] || ""}
             alt={product.name}
-            className="object-cover rounded-xl group-hover:scale-110 duration-150"
+            className="object-cover rounded-xl group-hover:scale-110 duration-500"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
           />
         </div>
         <CardContent className="p-1 space-y-3">
           <span className="text-[10px] font-sm text-amber-900 mt-10">
-            Category: {product.category}
+            Category: {product.category.name}
           </span>
           <div className="flex justify-between items-center gap-0">
-            <h3 className="font-normal text-[11px] text-gray-900 line-clamp-2">
+            <h3 className="font-medium text-lg text-gray-900 line-clamp-2">
               {product.name}
             </h3>
             <div className="flex items-center gap-1">

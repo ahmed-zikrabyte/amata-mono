@@ -8,28 +8,30 @@ import { Input } from "../../../../packages/ui/src/components/input";
 import { Textarea } from "../../../../packages/ui/src/components/textarea";
 import { Button } from "../../../../packages/ui/src/components/button";
 import FaqSection from "./faq-section";
+import LastSection from "./last-section";
 
 const ContactPage = () => {
   return (
     <div>
       <div
-        className="flex items-center justify-center h-96"
+        className="relative flex items-center justify-center h-96"
         style={{
           backgroundImage: `url(${BannerImg.src})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}
       >
-        <div className="w-1/3 text-center space-y-3">
-          <p className="text-3xl text-amber-900 font-semibold">
+        <div className="absolute z-10 w-full md:w-1/3 text-center space-y-3">
+          <p className="text-3xl md:text-4xl text-amber-700 font-semibold">
             Let's Stay Connected
           </p>
-          <p className="text-white">
+          <p className="text-white md:text-lg">
             Whether you want to know more about our ghee, your order, or our
             process — we’re just a message away. We love connecting with people
             who care about purity as much as we do.
           </p>
         </div>
+        <div className="bg-black/40 absolute h-full w-full" />
       </div>
 
       <div className="px-6 lg:px-20 xl:px-24 py-6 lg:py-18">
@@ -152,8 +154,9 @@ const ContactPage = () => {
           referrerPolicy="no-referrer-when-downgrade"
         ></iframe>
       </div>
-      
+
       <FaqSection />
+      <LastSection />
     </div>
   );
 };

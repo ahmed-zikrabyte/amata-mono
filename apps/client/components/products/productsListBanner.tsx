@@ -22,7 +22,7 @@ const ProductsListBanner = () => {
         </h6>
         <div className="flex items-center space-x-5">
           <Button>Explore Products</Button>
-          <Button className="bg-white text-black">View Offers</Button>
+          <Button className="bg-white text-black hover:text-white">View Offers</Button>
         </div>
       </div>
     </div>
