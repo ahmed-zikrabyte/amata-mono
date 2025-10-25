@@ -1,6 +1,6 @@
 import { ApiResponse } from "../../../../utils/ApiResponse";
 import catchAsync from "../../../../utils/catchAsync";
-import UserCategoryService from "../../services/client/cateogry.user.service";
+import UserCategoryService from "../../services/client/category.user.service";
 import { Request, Response } from "express";
 
 const userCategoryService = new UserCategoryService();
