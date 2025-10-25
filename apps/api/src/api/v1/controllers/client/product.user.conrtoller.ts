@@ -7,12 +7,14 @@ const userProductService = new UserProductService();
 
 export default class UserProductController {
   getAllProducts = catchAsync(async (req: Request, res: Response) => {
-    const { page, limit, search } = req.query;
+    const { page, limit, search, category } = req.query;
+    console.log(req.query)
 
     const response = await userProductService.getAllProducts(
       Number(page) || 1,
       Number(limit) || 10,
-      search as string
+      search as string,
+      category as string
     );
 
     return ApiResponse.success({
